@@ -91,7 +91,37 @@
   .app-container.collapsed .sidebar-footer,
   .app-container.collapsed .lang-label,
   .app-container.collapsed .lang-chevron { display: none; }
-  .app-container.collapsed .menu-item { justify-content: center; padding: 12px 0; }
+
+  .app-container.collapsed #active-pill { opacity: 0 !important; }
+
+  .app-container.collapsed .menu-item {
+    width: 40px;
+    height: 40px;
+    margin: 3px auto;
+    padding: 0;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    transition: background-color .2s ease, color .3s ease;
+  }
+
+  .app-container.collapsed .menu-item:hover {
+    background: rgba(255,255,255,.08);
+  }
+
+  .app-container.collapsed .menu-item.active {
+    background: #fff;
+    color: #000;
+    box-shadow: 0 0 15px rgba(255,255,255,.3);
+  }
+  .app-container.collapsed .menu-item.active:hover {
+    background: #fff;
+  }
+
+  .app-container.collapsed .menu-item.active .menu-icon img {
+    filter: brightness(0) opacity(1);
+  }
+
   .app-container.collapsed .lang-btn { justify-content: center; padding: 8px; }
 
   .sidebar-header {
@@ -554,16 +584,23 @@
       width: 100% !important;
     }
     #active-pill { display: none !important; }
-    .menu-item {
+
+    .menu-item,
+    .app-container.collapsed .menu-item {
       flex-direction: column !important;
       gap: 4px !important;
       padding: 6px 10px !important;
       height: auto !important;
+      width: auto !important;
+      margin: 0 !important;
       font-size: 10px !important;
       border-radius: 10px;
       color: rgba(255,255,255,.45);
       justify-content: center !important;
+      align-items: center !important;
       flex: 0 0 auto;
+      background: transparent !important;
+      box-shadow: none !important;
     }
     .menu-item > span:not(.menu-icon),
     .app-container.collapsed .menu-item > span:not(.menu-icon) {
@@ -571,11 +608,14 @@
       opacity: 1 !important;
       visibility: visible !important;
     }
-    .menu-item.active {
+    .menu-item.active,
+    .app-container.collapsed .menu-item.active {
       color: #fff;
-      background: rgba(255,255,255,.08);
+      background: rgba(255,255,255,.08) !important;
+      box-shadow: none !important;
     }
-    .menu-item.active .menu-icon img {
+    .menu-item.active .menu-icon img,
+    .app-container.collapsed .menu-item.active .menu-icon img {
       filter: brightness(0) invert(1) opacity(1);
     }
     .menu-icon,
