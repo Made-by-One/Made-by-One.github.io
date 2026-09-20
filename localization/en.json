@@ -30,7 +30,7 @@
   "packer.f1": ".dvp format",
   "packer.f2": "Max compression",
   "packer.f3": "Cover editor",
-  "packer.f4": "Auto .exe detect",
+  "packer.f4": "Auto .zip detect",
   "packer.f5": "Manifest",
   "packer.f6": "Multi-language",
   "packer.download": "⬇ Download .zip",
