@@ -34,10 +34,10 @@
   "packer.f1": "Formato .dvp",
   "packer.f2": "Compressão máx.",
   "packer.f3": "Editor de capas",
-  "packer.f4": "Detecção auto .exe",
+  "packer.f4": "Detecção auto .zip",
   "packer.f5": "Manifesto",
   "packer.f6": "Multi-idioma",
-  "packer.download": "⬇ Baixar .exe",
+  "packer.download": "⬇ Baixar .zip",
 
   "about.title": "Sobre o estúdio",
   "about.subtitle": "Made by One — pequeno, focado, aberto",
