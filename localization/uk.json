@@ -1,0 +1,56 @@
+{
+  "_name": "Українська",
+  "_flag": "🇺🇦",
+
+  "nav.home": "Головна",
+  "nav.launcher": "Devers Launcher",
+  "nav.packer": "Devers Packer",
+  "nav.about": "Про студію",
+
+  "home.title": "Made by One",
+  "home.sub": "Невелика студія, що робить чисті та сфокусовані інструменти для гравців і розробників.",
+  "home.btn.launcher": "▶ Devers Launcher",
+  "home.btn.packer": "📦 Devers Packer",
+  "home.stat.products": "Продукти",
+  "home.stat.release": "Поточний реліз",
+  "home.stat.license": "Ліцензія",
+
+  "launcher.title": "Devers Launcher",
+  "launcher.subtitle": "Сучасний ігровий лаунчер для архівів .dvp",
+  "launcher.desc": "Чистий і сучасний лаунчер для ігор у форматі .dvp, створених у Devers Packer. Розпаковує кожну гру в тимчасову папку, запускає її та прибирає все після закриття — жодних залишкових файлів на диску.",
+  "launcher.f1": "Бібліотека",
+  "launcher.f2": "Обкладинки",
+  "launcher.f3": "Обране",
+  "launcher.f4": "Час гри",
+  "launcher.f5": "Багатомовність",
+  "launcher.f6": "Drag & Drop",
+  "launcher.f7": "Трей",
+  "launcher.f8": "Автоочищення",
+  "launcher.download": "⬇ Завантажити .zip",
+
+  "packer.title": "Devers Packer",
+  "packer.subtitle": "Пакуй будь-яку папку з грою в один .dvp архів",
+  "packer.desc": "Перетворює будь-яку папку з грою на один .dvp архів — на основі ZIP, максимальне стиснення, вбудований маніфест та обкладинка. Редактор обкладинок дозволяє обрізати й масштабувати будь-яке зображення до 240×175 з живим превʼю.",
+  "packer.f1": "Формат .dvp",
+  "packer.f2": "Макс. стиснення",
+  "packer.f3": "Редактор обкладинок",
+  "packer.f4": "Авто-пошук .exe",
+  "packer.f5": "Маніфест",
+  "packer.f6": "Багатомовність",
+  "packer.download": "⬇ Завантажити .exe",
+
+  "about.title": "Про студію",
+  "about.subtitle": "Made by One — невелика, сфокусована, відкрита",
+  "about.desc": "Made by One — невелика студія, що створює чисті та мінімалістичні інструменти для гравців і розробників. Усе, що ми випускаємо, має бути легким, приватним і чесним — без телеметрії, без роздутих інсталяторів, без прихованих сервісів у фоні.",
+  "about.f1": "MIT-ліцензія",
+  "about.f2": "Відкритий код",
+  "about.f3": "Спочатку Windows",
+  "about.f4": "Без телеметрії",
+  "about.github": "GitHub ↗",
+
+  "common.github": "Відкрити на GitHub ↗",
+  "common.releases": "Усі релізи ↗",
+
+  "footer.copyright": "© 2026 Made by One Studio",
+  "footer.github": "GitHub ↗"
+}

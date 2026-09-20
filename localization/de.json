@@ -1,0 +1,56 @@
+{
+  "_name": "Deutsch",
+  "_flag": "🇩🇪",
+
+  "nav.home": "Start",
+  "nav.launcher": "Devers Launcher",
+  "nav.packer": "Devers Packer",
+  "nav.about": "Über uns",
+
+  "home.title": "Made by One",
+  "home.sub": "Kleines Studio, das saubere, fokussierte Tools für Gamer und Entwickler baut.",
+  "home.btn.launcher": "▶ Devers Launcher",
+  "home.btn.packer": "📦 Devers Packer",
+  "home.stat.products": "Produkte",
+  "home.stat.release": "Aktuelles Release",
+  "home.stat.license": "Lizenz",
+
+  "launcher.title": "Devers Launcher",
+  "launcher.subtitle": "Moderner Spiele-Launcher für .dvp-Archive",
+  "launcher.desc": "Ein sauberer, moderner Launcher für .dvp-Spiele, die mit Devers Packer erstellt wurden. Entpackt jedes Spiel in einen temporären Ordner, führt es aus und räumt alles beim Schließen auf — keine Restdateien auf deiner Festplatte.",
+  "launcher.f1": "Bibliothek",
+  "launcher.f2": "Cover",
+  "launcher.f3": "Favoriten",
+  "launcher.f4": "Spielzeit",
+  "launcher.f5": "Mehrsprachig",
+  "launcher.f6": "Drag & Drop",
+  "launcher.f7": "Tray",
+  "launcher.f8": "Auto-Aufräumen",
+  "launcher.download": "⬇ .zip herunterladen",
+
+  "packer.title": "Devers Packer",
+  "packer.subtitle": "Packe jeden Spielordner in ein einziges .dvp-Archiv",
+  "packer.desc": "Verwandelt jeden Spielordner in ein einziges .dvp-Archiv — ZIP-basiert, maximale Kompression, mit eingebettetem Manifest und Cover. Der Cover-Editor ermöglicht Zuschneiden und Skalieren beliebiger Bilder auf 240×175 mit Live-Vorschau.",
+  "packer.f1": ".dvp-Format",
+  "packer.f2": "Max. Kompression",
+  "packer.f3": "Cover-Editor",
+  "packer.f4": "Auto-.exe-Erkennung",
+  "packer.f5": "Manifest",
+  "packer.f6": "Mehrsprachig",
+  "packer.download": "⬇ .exe herunterladen",
+
+  "about.title": "Über das Studio",
+  "about.subtitle": "Made by One — klein, fokussiert, offen",
+  "about.desc": "Made by One ist ein kleines Studio, das saubere, minimalistische Tools für Gamer und Entwickler baut. Alles, was wir veröffentlichen, soll sich leicht, privat und ehrlich anfühlen — keine Telemetrie, keine überladenen Installer, keine versteckten Dienste im Hintergrund.",
+  "about.f1": "MIT-Lizenz",
+  "about.f2": "Open Source",
+  "about.f3": "Windows zuerst",
+  "about.f4": "Keine Telemetrie",
+  "about.github": "GitHub ↗",
+
+  "common.github": "Auf GitHub ansehen ↗",
+  "common.releases": "Alle Releases ↗",
+
+  "footer.copyright": "© 2026 Made by One Studio",
+  "footer.github": "GitHub ↗"
+}

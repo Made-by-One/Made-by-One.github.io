@@ -1,0 +1,56 @@
+{
+  "_name": "Français",
+  "_flag": "🇫🇷",
+
+  "nav.home": "Accueil",
+  "nav.launcher": "Devers Launcher",
+  "nav.packer": "Devers Packer",
+  "nav.about": "À propos",
+
+  "home.title": "Made by One",
+  "home.sub": "Petit studio créant des outils propres et ciblés pour les joueurs et les développeurs.",
+  "home.btn.launcher": "▶ Devers Launcher",
+  "home.btn.packer": "📦 Devers Packer",
+  "home.stat.products": "Produits",
+  "home.stat.release": "Version actuelle",
+  "home.stat.license": "Licence",
+
+  "launcher.title": "Devers Launcher",
+  "launcher.subtitle": "Lanceur de jeux moderne pour les archives .dvp",
+  "launcher.desc": "Un lanceur propre et moderne pour les jeux .dvp créés avec Devers Packer. Extrait chaque jeu dans un dossier temporaire, le lance et nettoie tout à la fermeture — aucun fichier résiduel sur votre disque.",
+  "launcher.f1": "Bibliothèque",
+  "launcher.f2": "Couvertures",
+  "launcher.f3": "Favoris",
+  "launcher.f4": "Temps de jeu",
+  "launcher.f5": "Multi-langue",
+  "launcher.f6": "Glisser-déposer",
+  "launcher.f7": "Barre système",
+  "launcher.f8": "Nettoyage auto",
+  "launcher.download": "⬇ Télécharger .zip",
+
+  "packer.title": "Devers Packer",
+  "packer.subtitle": "Empaquetez n'importe quel dossier de jeu en une seule archive .dvp",
+  "packer.desc": "Transforme n'importe quel dossier de jeu en une seule archive .dvp — basée sur ZIP, compression maximale, avec manifeste intégré et couverture. L'éditeur de couverture permet de rogner et redimensionner n'importe quelle image en 240×175 avec aperçu en direct.",
+  "packer.f1": "Format .dvp",
+  "packer.f2": "Compression max",
+  "packer.f3": "Éditeur de couverture",
+  "packer.f4": "Détection auto .exe",
+  "packer.f5": "Manifeste",
+  "packer.f6": "Multi-langue",
+  "packer.download": "⬇ Télécharger .exe",
+
+  "about.title": "À propos du studio",
+  "about.subtitle": "Made by One — petit, ciblé, ouvert",
+  "about.desc": "Made by One est un petit studio qui construit des outils propres et minimalistes pour les joueurs et les développeurs. Tout ce que nous publions est conçu pour être léger, privé et honnête — pas de télémétrie, pas d'installateurs gonflés, pas de services cachés en arrière-plan.",
+  "about.f1": "Licence MIT",
+  "about.f2": "Open source",
+  "about.f3": "Windows d'abord",
+  "about.f4": "Sans télémétrie",
+  "about.github": "GitHub ↗",
+
+  "common.github": "Voir sur GitHub ↗",
+  "common.releases": "Toutes les versions ↗",
+
+  "footer.copyright": "© 2026 Made by One Studio",
+  "footer.github": "GitHub ↗"
+}

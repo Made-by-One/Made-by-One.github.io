@@ -1,0 +1,56 @@
+{
+  "_name": "简体中文",
+  "_flag": "🇨🇳",
+
+  "nav.home": "主页",
+  "nav.launcher": "Devers Launcher",
+  "nav.packer": "Devers Packer",
+  "nav.about": "关于",
+
+  "home.title": "Made by One",
+  "home.sub": "为玩家和开发者打造简洁、专注工具的小型工作室。",
+  "home.btn.launcher": "▶ Devers Launcher",
+  "home.btn.packer": "📦 Devers Packer",
+  "home.stat.products": "产品",
+  "home.stat.release": "当前版本",
+  "home.stat.license": "许可证",
+
+  "launcher.title": "Devers Launcher",
+  "launcher.subtitle": "面向 .dvp 归档的现代游戏启动器",
+  "launcher.desc": "为 Devers Packer 创建的 .dvp 游戏打造的简洁现代启动器。将每个游戏解压到临时文件夹，运行它，关闭时清理所有内容——磁盘上不留任何残留文件。",
+  "launcher.f1": "游戏库",
+  "launcher.f2": "封面",
+  "launcher.f3": "收藏",
+  "launcher.f4": "游玩时间",
+  "launcher.f5": "多语言",
+  "launcher.f6": "拖放",
+  "launcher.f7": "系统托盘",
+  "launcher.f8": "自动清理",
+  "launcher.download": "⬇ 下载 .zip",
+
+  "packer.title": "Devers Packer",
+  "packer.subtitle": "将任意游戏文件夹打包为单个 .dvp 归档",
+  "packer.desc": "将任意游戏文件夹转换为单个 .dvp 归档——基于 ZIP、最大压缩，内置清单和封面。封面编辑器可让你裁剪和缩放任意图片至 240×175，并实时预览。",
+  "packer.f1": ".dvp 格式",
+  "packer.f2": "最大压缩",
+  "packer.f3": "封面编辑器",
+  "packer.f4": "自动检测 .exe",
+  "packer.f5": "清单",
+  "packer.f6": "多语言",
+  "packer.download": "⬇ 下载 .exe",
+
+  "about.title": "关于工作室",
+  "about.subtitle": "Made by One — 小而专注，开放",
+  "about.desc": "Made by One 是一个小型工作室，为玩家和开发者打造简洁、极简的工具。我们发布的一切都力求轻量、私密且诚实——没有遥测，没有臃肿的安装程序，没有在后台偷偷运行的服务。",
+  "about.f1": "MIT 许可证",
+  "about.f2": "开源",
+  "about.f3": "Windows 优先",
+  "about.f4": "无遥测",
+  "about.github": "GitHub ↗",
+
+  "common.github": "在 GitHub 上查看 ↗",
+  "common.releases": "所有版本 ↗",
+
+  "footer.copyright": "© 2026 Made by One Studio",
+  "footer.github": "GitHub ↗"
+}

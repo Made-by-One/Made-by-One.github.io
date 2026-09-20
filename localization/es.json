@@ -1,0 +1,56 @@
+{
+  "_name": "Español",
+  "_flag": "🇪🇸",
+
+  "nav.home": "Inicio",
+  "nav.launcher": "Devers Launcher",
+  "nav.packer": "Devers Packer",
+  "nav.about": "Acerca de",
+
+  "home.title": "Made by One",
+  "home.sub": "Pequeño estudio que crea herramientas limpias y enfocadas para jugadores y desarrolladores.",
+  "home.btn.launcher": "▶ Devers Launcher",
+  "home.btn.packer": "📦 Devers Packer",
+  "home.stat.products": "Productos",
+  "home.stat.release": "Versión actual",
+  "home.stat.license": "Licencia",
+
+  "launcher.title": "Devers Launcher",
+  "launcher.subtitle": "Lanzador de juegos moderno para archivos .dvp",
+  "launcher.desc": "Un lanzador limpio y moderno para juegos .dvp creados con Devers Packer. Extrae cada juego en una carpeta temporal, lo ejecuta y limpia todo al cerrarlo — sin archivos sobrantes en tu disco.",
+  "launcher.f1": "Biblioteca",
+  "launcher.f2": "Portadas",
+  "launcher.f3": "Favoritos",
+  "launcher.f4": "Tiempo de juego",
+  "launcher.f5": "Multi-idioma",
+  "launcher.f6": "Drag & Drop",
+  "launcher.f7": "Bandeja",
+  "launcher.f8": "Limpieza automática",
+  "launcher.download": "⬇ Descargar .zip",
+
+  "packer.title": "Devers Packer",
+  "packer.subtitle": "Empaqueta cualquier carpeta de juego en un único archivo .dvp",
+  "packer.desc": "Convierte cualquier carpeta de juego en un único archivo .dvp — basado en ZIP, compresión máxima, con manifiesto integrado y portada. El editor de portadas permite recortar y escalar cualquier imagen a 240×175 con vista previa en vivo.",
+  "packer.f1": "Formato .dvp",
+  "packer.f2": "Compresión máx.",
+  "packer.f3": "Editor de portadas",
+  "packer.f4": "Detección auto .exe",
+  "packer.f5": "Manifiesto",
+  "packer.f6": "Multi-idioma",
+  "packer.download": "⬇ Descargar .exe",
+
+  "about.title": "Acerca del estudio",
+  "about.subtitle": "Made by One — pequeño, enfocado, abierto",
+  "about.desc": "Made by One es un pequeño estudio que crea herramientas limpias y minimalistas para jugadores y desarrolladores. Todo lo que publicamos está diseñado para ser ligero, privado y honesto — sin telemetría, sin instaladores inflados, sin servicios ocultos en segundo plano.",
+  "about.f1": "Licencia MIT",
+  "about.f2": "Código abierto",
+  "about.f3": "Windows primero",
+  "about.f4": "Sin telemetría",
+  "about.github": "GitHub ↗",
+
+  "common.github": "Ver en GitHub ↗",
+  "common.releases": "Todas las versiones ↗",
+
+  "footer.copyright": "© 2026 Made by One Studio",
+  "footer.github": "GitHub ↗"
+}
