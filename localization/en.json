@@ -33,7 +33,7 @@
   "packer.f4": "Auto .exe detect",
   "packer.f5": "Manifest",
   "packer.f6": "Multi-language",
-  "packer.download": "⬇ Download .exe",
+  "packer.download": "⬇ Download .zip",
   "about.title": "About Studio",
   "about.subtitle": "Made by One — small, focused, open",
   "about.desc": "Made by One is a small studio building clean, minimal tools for gamers and developers. Everything we ship is designed to feel light, private, and honest — no telemetry, no bloated installers, no hidden services running in the background.",
