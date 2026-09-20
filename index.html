@@ -85,7 +85,8 @@
     z-index: 20;
   }
   .app-container.collapsed .sidebar { width: 60px; padding: 20px 10px; }
-  .app-container.collapsed .menu-item span:not(.menu-icon),
+
+  .app-container.collapsed .menu-item > span:not(.menu-icon),
   .app-container.collapsed .sidebar-title,
   .app-container.collapsed .sidebar-footer,
   .app-container.collapsed .lang-label,
@@ -564,8 +565,8 @@
       justify-content: center !important;
       flex: 0 0 auto;
     }
-    .menu-item span:not(.menu-icon),
-    .app-container.collapsed .menu-item span:not(.menu-icon) {
+    .menu-item > span:not(.menu-icon),
+    .app-container.collapsed .menu-item > span:not(.menu-icon) {
       display: inline !important;
       opacity: 1 !important;
       visibility: visible !important;
@@ -762,7 +763,7 @@
               <span class="feature" data-i18n="packer.f1">.dvp format</span>
               <span class="feature" data-i18n="packer.f2">Max compression</span>
               <span class="feature" data-i18n="packer.f3">Cover editor</span>
-              <span class="feature" data-i18n="packer.f4">Auto .zip detect</span>
+              <span class="feature" data-i18n="packer.f4">Auto .exe detect</span>
               <span class="feature" data-i18n="packer.f5">Manifest</span>
               <span class="feature" data-i18n="packer.f6">Multi-language</span>
             </div>
