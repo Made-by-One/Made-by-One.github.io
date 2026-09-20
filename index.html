@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MADE BY ONE — STUDIO</title>
+<link rel="icon" type="image/x-icon" href="./data/website.ico">
 <style>
   * {
     margin: 0; padding: 0; box-sizing: border-box;
@@ -84,7 +85,7 @@
     z-index: 20;
   }
   .app-container.collapsed .sidebar { width: 60px; padding: 20px 10px; }
-  .app-container.collapsed .menu-item span,
+  .app-container.collapsed .menu-item span:not(.menu-icon),
   .app-container.collapsed .sidebar-title,
   .app-container.collapsed .sidebar-footer,
   .app-container.collapsed .lang-label,
@@ -131,9 +132,30 @@
     height: 46px; transition: color .3s ease;
   }
   .menu-item.active { color: #000; font-weight: 400; }
-  .icon { width: 14px; height: 14px; background: currentColor; position: relative; flex-shrink: 0; border-radius: 3px; }
-  .icon::after { content: ''; position: absolute; top: 3px; left: 3px; width: 8px; height: 8px; background: #000; border-radius: 2px; }
-  .menu-item.active .icon::after { background: #fff; }
+
+  .menu-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    line-height: 1;
+    color: currentColor;
+    transition: color .3s ease;
+  }
+  .menu-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: brightness(0) invert(1) opacity(.5);
+    transition: filter .3s ease;
+  }
+  .menu-item.active .menu-icon img {
+    filter: brightness(0) opacity(1);
+  }
 
   .lang-wrapper {
     margin-top: 20px;
@@ -348,6 +370,13 @@
     font-size: 28px;
     flex-shrink: 0;
     text-shadow: 0 0 20px rgba(255,255,255,.5);
+    overflow: hidden;
+  }
+  .app-badge img {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
   }
   .app-meta h2 {
     font-size: 24px; font-weight: 300;
@@ -535,8 +564,8 @@
       justify-content: center !important;
       flex: 0 0 auto;
     }
-    .menu-item span,
-    .app-container.collapsed .menu-item span {
+    .menu-item span:not(.menu-icon),
+    .app-container.collapsed .menu-item span:not(.menu-icon) {
       display: inline !important;
       opacity: 1 !important;
       visibility: visible !important;
@@ -545,8 +574,15 @@
       color: #fff;
       background: rgba(255,255,255,.08);
     }
-    .menu-item.active .icon::after { background: #fff; }
-    .menu-item .icon { width: 16px !important; height: 16px !important; }
+    .menu-item.active .menu-icon img {
+      filter: brightness(0) invert(1) opacity(1);
+    }
+    .menu-icon,
+    .app-container.collapsed .menu-icon {
+      width: 20px !important;
+      height: 20px !important;
+      font-size: 18px !important;
+    }
 
     .sidebar-footer { display: none !important; }
 
@@ -574,16 +610,28 @@
       <div class="menu-list" id="menuList">
         <div id="active-pill"></div>
         <div class="menu-item active" data-page="home" onclick="switchPage('home', this)">
-          <div class="icon"></div><span data-i18n="nav.home">Home</span>
+          <span class="menu-icon">
+            <img src="./data/icon-home.png" alt="" onerror="this.replaceWith(document.createTextNode('🏠'))">
+          </span>
+          <span data-i18n="nav.home">Home</span>
         </div>
         <div class="menu-item" data-page="launcher" onclick="switchPage('launcher', this)">
-          <div class="icon"></div><span data-i18n="nav.launcher">Devers Launcher</span>
+          <span class="menu-icon">
+            <img src="./data/icon-launcher.png" alt="" onerror="this.replaceWith(document.createTextNode('✦'))">
+          </span>
+          <span data-i18n="nav.launcher">Devers Launcher</span>
         </div>
         <div class="menu-item" data-page="packer" onclick="switchPage('packer', this)">
-          <div class="icon"></div><span data-i18n="nav.packer">Devers Packer</span>
+          <span class="menu-icon">
+            <img src="./data/icon-packer.png" alt="" onerror="this.replaceWith(document.createTextNode('📦'))">
+          </span>
+          <span data-i18n="nav.packer">Devers Packer</span>
         </div>
         <div class="menu-item" data-page="about" onclick="switchPage('about', this)">
-          <div class="icon"></div><span data-i18n="nav.about">About</span>
+          <span class="menu-icon">
+            <img src="./data/icon-about.png" alt="" onerror="this.replaceWith(document.createTextNode('ℹ️'))">
+          </span>
+          <span data-i18n="nav.about">About</span>
         </div>
       </div>
 
@@ -647,7 +695,9 @@
 
           <div class="app-card">
             <div class="app-card-head">
-              <div class="app-badge">✦</div>
+              <div class="app-badge">
+                <img src="./data/icon-launcher.png" alt="" onerror="this.replaceWith(document.createTextNode('✦'))">
+              </div>
               <div class="app-meta">
                 <h2>Devers Launcher</h2>
                 <div class="app-version">v1.1 · Windows · MIT</div>
@@ -693,7 +743,9 @@
 
           <div class="app-card">
             <div class="app-card-head">
-              <div class="app-badge">📦</div>
+              <div class="app-badge">
+                <img src="./data/icon-packer.png" alt="" onerror="this.replaceWith(document.createTextNode('📦'))">
+              </div>
               <div class="app-meta">
                 <h2>Devers Packer</h2>
                 <div class="app-version">v1.1 · Windows · MIT</div>
