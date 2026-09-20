@@ -1,3 +1,1 @@
-# Made by One — Landing
-
-Source for [made-by-one.github.io](https://made-by-one.github.io) — the official landing page for Made by One Studio.
+[![Made by](https://img.shields.io/badge/Made%20by%20One%20Studio-black)](https://made-by-one.github.io/)
