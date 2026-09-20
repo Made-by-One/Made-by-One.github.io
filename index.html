@@ -34,7 +34,6 @@
   a { color: inherit; text-decoration: none; }
   button { font-family: inherit; }
 
-  /* ===== CURSOR ===== */
   #custom-cursor {
     position: fixed; top: 0; left: 0;
     width: 24px; height: 24px;
@@ -48,7 +47,6 @@
   #custom-cursor.hovering { background-color: rgba(255,255,255,.2); width: 34px; height: 34px; }
   #custom-cursor.clicking  { width: 14px; height: 14px; background-color: #fff; }
 
-  /* ===== INFINITE MOVING GRID ===== */
   .bg-grid {
     position: fixed; inset: 0; pointer-events: none; z-index: 0;
     background-color: #000;
@@ -69,7 +67,6 @@
     background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.92) 100%);
   }
 
-  /* ===== LAYOUT ===== */
   .app-container {
     position: relative; z-index: 10;
     display: flex; width: 100vw; height: 100vh;
@@ -77,7 +74,6 @@
     backdrop-filter: blur(2px);
   }
 
-  /* ===== SIDEBAR ===== */
   .sidebar {
     position: relative; width: 280px; flex-shrink: 0;
     background: rgba(0,0,0,.75);
@@ -139,7 +135,6 @@
   .icon::after { content: ''; position: absolute; top: 3px; left: 3px; width: 8px; height: 8px; background: #000; border-radius: 2px; }
   .menu-item.active .icon::after { background: #fff; }
 
-  /* ===== LANGUAGE SWITCHER ===== */
   .lang-wrapper {
     margin-top: 20px;
     padding-top: 16px;
@@ -209,7 +204,6 @@
     padding-top: 10px;
   }
 
-  /* ===== MAIN CONTENT ===== */
   .main-content {
     flex-grow: 1; padding: 40px;
     overflow-y: auto;
@@ -239,7 +233,6 @@
 
   .hidden { display: none !important; }
 
-  /* ===== HERO ===== */
   .hero { padding: 40px 0; }
   .hero-title {
     font-size: 72px; font-weight: 200;
@@ -290,7 +283,6 @@
   .stat-value { font-size: 32px; font-weight: 300; letter-spacing: -1px; }
   .stat-label { font-size: 11px; color: var(--muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 2px; }
 
-  /* ===== APP CARDS ===== */
   .app-card {
     background: rgba(0,0,0,.55);
     border: 1px solid rgba(255,255,255,.15);
@@ -345,7 +337,6 @@
     border-top: 1px solid rgba(255,255,255,.08);
   }
 
-  /* ===== SITE FOOTER ===== */
   .site-footer {
     margin-top: 60px;
     padding-top: 20px;
@@ -357,7 +348,6 @@
   .site-footer a { color: var(--muted); transition: color .2s; }
   .site-footer a:hover { color: #fff; }
 
-  /* ===== MOBILE ===== */
   @media (max-width: 1024px) {
     h1 { font-size: 38px; }
     .hero-title { font-size: 54px; }
@@ -408,7 +398,6 @@
         </div>
       </div>
 
-      <!-- Language switcher -->
       <div class="lang-wrapper">
         <div class="lang-menu" id="langMenu"></div>
         <button class="lang-btn" id="langBtn">
@@ -424,7 +413,6 @@
     <main class="main-content" id="mainContent">
       <div class="content-wrapper">
 
-        <!-- ================= HOME ================= -->
         <section class="page" id="page-home">
           <div class="hero">
             <h1 class="hero-title"><span class="accent">✦</span> <span data-i18n="home.title">Made by One</span></h1>
@@ -462,7 +450,6 @@
           </div>
         </section>
 
-        <!-- ================= LAUNCHER ================= -->
         <section class="page hidden" id="page-launcher">
           <div class="page-header">
             <h1 data-i18n="launcher.title">Devers Launcher</h1>
@@ -509,7 +496,6 @@
           </div>
         </section>
 
-        <!-- ================= PACKER ================= -->
         <section class="page hidden" id="page-packer">
           <div class="page-header">
             <h1 data-i18n="packer.title">Devers Packer</h1>
@@ -554,7 +540,6 @@
           </div>
         </section>
 
-        <!-- ================= ABOUT ================= -->
         <section class="page hidden" id="page-about">
           <div class="page-header">
             <h1 data-i18n="about.title">About Studio</h1>
@@ -600,204 +585,47 @@
   </div>
 
 <script>
-/* ============================================================
-   DOWNLOAD LINKS (v1.1 release)
-   ============================================================ */
 const LAUNCHER_URL = "https://github.com/Made-by-One/Devers-Launcher/releases/download/v1.1/Devers-Launcher-Windows-v1.1.zip";
 const PACKER_URL   = "https://github.com/Made-by-One/Devers-Packer/releases/download/v1.1/Devers-Packer-Windows-v1.1.zip";
 
 document.getElementById('downloadLauncher').href = LAUNCHER_URL;
 document.getElementById('downloadPacker').href   = PACKER_URL;
 
-/* ============================================================
-   TRANSLATIONS
-   Structure mirrors what you'd have in i18n/en.json, i18n/ru.json, etc.
-   To switch to external JSON files later, replace `TRANSLATIONS`
-   with async fetch(`./i18n/${lang}.json`).
-   ============================================================ */
-const TRANSLATIONS = {
-  en: {
-    _name: "English",
-    _flag: "🇬🇧",
-
-    "nav.home": "Home",
-    "nav.launcher": "Devers Launcher",
-    "nav.packer": "Devers Packer",
-    "nav.about": "About",
-
-    "home.title": "Made by One",
-    "home.sub": "Small studio making clean, focused tools for gamers and developers.",
-    "home.btn.launcher": "▶ Devers Launcher",
-    "home.btn.packer": "📦 Devers Packer",
-    "home.stat.products": "Products",
-    "home.stat.release": "Current release",
-    "home.stat.license": "License",
-
-    "launcher.title": "Devers Launcher",
-    "launcher.subtitle": "Modern game launcher for .dvp archives",
-    "launcher.desc": "A clean, modern launcher for .dvp games created with Devers Packer. Extracts each game into a temp folder, runs it, and cleans everything up when you close it — no leftover files on your disk.",
-    "launcher.f1": "Library",
-    "launcher.f2": "Covers",
-    "launcher.f3": "Favorites",
-    "launcher.f4": "Playtime",
-    "launcher.f5": "Multi-language",
-    "launcher.f6": "Drag & Drop",
-    "launcher.f7": "Tray",
-    "launcher.f8": "Auto-cleanup",
-    "launcher.download": "⬇ Download .zip",
-
-    "packer.title": "Devers Packer",
-    "packer.subtitle": "Pack any game folder into a single .dvp archive",
-    "packer.desc": "Turns any game folder into a single .dvp archive — ZIP-based, maximum compression, with an embedded manifest and a cover. The cover editor lets you crop and scale any image to 240×175 with a live preview.",
-    "packer.f1": ".dvp format",
-    "packer.f2": "Max compression",
-    "packer.f3": "Cover editor",
-    "packer.f4": "Auto .exe detect",
-    "packer.f5": "Manifest",
-    "packer.f6": "Multi-language",
-    "packer.download": "⬇ Download .exe",
-
-    "about.title": "About Studio",
-    "about.subtitle": "Made by One — small, focused, open",
-    "about.desc": "Made by One is a small studio building clean, minimal tools for gamers and developers. Everything we ship is designed to feel light, private, and honest — no telemetry, no bloated installers, no hidden services running in the background.",
-    "about.f1": "MIT License",
-    "about.f2": "Open source",
-    "about.f3": "Windows-first",
-    "about.f4": "No telemetry",
-    "about.github": "GitHub ↗",
-
-    "common.github": "View on GitHub ↗",
-    "common.releases": "All releases ↗",
-
-    "footer.copyright": "© 2026 Made by One Studio",
-    "footer.github": "GitHub ↗",
-  },
-
-  ru: {
-    _name: "Русский",
-    _flag: "🇷🇺",
-
-    "nav.home": "Главная",
-    "nav.launcher": "Devers Launcher",
-    "nav.packer": "Devers Packer",
-    "nav.about": "О студии",
-
-    "home.title": "Made by One",
-    "home.sub": "Небольшая студия, делающая чистые и сфокусированные инструменты для игроков и разработчиков.",
-    "home.btn.launcher": "▶ Devers Launcher",
-    "home.btn.packer": "📦 Devers Packer",
-    "home.stat.products": "Продукта",
-    "home.stat.release": "Текущий релиз",
-    "home.stat.license": "Лицензия",
-
-    "launcher.title": "Devers Launcher",
-    "launcher.subtitle": "Современный игровой лаунчер для архивов .dvp",
-    "launcher.desc": "Чистый и современный лаунчер для игр в формате .dvp, созданных в Devers Packer. Распаковывает игру во временную папку, запускает её и очищает всё после закрытия — никакого мусора на диске.",
-    "launcher.f1": "Библиотека",
-    "launcher.f2": "Обложки",
-    "launcher.f3": "Избранное",
-    "launcher.f4": "Время игры",
-    "launcher.f5": "Мультиязычность",
-    "launcher.f6": "Drag & Drop",
-    "launcher.f7": "Трей",
-    "launcher.f8": "Автоочистка",
-    "launcher.download": "⬇ Скачать .zip",
-
-    "packer.title": "Devers Packer",
-    "packer.subtitle": "Упакуй любую папку с игрой в один .dvp архив",
-    "packer.desc": "Превращает любую папку с игрой в один .dvp архив — ZIP-основа, максимальное сжатие, встроенный манифест и обложка. Редактор обложек позволяет обрезать и масштабировать изображение до 240×175 с живым превью.",
-    "packer.f1": "Формат .dvp",
-    "packer.f2": "Макс. сжатие",
-    "packer.f3": "Редактор обложек",
-    "packer.f4": "Авто-поиск .exe",
-    "packer.f5": "Манифест",
-    "packer.f6": "Мультиязычность",
-    "packer.download": "⬇ Скачать .exe",
-
-    "about.title": "О студии",
-    "about.subtitle": "Made by One — небольшая, сфокусированная, открытая",
-    "about.desc": "Made by One — небольшая студия, создающая чистые и минималистичные инструменты для игроков и разработчиков. Всё, что мы делаем, должно быть лёгким, приватным и честным — без телеметрии, без раздутых инсталляторов, без скрытых сервисов в фоне.",
-    "about.f1": "MIT-лицензия",
-    "about.f2": "Открытый код",
-    "about.f3": "Сначала Windows",
-    "about.f4": "Без телеметрии",
-    "about.github": "GitHub ↗",
-
-    "common.github": "Открыть на GitHub ↗",
-    "common.releases": "Все релизы ↗",
-
-    "footer.copyright": "© 2026 Made by One Studio",
-    "footer.github": "GitHub ↗",
-  },
-
-  uk: {
-    _name: "Українська",
-    _flag: "🇺🇦",
-
-    "nav.home": "Головна",
-    "nav.launcher": "Devers Launcher",
-    "nav.packer": "Devers Packer",
-    "nav.about": "Про студію",
-
-    "home.title": "Made by One",
-    "home.sub": "Невелика студія, що робить чисті та сфокусовані інструменти для гравців і розробників.",
-    "home.btn.launcher": "▶ Devers Launcher",
-    "home.btn.packer": "📦 Devers Packer",
-    "home.stat.products": "Продукти",
-    "home.stat.release": "Поточний реліз",
-    "home.stat.license": "Ліцензія",
-
-    "launcher.title": "Devers Launcher",
-    "launcher.subtitle": "Сучасний ігровий лаунчер для архівів .dvp",
-    "launcher.desc": "Чистий і сучасний лаунчер для ігор у форматі .dvp, створених у Devers Packer. Розпаковує гру в тимчасову папку, запускає її та прибирає все після закриття — жодного сміття на диску.",
-    "launcher.f1": "Бібліотека",
-    "launcher.f2": "Обкладинки",
-    "launcher.f3": "Обране",
-    "launcher.f4": "Час гри",
-    "launcher.f5": "Багатомовність",
-    "launcher.f6": "Drag & Drop",
-    "launcher.f7": "Трей",
-    "launcher.f8": "Автоочищення",
-    "launcher.download": "⬇ Завантажити .zip",
-
-    "packer.title": "Devers Packer",
-    "packer.subtitle": "Пакуй будь-яку папку з грою в один .dvp архів",
-    "packer.desc": "Перетворює будь-яку папку з грою на один .dvp архів — ZIP-основа, максимальне стиснення, вбудований маніфест та обкладинка.",
-    "packer.f1": "Формат .dvp",
-    "packer.f2": "Макс. стиснення",
-    "packer.f3": "Редактор обкладинок",
-    "packer.f4": "Авто-пошук .exe",
-    "packer.f5": "Маніфест",
-    "packer.f6": "Багатомовність",
-    "packer.download": "⬇ Завантажити .exe",
-
-    "about.title": "Про студію",
-    "about.subtitle": "Made by One — невелика, сфокусована, відкрита",
-    "about.desc": "Made by One — невелика студія, що створює чисті та мінімалістичні інструменти для гравців і розробників.",
-    "about.f1": "MIT-ліцензія",
-    "about.f2": "Відкритий код",
-    "about.f3": "Спочатку Windows",
-    "about.f4": "Без телеметрії",
-    "about.github": "GitHub ↗",
-
-    "common.github": "Відкрити на GitHub ↗",
-    "common.releases": "Усі релізи ↗",
-
-    "footer.copyright": "© 2026 Made by One Studio",
-    "footer.github": "GitHub ↗",
-  }
-};
-
-/* ============================================================
-   LANGUAGE MANAGER
-   ============================================================ */
 const DEFAULT_LANG = "en";
 const STORAGE_KEY = "mbo_lang";
+const LANG_FILES = ["en", "ru", "uk", "es", "de", "fr", "pt", "zh"];
+
+let TRANSLATIONS = {};
 let currentLang = DEFAULT_LANG;
+
+async function fetchLocale(lang) {
+  const response = await fetch(`./localization/${lang}.json`);
+  if (!response.ok) throw new Error(`Failed to load ${lang}.json`);
+  return await response.json();
+}
+
+async function loadAllTranslations() {
+  const results = await Promise.allSettled(
+    LANG_FILES.map(async (lang) => {
+      const data = await fetchLocale(lang);
+      return { lang, data };
+    })
+  );
+
+  TRANSLATIONS = {};
+  results.forEach((result) => {
+    if (result.status === "fulfilled") {
+      TRANSLATIONS[result.value.lang] = result.value.data;
+    } else {
+      console.error("Failed to load locale:", result.reason);
+    }
+  });
+}
 
 function getLang() {
   return localStorage.getItem(STORAGE_KEY) || DEFAULT_LANG;
 }
+
 function setLang(code) {
   if (!TRANSLATIONS[code]) code = DEFAULT_LANG;
   currentLang = code;
@@ -807,9 +635,11 @@ function setLang(code) {
   renderLangMenu();
   updateLangButton();
 }
+
 function t(key) {
-  const dict = TRANSLATIONS[currentLang] || TRANSLATIONS[DEFAULT_LANG];
-  return dict[key] || TRANSLATIONS[DEFAULT_LANG][key] || key;
+  const dict = TRANSLATIONS[currentLang] || TRANSLATIONS[DEFAULT_LANG] || {};
+  const fallback = TRANSLATIONS[DEFAULT_LANG] || {};
+  return dict[key] || fallback[key] || key;
 }
 
 function applyTranslations() {
@@ -824,9 +654,6 @@ function applyTranslations() {
   });
 }
 
-/* ============================================================
-   LANGUAGE MENU
-   ============================================================ */
 function renderLangMenu() {
   const menu = document.getElementById('langMenu');
   menu.innerHTML = '';
@@ -844,7 +671,7 @@ function renderLangMenu() {
 }
 
 function updateLangButton() {
-  const dict = TRANSLATIONS[currentLang] || TRANSLATIONS[DEFAULT_LANG];
+  const dict = TRANSLATIONS[currentLang] || TRANSLATIONS[DEFAULT_LANG] || {};
   document.getElementById('langFlag').textContent = dict._flag || '';
   document.getElementById('langLabel').textContent = dict._name || currentLang;
 }
@@ -861,9 +688,6 @@ document.addEventListener('click', () => {
   document.getElementById('langBtn').classList.remove('open');
 });
 
-/* ============================================================
-   NAVIGATION
-   ============================================================ */
 function switchPage(key, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
   const page = document.getElementById('page-' + key);
@@ -881,9 +705,6 @@ function switchPage(key, el) {
 }
 function switchPageByKey(key) { switchPage(key, null); }
 
-/* ============================================================
-   SIDEBAR
-   ============================================================ */
 function toggleSidebar() {
   document.getElementById('appContainer').classList.toggle('collapsed');
   setTimeout(positionPill, 50);
@@ -896,12 +717,8 @@ function positionPill() {
   pill.style.opacity = '1';
   pill.style.top = active.offsetTop + 'px';
 }
-window.addEventListener('load', positionPill);
 window.addEventListener('resize', positionPill);
 
-/* ============================================================
-   CUSTOM CURSOR
-   ============================================================ */
 const cursor = document.getElementById('custom-cursor');
 if (window.matchMedia('(hover: hover)').matches) {
   cursor.style.display = 'block';
@@ -927,11 +744,16 @@ if (window.matchMedia('(hover: hover)').matches) {
   });
 }
 
-/* ============================================================
-   INIT
-   ============================================================ */
-setLang(getLang());
-window.addEventListener('load', positionPill);
+async function init() {
+  await loadAllTranslations();
+
+  const savedLang = getLang();
+  setLang(TRANSLATIONS[savedLang] ? savedLang : DEFAULT_LANG);
+
+  positionPill();
+}
+
+window.addEventListener('load', init);
 </script>
 </body>
 </html>
