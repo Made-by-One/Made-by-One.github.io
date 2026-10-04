@@ -1,17 +1,22 @@
 {
   "_name": "Русский",
   "_flag": "🇷🇺",
+
   "nav.home": "Главная",
   "nav.launcher": "Devers Launcher",
   "nav.packer": "Devers Packer",
+  "nav.games": "Игры",
   "nav.about": "О студии",
+
   "home.title": "Made by One",
   "home.sub": "Небольшая студия, делающая чистые и сфокусированные инструменты для игроков и разработчиков.",
   "home.btn.launcher": "▶ Devers Launcher",
   "home.btn.packer": "📦 Devers Packer",
+  "home.btn.games": "🎮 Игры",
   "home.stat.products": "Продукта",
   "home.stat.release": "Текущий релиз",
   "home.stat.license": "Лицензия",
+
   "launcher.title": "Devers Launcher",
   "launcher.subtitle": "Современный игровой лаунчер для архивов .dvp",
   "launcher.desc": "Чистый и современный лаунчер для игр в формате .dvp, созданных в Devers Packer. Распаковывает игру во временную папку, запускает её и очищает всё после закрытия — никакого мусора на диске.",
@@ -24,6 +29,7 @@
   "launcher.f7": "Трей",
   "launcher.f8": "Автоочистка",
   "launcher.download": "⬇ Скачать .zip",
+
   "packer.title": "Devers Packer",
   "packer.subtitle": "Упакуй любую папку с игрой в один .dvp архив",
   "packer.desc": "Превращает любую папку с игрой в один .dvp архив — ZIP-основа, максимальное сжатие, встроенный манифест и обложка. Редактор обложек позволяет обрезать и масштабировать изображение до 240×175 с живым превью.",
@@ -34,6 +40,18 @@
   "packer.f5": "Манифест",
   "packer.f6": "Мультиязычность",
   "packer.download": "⬇ Скачать .zip",
+
+  "games.title": "Игры",
+  "games.subtitle": "В разработке — скоро",
+  "games.status.dev": "В разработке",
+  "games.release.2027": "Выход: 2027",
+  "games.genre": "Жанр: уточняется",
+  "games.platform": "Платформа: PC",
+  "games.returnme.desc": "Return Me — предстоящая игра от Made by One Studio. Подробности будут раскрыты по мере разработки. Следите за обновлениями.",
+  "games.progress": "Прогресс разработки",
+  "games.notify": "🔔 Выход в 2027",
+  "games.follow": "Следить за обновлениями ↗",
+
   "about.title": "О студии",
   "about.subtitle": "Made by One — небольшая, сфокусированная, открытая",
   "about.desc": "Made by One — небольшая студия, создающая чистые и минималистичные инструменты для игроков и разработчиков. Всё, что мы делаем, должно быть лёгким, приватным и честным — без телеметрии, без раздутых инсталляторов, без скрытых сервисов в фоне.",
@@ -42,8 +60,10 @@
   "about.f3": "Сначала Windows",
   "about.f4": "Без телеметрии",
   "about.github": "GitHub ↗",
+
   "common.github": "Открыть на GitHub ↗",
   "common.releases": "Все релизы ↗",
+
   "footer.copyright": "© 2026 Made by One Studio",
   "footer.github": "GitHub ↗"
 }
