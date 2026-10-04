@@ -81,16 +81,27 @@
     backdrop-filter: blur(2px);
   }
 
-  .sidebar {
-    position: relative; width: 280px; flex-shrink: 0;
+  .sidebar-wrap {
+    position: relative;
+    width: 280px;
+    flex-shrink: 0;
     background: rgba(0,0,0,.75);
     border-right: 1px solid rgba(255,255,255,.1);
-    padding: 20px;
-    display: flex; flex-direction: column;
+    display: flex;
+    flex-direction: column;
     transition: width .4s ease;
     z-index: 20;
+    overflow: hidden;
   }
-  .app-container.collapsed .sidebar { width: 60px; padding: 20px 10px; }
+  .app-container.collapsed .sidebar-wrap { width: 60px; }
+
+  .sidebar {
+    display: flex; flex-direction: column;
+    flex-shrink: 0;
+    padding: 20px 20px 0 20px;
+    min-width: 0;
+  }
+  .app-container.collapsed .sidebar { padding: 20px 10px 0 10px; }
 
   .app-container.collapsed .menu-item > span:not(.menu-icon),
   .app-container.collapsed .sidebar-title,
@@ -110,11 +121,9 @@
     align-items: center;
     transition: background-color .2s ease, color .3s ease;
   }
-
   .app-container.collapsed .menu-item:hover {
     background: rgba(198,255,61,.08);
   }
-
   .app-container.collapsed .menu-item.active {
     background: var(--accent);
     color: #000;
@@ -123,11 +132,9 @@
   .app-container.collapsed .menu-item.active:hover {
     background: var(--accent);
   }
-
   .app-container.collapsed .menu-item.active .menu-icon img {
     filter: brightness(0) opacity(1);
   }
-
   .app-container.collapsed .lang-btn { justify-content: center; padding: 8px; }
 
   .sidebar-header {
@@ -153,14 +160,30 @@
   .toggle-btn:hover { background: var(--accent); color: #000; border-color: var(--accent); }
   .app-container.collapsed .toggle-btn { transform: rotate(180deg); }
 
-  .menu-list { position: relative; display: flex; flex-direction: column; gap: 5px; }
+  .menu-list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex-shrink: 0;
+    padding: 0 20px;
+    min-width: 0;
+  }
+  .app-container.collapsed .menu-list { padding: 0 10px; }
+
   #active-pill {
-    position: absolute; left: 0; right: 0;
-    height: 46px; background: var(--accent); border-radius: 10px;
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    height: 46px;
+    background: var(--accent);
+    border-radius: 10px;
     transition: top .4s cubic-bezier(.4,0,.2,1), opacity .3s;
     box-shadow: 0 0 20px var(--accent-soft);
     z-index: 1;
   }
+  .app-container.collapsed #active-pill { left: 10px; right: 10px; }
+
   .menu-item {
     position: relative; z-index: 2;
     display: flex; align-items: center; gap: 12px;
@@ -194,8 +217,14 @@
     filter: brightness(0) opacity(1);
   }
 
+  .sidebar-bottom {
+    margin-top: auto;
+    padding: 0 20px 20px 20px;
+    flex-shrink: 0;
+  }
+  .app-container.collapsed .sidebar-bottom { padding: 0 10px 20px 10px; }
+
   .lang-wrapper {
-    margin-top: 20px;
     padding-top: 16px;
     border-top: 1px solid rgba(255,255,255,.1);
     position: relative;
@@ -527,10 +556,182 @@
   .site-footer a { color: var(--muted); transition: color .2s; }
   .site-footer a:hover { color: var(--accent); }
 
+  .game-card {
+    position: relative;
+    background: rgba(0,0,0,.55);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 18px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    transition: border-color .3s, transform .3s;
+    backdrop-filter: blur(8px);
+  }
+  .game-card:hover {
+    border-color: rgba(198,255,61,.4);
+    transform: translateY(-2px);
+  }
+  .game-cover {
+    position: relative;
+    height: 320px;
+    background: linear-gradient(135deg, #0a1a0a 0%, #1a2a1a 50%, #0a1a0a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .game-cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 20px,
+        rgba(198,255,61,.03) 20px,
+        rgba(198,255,61,.03) 40px
+      );
+  }
+  .game-cover-placeholder {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 40px;
+  }
+  .game-cover-placeholder .game-icon {
+    font-size: 72px;
+    margin-bottom: 16px;
+    display: block;
+    filter: drop-shadow(0 0 30px var(--accent-soft));
+  }
+  .game-cover-placeholder .game-cover-title {
+    font-size: 36px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-shadow: 0 0 40px var(--accent-soft);
+  }
+  .game-status-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 2;
+    background: rgba(0,0,0,.8);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: var(--mono);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .game-status-badge .pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--accent-soft); }
+    50% { opacity: .5; box-shadow: 0 0 0 6px transparent; }
+  }
+  .game-body {
+    padding: 28px 32px;
+  }
+  .game-body h2 {
+    font-size: 28px;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-family: 'Space Grotesk', sans-serif;
+    margin-bottom: 6px;
+  }
+  .game-meta-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 16px;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: var(--mono);
+  }
+  .game-meta-line span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .game-desc {
+    font-size: 14px;
+    color: rgba(255,255,255,.7);
+    line-height: 1.75;
+    margin-bottom: 24px;
+  }
+  .game-progress {
+    margin-bottom: 24px;
+  }
+  .game-progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: var(--mono);
+    margin-bottom: 8px;
+  }
+  .game-progress-bar {
+    height: 6px;
+    background: rgba(255,255,255,.08);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .game-progress-fill {
+    height: 100%;
+    width: 15%;
+    background: linear-gradient(90deg, var(--accent), #e9ffb3);
+    border-radius: 999px;
+    box-shadow: 0 0 12px var(--accent-soft);
+    animation: progressPulse 3s ease-in-out infinite;
+  }
+  @keyframes progressPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .7; }
+  }
+  .game-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+  .btn-disabled {
+    background: rgba(255,255,255,.06);
+    color: var(--muted-2);
+    border: 1px solid rgba(255,255,255,.1);
+    padding: 14px 28px;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: not-allowed;
+    opacity: .6;
+  }
+
   @media (min-width: 768px) and (max-width: 1024px) {
     h1 { font-size: 38px; }
     .hero-title { font-size: 54px; }
-    .sidebar { width: 240px; }
+    .sidebar-wrap { width: 240px; }
   }
 
   @media (max-width: 767px) {
@@ -538,43 +739,68 @@
     .lang-btn, .lang-menu-item { cursor: auto; }
     #custom-cursor { display: none !important; }
 
-    .app-container { flex-direction: column; }
+    html, body {
+      overflow: hidden !important;
+      height: 100dvh !important;
+    }
 
-    .main-content { padding: 20px 16px 90px; }
-    h1 { font-size: 30px; }
-    .hero-title { font-size: 40px; }
-    .hero-sub { font-size: 12px; letter-spacing: 2px; }
-    .stat-row { grid-template-columns: 1fr; }
+    .app-container {
+      position: relative !important;
+      display: block !important;
+      width: 100vw !important;
+      height: 100dvh !important;
+      padding: 0 !important;
+    }
+
+    .sidebar-wrap,
+    .app-container.collapsed .sidebar-wrap {
+      background: transparent !important;
+      border-right: none !important;
+      display: contents !important;
+      width: auto !important;
+      overflow: visible !important;
+    }
 
     .sidebar,
     .app-container.collapsed .sidebar {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: auto !important;
       width: 100% !important;
       max-width: 100% !important;
-      height: 64px !important;
+      height: 56px !important;
+      min-height: 56px !important;
+      max-height: 56px !important;
       padding: 0 14px !important;
+      margin: 0 !important;
+      display: flex !important;
       flex-direction: row !important;
       align-items: center !important;
       justify-content: space-between !important;
-      border-right: none;
-      border-bottom: 1px solid rgba(255,255,255,.1);
-      background: rgba(0,0,0,.9);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      border-right: none !important;
+      border-bottom: 1px solid rgba(255,255,255,.1) !important;
+      background: rgba(0,0,0,.92) !important;
+      backdrop-filter: blur(14px) !important;
+      -webkit-backdrop-filter: blur(14px) !important;
       overflow: visible !important;
-      z-index: 100 !important;
+      z-index: 9998 !important;
+      flex: none !important;
     }
 
     .sidebar-header,
     .app-container.collapsed .sidebar-header {
+      position: static !important;
       margin: 0 !important;
       padding: 0 !important;
-      border-bottom: none !important;
-      width: 100% !important;
+      border: none !important;
+      width: auto !important;
       height: 100% !important;
       display: flex !important;
       align-items: center !important;
-      justify-content: space-between !important;
-      gap: 10px;
+      justify-content: flex-start !important;
+      gap: 10px !important;
     }
     .sidebar-title,
     .app-container.collapsed .sidebar-title {
@@ -582,25 +808,33 @@
       font-size: 13px !important;
       opacity: 1 !important;
       visibility: visible !important;
-      flex: 1;
+      border: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
     }
     .toggle-btn { display: none !important; }
+
+    .sidebar-bottom,
+    .app-container.collapsed .sidebar-bottom {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
 
     .lang-wrapper,
     .app-container.collapsed .lang-wrapper {
       position: fixed !important;
-      top: 12px !important;
+      top: 8px !important;
       right: 14px !important;
       left: auto !important;
       bottom: auto !important;
       margin: 0 !important;
       padding: 0 !important;
-      border-top: none !important;
+      border: none !important;
       width: auto !important;
       height: auto !important;
       display: flex !important;
       align-items: center !important;
-      z-index: 150 !important;
+      z-index: 9999 !important;
       opacity: 1 !important;
       visibility: visible !important;
     }
@@ -615,14 +849,14 @@
       padding: 0 !important;
       gap: 0 !important;
       border-radius: 10px !important;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,.06) !important;
+      border: 1px solid rgba(255,255,255,.2) !important;
       opacity: 1 !important;
       visibility: visible !important;
     }
     .lang-btn .flag {
       font-size: 20px !important;
-      line-height: 1;
+      line-height: 1 !important;
       display: inline-block !important;
     }
     .lang-btn .lang-label,
@@ -633,83 +867,130 @@
     .lang-menu,
     .app-container.collapsed .lang-menu {
       position: fixed !important;
-      top: 62px !important;
+      top: 54px !important;
       right: 14px !important;
       left: auto !important;
       bottom: auto !important;
       min-width: 180px !important;
       width: auto !important;
       max-width: calc(100vw - 28px) !important;
-      max-height: 60vh;
-      border-radius: 14px;
-      z-index: 200 !important;
+      max-height: 60vh !important;
+      border-radius: 14px !important;
+      z-index: 10000 !important;
     }
 
-    .menu-list {
+    .menu-list,
+    .app-container.collapsed .menu-list {
       position: fixed !important;
-      left: 0 !important; right: 0 !important; bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
       top: auto !important;
+      display: flex !important;
       flex-direction: row !important;
       justify-content: space-around !important;
+      align-items: center !important;
       gap: 0 !important;
-      padding: 8px 6px !important;
-      background: rgba(0,0,0,.92);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-top: 1px solid rgba(255,255,255,.1);
-      z-index: 50 !important;
-      width: 100% !important;
+      padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px)) !important;
+      margin: 0 !important;
+      background: rgba(0,0,0,.95) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      border-top: 1px solid rgba(255,255,255,.12) !important;
+      border-bottom: none !important;
+      border-left: none !important;
+      border-right: none !important;
+      z-index: 9999 !important;
+      width: 100vw !important;
+      height: auto !important;
+      min-height: 62px !important;
+      overflow: visible !important;
+      flex: none !important;
     }
     #active-pill { display: none !important; }
 
     .menu-item,
     .app-container.collapsed .menu-item {
+      position: relative !important;
       flex-direction: column !important;
-      gap: 4px !important;
-      padding: 6px 10px !important;
+      gap: 3px !important;
+      padding: 6px 6px !important;
       height: auto !important;
       width: auto !important;
+      min-width: 54px !important;
       margin: 0 !important;
-      font-size: 10px !important;
-      border-radius: 10px;
-      color: rgba(255,255,255,.45);
+      font-size: 9px !important;
+      line-height: 1.1 !important;
+      border-radius: 10px !important;
+      color: rgba(255,255,255,.5) !important;
       justify-content: center !important;
       align-items: center !important;
-      flex: 0 0 auto;
+      flex: 0 0 auto !important;
       background: transparent !important;
       box-shadow: none !important;
+      text-align: center !important;
     }
     .menu-item > span:not(.menu-icon),
     .app-container.collapsed .menu-item > span:not(.menu-icon) {
       display: inline !important;
       opacity: 1 !important;
       visibility: visible !important;
+      white-space: nowrap !important;
     }
     .menu-item.active,
     .app-container.collapsed .menu-item.active {
-      color: var(--accent);
-      background: rgba(198,255,61,.08) !important;
+      color: var(--accent) !important;
+      background: rgba(198,255,61,.1) !important;
       box-shadow: none !important;
     }
     .menu-item.active .menu-icon img,
     .app-container.collapsed .menu-item.active .menu-icon img {
-      filter: brightness(0) invert(1) opacity(1);
+      filter: brightness(0) invert(1) opacity(1) !important;
     }
     .menu-icon,
     .app-container.collapsed .menu-icon {
-      width: 20px !important;
-      height: 20px !important;
-      font-size: 18px !important;
+      width: 22px !important;
+      height: 22px !important;
+      font-size: 20px !important;
     }
 
     .sidebar-footer { display: none !important; }
 
-    .app-card { padding: 20px; }
-    .app-badge { width: 52px; height: 52px; font-size: 22px; }
-    .hero-actions { flex-direction: column; align-items: stretch; }
-    .btn-retro, .btn-ghost { justify-content: center; }
-    .app-actions { flex-direction: column; align-items: stretch; }
-    .site-footer { flex-direction: column; gap: 8px; text-align: center; }
+    .main-content {
+      position: absolute !important;
+      top: 56px !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 70px !important;
+      width: 100% !important;
+      height: auto !important;
+      padding: 16px !important;
+      margin: 0 !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
+
+    .content-wrapper { padding-bottom: 20px !important; }
+
+    h1 { font-size: 30px !important; }
+    .hero-title { font-size: 40px !important; }
+    .hero-sub { font-size: 12px !important; letter-spacing: 2px !important; }
+    .stat-row { grid-template-columns: 1fr !important; }
+
+    .app-card { padding: 20px !important; }
+    .app-badge { width: 52px !important; height: 52px !important; font-size: 22px !important; }
+    .hero-actions { flex-direction: column !important; align-items: stretch !important; }
+    .btn-retro, .btn-ghost { justify-content: center !important; }
+    .app-actions { flex-direction: column !important; align-items: stretch !important; }
+    .game-actions { flex-direction: column !important; align-items: stretch !important; }
+    .btn-disabled { justify-content: center !important; }
+    .site-footer { flex-direction: column !important; gap: 8px !important; text-align: center !important; }
+
+    .game-cover { height: 200px !important; }
+    .game-cover-placeholder .game-icon { font-size: 44px !important; }
+    .game-cover-placeholder .game-cover-title { font-size: 22px !important; letter-spacing: 2px !important; }
+    .game-body { padding: 18px !important; }
+    .game-body h2 { font-size: 22px !important; }
   }
 </style>
 </head>
@@ -719,11 +1000,13 @@
   <div id="custom-cursor"></div>
 
   <div class="app-container" id="appContainer">
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header">
-        <div class="sidebar-title">MADE BY ONE</div>
-        <button class="toggle-btn" onclick="toggleSidebar()">&lt;</button>
-      </div>
+    <div class="sidebar-wrap">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-title">MADE BY ONE</div>
+          <button class="toggle-btn" onclick="toggleSidebar()">&lt;</button>
+        </div>
+      </aside>
 
       <div class="menu-list" id="menuList">
         <div id="active-pill"></div>
@@ -745,6 +1028,12 @@
           </span>
           <span data-i18n="nav.packer">Devers Packer</span>
         </div>
+        <div class="menu-item" data-page="games" onclick="switchPage('games', this)">
+          <span class="menu-icon">
+            <img src="./data/icon-games.png" alt="" onerror="this.replaceWith(document.createTextNode('🎮'))">
+          </span>
+          <span data-i18n="nav.games">Games</span>
+        </div>
         <div class="menu-item" data-page="about" onclick="switchPage('about', this)">
           <span class="menu-icon">
             <img src="./data/icon-about.png" alt="" onerror="this.replaceWith(document.createTextNode('ℹ️'))">
@@ -753,17 +1042,19 @@
         </div>
       </div>
 
-      <div class="lang-wrapper">
-        <div class="lang-menu" id="langMenu"></div>
-        <button class="lang-btn" id="langBtn" aria-label="Language">
-          <span class="flag" id="langFlag">🌐</span>
-          <span class="lang-label" id="langLabel">English</span>
-          <span class="lang-chevron">▲</span>
-        </button>
-      </div>
+      <div class="sidebar-bottom">
+        <div class="lang-wrapper">
+          <div class="lang-menu" id="langMenu"></div>
+          <button class="lang-btn" id="langBtn" aria-label="Language">
+            <span class="flag" id="langFlag">🌐</span>
+            <span class="lang-label" id="langLabel">English</span>
+            <span class="lang-chevron">▲</span>
+          </button>
+        </div>
 
-      <div class="sidebar-footer"><span>© 2026 / MADE BY ONE</span></div>
-    </aside>
+        <div class="sidebar-footer"><span>© 2026 / MADE BY ONE</span></div>
+      </div>
+    </div>
 
     <main class="main-content" id="mainContent">
       <div class="content-wrapper">
@@ -783,6 +1074,9 @@
               </button>
               <button class="btn-ghost" onclick="switchPageByKey('packer')" data-i18n="home.btn.packer">
                 📦 Devers Packer
+              </button>
+              <button class="btn-ghost" onclick="switchPageByKey('games')" data-i18n="home.btn.games">
+                🎮 Games
               </button>
             </div>
           </div>
@@ -899,6 +1193,61 @@
                 All releases ↗
               </a>
             </div>
+          </div>
+        </section>
+
+        <section class="page hidden" id="page-games">
+          <div class="page-header">
+            <h1 data-i18n="games.title">Games</h1>
+            <div class="subtitle" data-i18n="games.subtitle">In development — coming soon</div>
+          </div>
+
+          <div class="game-card">
+            <div class="game-cover">
+              <div class="game-status-badge">
+                <span class="pulse-dot"></span>
+                <span data-i18n="games.status.dev">In Development</span>
+              </div>
+              <div class="game-cover-placeholder">
+                <span class="game-icon">🎮</span>
+                <div class="game-cover-title">Return Me</div>
+              </div>
+            </div>
+            <div class="game-body">
+              <h2>Return Me</h2>
+              <div class="game-meta-line">
+                <span>📅 <span data-i18n="games.release.2027">Release: 2027</span></span>
+                <span>🎯 <span data-i18n="games.genre">Genre: TBA</span></span>
+                <span>💻 <span data-i18n="games.platform">Platform: PC</span></span>
+              </div>
+              <p class="game-desc" data-i18n="games.returnme.desc">
+                Return Me is an upcoming game from Made by One Studio. 
+                More details will be revealed as development progresses. 
+                Stay tuned for updates.
+              </p>
+              <div class="game-progress">
+                <div class="game-progress-label">
+                  <span data-i18n="games.progress">Development Progress</span>
+                  <span>15%</span>
+                </div>
+                <div class="game-progress-bar">
+                  <div class="game-progress-fill"></div>
+                </div>
+              </div>
+              <div class="game-actions">
+                <span class="btn-disabled" data-i18n="games.notify">
+                  🔔 Coming 2027
+                </span>
+                <a class="btn-ghost" href="https://madebyone.itch.io/" target="_blank" data-i18n="games.follow">
+                  Follow for updates ↗
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="site-footer">
+            <span data-i18n="footer.copyright">© 2026 Made by One Studio</span>
+            <a href="https://github.com/Made-by-One" target="_blank" data-i18n="footer.github">GitHub ↗</a>
           </div>
         </section>
 
@@ -1103,7 +1452,7 @@ function positionPill() {
 window.addEventListener('resize', positionPill);
 
 function bindCardGlow() {
-  document.querySelectorAll('.app-card').forEach(card => {
+  document.querySelectorAll('.app-card, .game-card').forEach(card => {
     card.addEventListener('mousemove', e => {
       const rect = card.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -1134,11 +1483,11 @@ if (window.matchMedia('(hover: hover)').matches) {
   document.addEventListener('mousedown', () => cursor.classList.add('clicking'));
   document.addEventListener('mouseup',   () => cursor.classList.remove('clicking'));
   document.addEventListener('mouseover', e => {
-    if (e.target.closest('button, .menu-item, a, .toggle-btn, .app-card, .lang-btn, .lang-menu-item'))
+    if (e.target.closest('button, .menu-item, a, .toggle-btn, .app-card, .game-card, .lang-btn, .lang-menu-item'))
       cursor.classList.add('hovering');
   });
   document.addEventListener('mouseout', e => {
-    if (e.target.closest('button, .menu-item, a, .toggle-btn, .app-card, .lang-btn, .lang-menu-item'))
+    if (e.target.closest('button, .menu-item, a, .toggle-btn, .app-card, .game-card, .lang-btn, .lang-menu-item'))
       cursor.classList.remove('hovering');
   });
 }
