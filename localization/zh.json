@@ -6,6 +6,7 @@
   "nav.launcher": "Devers Launcher",
   "nav.packer": "Devers Packer",
   "nav.games": "游戏",
+  "nav.news": "新闻",
   "nav.about": "关于",
 
   "home.title": "Made by One",
@@ -52,6 +53,12 @@
   "games.notify": "🔔 2027 年推出",
   "games.follow": "关注获取更新 ↗",
 
+  "news.title": "新闻",
+  "news.subtitle": "工作室最新动态",
+  "news.loading": "正在加载新闻…",
+  "news.empty": "暂无新闻",
+  "news.error": "加载新闻失败",
+
   "about.title": "关于工作室",
   "about.subtitle": "Made by One — 小而专注，开放",
   "about.desc": "Made by One 是一个小型工作室，为玩家和开发者打造简洁、极简的工具。我们发布的一切都力求轻量、私密且诚实——没有遥测，没有臃肿的安装程序，没有在后台偷偷运行的服务。",
@@ -65,5 +72,6 @@
   "common.releases": "所有版本 ↗",
 
   "footer.copyright": "© 2026 Made by One Studio",
+  "footer.about": "关于",
   "footer.github": "GitHub ↗"
 }

@@ -6,6 +6,7 @@
   "nav.launcher": "Devers Launcher",
   "nav.packer": "Devers Packer",
   "nav.games": "Ігри",
+  "nav.news": "Новини",
   "nav.about": "Про студію",
 
   "home.title": "Made by One",
@@ -52,6 +53,12 @@
   "games.notify": "🔔 Вихід у 2027",
   "games.follow": "Стежити за оновленнями ↗",
 
+  "news.title": "Новини",
+  "news.subtitle": "Останні оновлення студії",
+  "news.loading": "Завантаження новин…",
+  "news.empty": "Поки немає новин",
+  "news.error": "Не вдалося завантажити новини",
+
   "about.title": "Про студію",
   "about.subtitle": "Made by One — невелика, сфокусована, відкрита",
   "about.desc": "Made by One — невелика студія, що створює чисті та мінімалістичні інструменти для гравців і розробників. Усе, що ми випускаємо, має бути легким, приватним і чесним — без телеметрії, без роздутих інсталяторів, без прихованих сервісів у фоні.",
@@ -65,5 +72,6 @@
   "common.releases": "Усі релізи ↗",
 
   "footer.copyright": "© 2026 Made by One Studio",
+  "footer.about": "Про студію",
   "footer.github": "GitHub ↗"
 }

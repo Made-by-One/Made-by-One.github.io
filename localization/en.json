@@ -5,6 +5,7 @@
   "nav.launcher": "Devers Launcher",
   "nav.packer": "Devers Packer",
   "nav.games": "Games",
+  "nav.news": "News",
   "nav.about": "About",
   "home.title": "Made by One",
   "home.sub": "Small studio making clean, focused tools for gamers and developers.",
@@ -46,6 +47,11 @@
   "games.progress": "Development Progress",
   "games.notify": "🔔 Coming 2027",
   "games.follow": "Follow for updates ↗",
+  "news.title": "News",
+  "news.subtitle": "Latest updates from the studio",
+  "news.loading": "Loading news…",
+  "news.empty": "No news yet",
+  "news.error": "Failed to load news",
   "about.title": "About Studio",
   "about.subtitle": "Made by One — small, focused, open",
   "about.desc": "Made by One is a small studio building clean, minimal tools for gamers and developers. Everything we ship is designed to feel light, private, and honest — no telemetry, no bloated installers, no hidden services running in the background.",
@@ -57,5 +63,6 @@
   "common.github": "View on GitHub ↗",
   "common.releases": "All releases ↗",
   "footer.copyright": "© 2026 Made by One Studio",
+  "footer.about": "About",
   "footer.github": "GitHub ↗"
 }

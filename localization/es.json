@@ -6,6 +6,7 @@
   "nav.launcher": "Devers Launcher",
   "nav.packer": "Devers Packer",
   "nav.games": "Juegos",
+  "nav.news": "Noticias",
   "nav.about": "Acerca de",
 
   "home.title": "Made by One",
@@ -52,6 +53,12 @@
   "games.notify": "🔔 Llega en 2027",
   "games.follow": "Seguir para novedades ↗",
 
+  "news.title": "Noticias",
+  "news.subtitle": "Últimas novedades del estudio",
+  "news.loading": "Cargando noticias…",
+  "news.empty": "Aún no hay noticias",
+  "news.error": "No se pudieron cargar las noticias",
+
   "about.title": "Acerca del estudio",
   "about.subtitle": "Made by One — pequeño, enfocado, abierto",
   "about.desc": "Made by One es un pequeño estudio que crea herramientas limpias y minimalistas para jugadores y desarrolladores. Todo lo que publicamos está diseñado para ser ligero, privado y honesto — sin telemetría, sin instaladores inflados, sin servicios ocultos en segundo plano.",
@@ -65,5 +72,6 @@
   "common.releases": "Todas las versiones ↗",
 
   "footer.copyright": "© 2026 Made by One Studio",
+  "footer.about": "Acerca de",
   "footer.github": "GitHub ↗"
 }
