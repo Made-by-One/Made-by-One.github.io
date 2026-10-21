@@ -949,6 +949,26 @@
     color: var(--muted);
     font-family: var(--mono);
   }
+  .news-card .news-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-family: var(--mono);
+    color: var(--muted);
+    border: 1px solid rgba(200, 220, 255, .2);
+    border-radius: 999px;
+    padding: 5px 12px;
+    transition: color .2s, border-color .2s, box-shadow .2s;
+  }
+  .news-card .news-link:hover {
+    color: #fff;
+    border-color: #fff;
+    box-shadow: 0 0 18px -6px var(--accent-soft);
+  }
 
   @media (min-width: 768px) and (max-width: 1024px) {
     h1 { font-size: 38px; }
@@ -1316,11 +1336,11 @@
 
           <div class="stat-row">
             <div class="stat">
-              <div class="stat-value">02</div>
+              <div class="stat-value" id="statProducts">02</div>
               <div class="stat-label" data-i18n="home.stat.products">Products</div>
             </div>
             <div class="stat">
-              <div class="stat-value">v1.5</div>
+              <div class="stat-value" id="statRelease">v1.5</div>
               <div class="stat-label" data-i18n="home.stat.release">Current release</div>
             </div>
             <div class="stat">
@@ -1352,7 +1372,7 @@
               </div>
               <div class="app-meta">
                 <h2>Devers Launcher</h2>
-                <div class="app-version">v1.5 · Windows · MIT</div>
+                <div class="app-version" id="launcherVersion">v1.5 · Windows · MIT</div>
               </div>
             </div>
 
@@ -1380,7 +1400,7 @@
               <a class="btn-ghost" href="https://github.com/Made-by-One/Devers-Launcher" target="_blank" data-i18n="common.github">
                 View on GitHub ↗
               </a>
-              <a class="btn-ghost" href="https://github.com/Made-by-One/Devers-Launcher/releases" target="_blank" data-i18n="common.releases">
+              <a class="btn-ghost" id="launcherReleases" href="https://github.com/Made-by-One/Devers-Launcher/releases" target="_blank" data-i18n="common.releases">
                 All releases ↗
               </a>
             </div>
@@ -1401,7 +1421,7 @@
               </div>
               <div class="app-meta">
                 <h2>Devers Packer</h2>
-                <div class="app-version">v1.1 · Windows · MIT</div>
+                <div class="app-version" id="packerVersion">v1.1 · Windows · MIT</div>
               </div>
             </div>
 
@@ -1427,7 +1447,7 @@
               <a class="btn-ghost" href="https://github.com/Made-by-One/Devers-Packer" target="_blank" data-i18n="common.github">
                 View on GitHub ↗
               </a>
-              <a class="btn-ghost" href="https://github.com/Made-by-One/Devers-Packer/releases" target="_blank" data-i18n="common.releases">
+              <a class="btn-ghost" id="packerReleases" href="https://github.com/Made-by-One/Devers-Packer/releases" target="_blank" data-i18n="common.releases">
                 All releases ↗
               </a>
             </div>
@@ -1441,51 +1461,8 @@
             <div class="subtitle" data-i18n="games.subtitle">In development — coming soon</div>
           </div>
 
-          <div class="game-card">
-            <div class="game-cover">
-              <div class="game-status-badge">
-                <span class="pulse-dot"></span>
-                <span data-i18n="games.status.dev">In Development</span>
-              </div>
-              <img src="./data/games/ReturnMe.png" alt="Return Me cover"
-                   class="game-cover-img"
-                   onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-              <div class="game-cover-placeholder" style="display:none;">
-                <span class="game-icon">🎮</span>
-                <div class="game-cover-title">Return Me</div>
-              </div>
-            </div>
-            <div class="game-body">
-              <h2>Return Me</h2>
-              <div class="game-meta-line">
-                <span>📅 <span data-i18n="games.release.2027">Release: 2027</span></span>
-                <span>🎯 <span data-i18n="games.genre">Genre: TBA</span></span>
-                <span>💻 <span data-i18n="games.platform">Platform: PC</span></span>
-              </div>
-              <p class="game-desc" data-i18n="games.returnme.desc">
-                Return Me is an upcoming game from Made by One Studio. 
-                More details will be revealed as development progresses. 
-                Stay tuned for updates.
-              </p>
-              <div class="game-progress">
-                <div class="game-progress-label">
-                  <span data-i18n="games.progress">Development Progress</span>
-                  <span>15%</span>
-                </div>
-                <div class="game-progress-bar">
-                  <div class="game-progress-fill"></div>
-                </div>
-              </div>
-              <div class="game-actions">
-                <span class="btn-disabled" data-i18n="games.notify">
-                  🔔 Coming 2027
-                </span>
-                <a class="btn-ghost" href="https://madebyone.itch.io/" target="_blank" data-i18n="games.follow">
-                  Follow for updates ↗
-                </a>
-              </div>
-            </div>
-          </div>
+          <!-- Игры рендерятся автоматически из data/site.json -->
+          <div id="gamesList"></div>
 
           <div class="site-footer">
             <span data-i18n="footer.copyright">© 2026 Made by One Studio</span>
@@ -1564,12 +1541,13 @@
   </div>
 
 <script>
-const LAUNCHER_URL = "https://github.com/Made-by-One/Devers-Launcher/releases/download/v1.5/Devers-Launcher-Windows-v1.5.zip";
-const PACKER_URL   = "https://github.com/Made-by-One/Devers-Packer/releases/download/v1.1/Devers-Packer-Windows-v1.1.zip";
+const SITE_URL     = "./data/site.json";
+const RELEASES_URL = "./data/releases.json";
 const NEWS_URL     = "./data/news/news.json";
+const GITHUB_API   = "https://api.github.com/repos/";
 
-document.getElementById('downloadLauncher').href = LAUNCHER_URL;
-document.getElementById('downloadPacker').href   = PACKER_URL;
+let SITE_CONFIG = null;  // data/site.json — продукты и игры студии
+let RELEASES    = {};    // id продукта → метаданные последнего релиза GitHub
 
 const DEFAULT_LANG = "en";
 const STORAGE_KEY = "mbo_lang";
@@ -1637,16 +1615,32 @@ function t(key) {
   return dict[key] || fallback[key] || key;
 }
 
+function fillTemplate(str, vars) {
+  return String(str == null ? "" : str).replace(/\{(\w+)\}/g, (m, k) =>
+    (vars && vars[k] != null) ? String(vars[k]) : m
+  );
+}
+
+function escapeHtml(str) {
+  return String(str == null ? "" : str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function applyTranslations() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
-    const value = t(key);
+    const value = fillTemplate(t(key), { year: new Date().getFullYear() });
     if (value.includes('<') || value.includes('&')) {
       el.innerHTML = value;
     } else {
       el.textContent = value;
     }
   });
+  renderGames();
   // Если вкладка новостей открыта — перерисовываем на текущем языке
   const newsPage = document.getElementById("page-news");
   if (newsPage && !newsPage.classList.contains("hidden")) {
@@ -1769,6 +1763,175 @@ if (window.matchMedia('(hover: hover)').matches) {
   });
 }
 
+/* ============ АВТОМАТИЗАЦИЯ: КОНФИГ + РЕЛИЗЫ GITHUB ============ */
+
+async function fetchJson(url) {
+  const res = await fetch(url, { cache: "no-cache" });
+  if (!res.ok) throw new Error(`${url} → HTTP ${res.status}`);
+  return await res.json();
+}
+
+function pickAsset(assets, pattern) {
+  const zips = (assets || []).filter(a => /\.zip$/i.test(a.name || ""));
+  const hit = zips.find(a => (a.name || "").toLowerCase()
+    .includes(String(pattern || "windows").toLowerCase()));
+  return hit || zips[0] || null;
+}
+
+async function loadSiteConfig() {
+  try {
+    SITE_CONFIG = await fetchJson(SITE_URL);
+  } catch (e) {
+    console.error("Не удалось загрузить site.json:", e);
+    SITE_CONFIG = { products: [], games: [] };
+  }
+}
+
+async function loadReleases() {
+  // 1) Сначала читаем кэш, который обновляет GitHub Action (data/releases.json)
+  try {
+    const data = await fetchJson(RELEASES_URL);
+    if (data && data.products) { RELEASES = data.products; return; }
+  } catch (e) {
+    console.warn("releases.json недоступен, пробуем GitHub API напрямую");
+  }
+
+  // 2) Fallback: живой запрос к GitHub API (без токена лимит 60 запросов/час)
+  const live = {};
+  await Promise.all(((SITE_CONFIG && SITE_CONFIG.products) || []).map(async (p) => {
+    try {
+      const r = await fetchJson(GITHUB_API + p.repo + "/releases/latest");
+      const asset = pickAsset(r.assets, p.assetPattern);
+      live[p.id] = {
+        version: r.tag_name,
+        publishedAt: r.published_at,
+        htmlUrl: r.html_url,
+        downloadUrl: asset ? asset.browser_download_url : r.html_url,
+        body: r.body || ""
+      };
+    } catch (e) {
+      console.warn("GitHub API недоступен для", p.repo, e);
+    }
+  }));
+  if (Object.keys(live).length) RELEASES = live;
+}
+
+function productRelease(p) {
+  const r = RELEASES[p.id] || {};
+  return {
+    version: r.version || p.fallbackVersion || "",
+    publishedAt: r.publishedAt || "",
+    htmlUrl: r.htmlUrl || `https://github.com/${p.repo}/releases`,
+    downloadUrl: r.downloadUrl || p.fallbackDownload || `https://github.com/${p.repo}/releases`,
+    body: r.body || ""
+  };
+}
+
+function applyProductMeta() {
+  const products = (SITE_CONFIG && SITE_CONFIG.products) || [];
+
+  products.forEach(p => {
+    const r = productRelease(p);
+    const cap = p.id.charAt(0).toUpperCase() + p.id.slice(1);
+
+    const meta = document.getElementById(p.id + "Version");
+    if (meta) meta.textContent = [r.version, p.platform, p.license].filter(Boolean).join(" · ");
+
+    const dl = document.getElementById("download" + cap);
+    if (dl) dl.href = r.downloadUrl;
+
+    const rel = document.getElementById(p.id + "Releases");
+    if (rel) rel.href = r.htmlUrl;
+  });
+
+  // Статистика на главной
+  const statProducts = document.getElementById("statProducts");
+  if (statProducts) statProducts.textContent = String(products.length).padStart(2, "0");
+
+  const statRelease = document.getElementById("statRelease");
+  if (statRelease && products.length) {
+    const latest = products
+      .map(p => ({ r: productRelease(p) }))
+      .filter(x => x.r.publishedAt || x.r.version)
+      .sort((a, b) => new Date(b.r.publishedAt || 0) - new Date(a.r.publishedAt || 0))[0];
+    if (latest) statRelease.textContent = latest.r.version;
+  }
+}
+
+/* ============ ИГРЫ (из data/site.json) ============ */
+
+function renderGames() {
+  const list = document.getElementById("gamesList");
+  if (!list) return;
+
+  const games = (SITE_CONFIG && SITE_CONFIG.games) || [];
+  if (!games.length) {
+    list.innerHTML = `<div class="news-empty">${escapeHtml(t("games.empty"))}</div>`;
+    return;
+  }
+
+  list.innerHTML = games.map(g => {
+    const placeholder = `
+      <div class="game-cover-placeholder" ${g.cover ? 'style="display:none;"' : ""}>
+        <span class="game-icon">${g.icon || "🎮"}</span>
+        <div class="game-cover-title">${escapeHtml(g.name)}</div>
+      </div>`;
+    const coverHtml = g.cover
+      ? `<img src="${g.cover}" alt="${escapeHtml(g.name)} cover" class="game-cover-img"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">${placeholder}`
+      : placeholder.replace('style="display:none;"', "");
+
+    const meta = [
+      ["📅", "games.label.release", g.release],
+      ["🎯", "games.label.genre", pickLocalized(g.genre)],
+      ["💻", "games.label.platform", pickLocalized(g.platform)]
+    ]
+      .filter(m => m[2])
+      .map(([icon, key, val]) => `<span>${icon} ${escapeHtml(t(key))}: ${escapeHtml(String(val))}</span>`)
+      .join("");
+
+    const progress = (typeof g.progress === "number")
+      ? `<div class="game-progress">
+           <div class="game-progress-label">
+             <span>${escapeHtml(t("games.progress"))}</span>
+             <span>${g.progress}%</span>
+           </div>
+           <div class="game-progress-bar">
+             <div class="game-progress-fill" style="width:${Math.min(100, Math.max(2, g.progress))}%"></div>
+           </div>
+         </div>`
+      : "";
+
+    const notify = `<span class="btn-disabled">${escapeHtml(fillTemplate(t("games.notify"), { year: g.release || "" }))}</span>`;
+    const follow = g.link
+      ? `<a class="btn-ghost" href="${g.link}" target="_blank">${escapeHtml(t("games.follow"))}</a>`
+      : "";
+
+    return `
+      <div class="game-card">
+        <div class="game-cover">
+          <div class="game-status-badge">
+            <span class="pulse-dot"></span>
+            <span>${escapeHtml(t("games.status." + (g.status || "dev")))}</span>
+          </div>
+          ${coverHtml}
+        </div>
+        <div class="game-body">
+          <h2>${escapeHtml(g.name)}</h2>
+          <div class="game-meta-line">${meta}</div>
+          <p class="game-desc">${escapeHtml(pickLocalized(g.desc) || "")}</p>
+          ${progress}
+          <div class="game-actions">
+            ${notify}
+            ${follow}
+          </div>
+        </div>
+      </div>`;
+  }).join("");
+
+  bindCardGlow();
+}
+
 /* ============ НОВОСТИ ============ */
 
 // Выбор значения из объекта переводов по текущему языку
@@ -1802,33 +1965,69 @@ async function loadNews() {
   renderNews();
 }
 
+// Автоматические новости из релизов GitHub (публикуются без ручного редактирования)
+// Если ручная новость уже освещает продукт (поле "products": ["launcher"]),
+// авто-новость для него не дублируется.
+function autoReleaseNews() {
+  const covered = new Set();
+  (NEWS_CACHE || []).forEach(item =>
+    (item.products || []).forEach(id => covered.add(id))
+  );
+
+  const products = (SITE_CONFIG && SITE_CONFIG.products) || [];
+  return products.filter(p => !covered.has(p.id)).map(p => {
+    const r = productRelease(p);
+    if (!r.publishedAt && !r.version) return null;
+
+    const vars = { product: p.name, version: r.version };
+    const text = (currentLang === DEFAULT_LANG && r.body)
+      ? r.body.replace(/\r/g, "").trim().slice(0, 600)
+      : fillTemplate(t("news.release.text"), vars);
+
+    return {
+      date: r.publishedAt ? String(r.publishedAt).slice(0, 10) : "",
+      tag: t("news.release.tag"),
+      title: fillTemplate(t("news.release.title"), vars),
+      text,
+      link: r.htmlUrl
+    };
+  }).filter(Boolean);
+}
+
 function renderNews() {
   const container = document.getElementById("newsList");
   if (!container) return;
 
-  if (!NEWS_CACHE || NEWS_CACHE.length === 0) {
+  // Ручные новости (news.json) + автоматические из релизов GitHub
+  const all = [...(NEWS_CACHE || []), ...autoReleaseNews()];
+
+  if (all.length === 0) {
     container.innerHTML = `<div class="news-empty" data-i18n="news.empty">${t("news.empty")}</div>`;
     return;
   }
 
   // Сортировка по дате (новые сверху)
-  const sorted = [...NEWS_CACHE].sort((a, b) => {
+  const sorted = [...all].sort((a, b) => {
     const da = new Date(a.date || 0).getTime();
     const db = new Date(b.date || 0).getTime();
     return db - da;
   });
 
   container.innerHTML = sorted.map(item => {
-    const title = pickLocalized(item.title);
-    const text  = pickLocalized(item.text);
+    const title = escapeHtml(pickLocalized(item.title));
+    const text  = escapeHtml(pickLocalized(item.text));
     const tagRaw = pickLocalized(item.tag);
-    const tag = tagRaw ? `<span class="news-tag">${tagRaw}</span>` : "";
+    const tag = tagRaw ? `<span class="news-tag">${escapeHtml(tagRaw)}</span>` : "";
+    const link = item.link
+      ? `<a class="news-link" href="${item.link}" target="_blank">↗ ${escapeHtml(t("news.release.more"))}</a>`
+      : "";
     return `
       <article class="news-card">
-        <div class="news-date">${item.date || ""}</div>
+        <div class="news-date">${escapeHtml(item.date || "")}</div>
         <h3 class="news-title">${title}</h3>
         <div class="news-text">${text}</div>
         ${tag}
+        ${link}
       </article>`;
   }).join("");
 
@@ -1836,7 +2035,10 @@ function renderNews() {
 }
 
 async function init() {
-  await loadAllTranslations();
+  await Promise.all([
+    loadAllTranslations(),
+    loadSiteConfig().then(loadReleases)
+  ]);
 
   const saved = localStorage.getItem(STORAGE_KEY);
   const manual = localStorage.getItem(MANUAL_KEY);
@@ -1850,6 +2052,7 @@ async function init() {
   }
 
   setLang(langToUse);
+  applyProductMeta();
   positionPill();
   bindCardGlow();
 }
