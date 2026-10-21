@@ -1,0 +1,75 @@
+{
+  "studio": {
+    "name": "Made by One",
+    "github": "https://github.com/Made-by-One",
+    "itch": "https://madebyone.itch.io/"
+  },
+
+  "products": [
+    {
+      "id": "launcher",
+      "name": "Devers Launcher",
+      "repo": "Made-by-One/Devers-Launcher",
+      "page": "launcher",
+      "platform": "Windows",
+      "license": "MIT",
+      "assetPattern": "Windows",
+      "fallbackVersion": "v1.5",
+      "fallbackDownload": "https://github.com/Made-by-One/Devers-Launcher/releases/download/v1.5/Devers-Launcher-Windows-v1.5.zip"
+    },
+    {
+      "id": "packer",
+      "name": "Devers Packer",
+      "repo": "Made-by-One/Devers-Packer",
+      "page": "packer",
+      "platform": "Windows",
+      "license": "MIT",
+      "assetPattern": "Windows",
+      "fallbackVersion": "v1.1",
+      "fallbackDownload": "https://github.com/Made-by-One/Devers-Packer/releases/download/v1.1/Devers-Packer-Windows-v1.1.zip"
+    }
+  ],
+
+  "games": [
+    {
+      "id": "returnme",
+      "name": "Return Me",
+      "icon": "🎮",
+      "cover": "./data/games/ReturnMe.png",
+      "status": "dev",
+      "progress": 15,
+      "release": "2027",
+      "genre": {
+        "en": "TBA",
+        "ru": "TBA",
+        "uk": "TBA",
+        "es": "TBA",
+        "de": "TBA",
+        "fr": "TBA",
+        "pt": "TBA",
+        "zh": "待公布"
+      },
+      "platform": {
+        "en": "PC",
+        "ru": "PC",
+        "uk": "PC",
+        "es": "PC",
+        "de": "PC",
+        "fr": "PC",
+        "pt": "PC",
+        "zh": "PC"
+      },
+      "desc": {
+        "en": "Return Me is a surreal road movie about climbing out of a mental pit. More details will be revealed as development progresses. Stay tuned for updates.",
+        "ru": "Return Me — это сюрреалистичное роуд-муви о выходе из ментальной ямы. Подробности будут раскрываться по мере разработки. Следите за обновлениями.",
+        "uk": "Return Me — це сюрреалістичне роуд-муві про вихід із ментальної ями. Подробиці будуть розкриватися в міру розробки. Слідкуйте за оновленнями.",
+        "es": "Return Me es una road movie surrealista sobre salir de un pozo mental. Se revelarán más detalles a medida que avance el desarrollo. Mantente atento.",
+        "de": "Return Me ist ein surrealer Roadmovie über den Ausstieg aus einer mentalen Grube. Mit der Entwicklung werden weitere Details folgen. Bleib dran.",
+        "fr": "Return Me est un road movie surréaliste sur le fait de sortir d'un trou mental. Plus de détails seront révélés au fur et à mesure du développement. Restez à l'écoute.",
+        "pt": "Return Me é um road movie surrealista sobre sair de um buraco mental. Mais detalhes serão revelados conforme o desenvolvimento avança. Fique atento.",
+        "zh": "《Return Me》是一部关于走出心理低谷的超现实公路电影。更多细节将随开发进度公布，敬请期待。"
+      },
+      "link": "https://madebyone.itch.io/"
+    }
+  ]
+}
