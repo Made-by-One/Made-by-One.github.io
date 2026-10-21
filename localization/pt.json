@@ -1,14 +1,12 @@
 {
   "_name": "Português",
   "_flag": "🇵🇹",
-
   "nav.home": "Início",
   "nav.launcher": "Devers Launcher",
   "nav.packer": "Devers Packer",
   "nav.games": "Jogos",
   "nav.news": "Notícias",
   "nav.about": "Sobre",
-
   "home.title": "Made by One",
   "home.sub": "Pequeno estúdio que cria ferramentas limpas e focadas para jogadores e desenvolvedores.",
   "home.btn.launcher": "▶ Devers Launcher",
@@ -17,7 +15,6 @@
   "home.stat.products": "Produtos",
   "home.stat.release": "Versão atual",
   "home.stat.license": "Licença",
-
   "launcher.title": "Devers Launcher",
   "launcher.subtitle": "Launcher de jogos moderno para arquivos .dvp",
   "launcher.desc": "Um launcher limpo e moderno para jogos .dvp criados com o Devers Packer. Extrai cada jogo para uma pasta temporária, executa-o e limpa tudo ao fechar — sem arquivos deixados no seu disco.",
@@ -30,7 +27,6 @@
   "launcher.f7": "Bandeja",
   "launcher.f8": "Limpeza automática",
   "launcher.download": "⬇ Baixar .zip",
-
   "packer.title": "Devers Packer",
   "packer.subtitle": "Empacote qualquer pasta de jogo em um único arquivo .dvp",
   "packer.desc": "Transforma qualquer pasta de jogo em um único arquivo .dvp — baseado em ZIP, compressão máxima, com manifesto integrado e capa. O editor de capas permite recortar e redimensionar qualquer imagem para 240×175 com pré-visualização ao vivo.",
@@ -41,7 +37,6 @@
   "packer.f5": "Manifesto",
   "packer.f6": "Multi-idioma",
   "packer.download": "⬇ Baixar .zip",
-
   "games.title": "Jogos",
   "games.subtitle": "Em desenvolvimento — em breve",
   "games.status.dev": "Em desenvolvimento",
@@ -50,15 +45,13 @@
   "games.platform": "Plataforma: Windows 10/11",
   "games.returnme.desc": "Return Me é uma road movie surreal sobre sair de um poço mental.",
   "games.progress": "Progresso do desenvolvimento",
-  "games.notify": "🔔 Chega em 2027",
+  "games.notify": "🔔 Lançamento em {year}",
   "games.follow": "Seguir para novidades ↗",
-
   "news.title": "Notícias",
   "news.subtitle": "Últimas novidades do estúdio",
   "news.loading": "Carregando notícias…",
   "news.empty": "Ainda sem notícias",
   "news.error": "Falha ao carregar notícias",
-
   "about.title": "Sobre o estúdio",
   "about.subtitle": "Made by One — pequeno, focado, aberto",
   "about.desc": "Made by One é um pequeno estúdio que cria ferramentas limpas e minimalistas para jogadores e desenvolvedores. Tudo o que publicamos é projetado para ser leve, privado e honesto — sem telemetria, sem instaladores inchados, sem serviços ocultos em segundo plano.",
@@ -67,11 +60,19 @@
   "about.f3": "Windows primeiro",
   "about.f4": "Sem telemetria",
   "about.github": "GitHub ↗",
-
   "common.github": "Ver no GitHub ↗",
   "common.releases": "Todas as versões ↗",
-
-  "footer.copyright": "© 2026 Made by One Studio",
+  "footer.copyright": "© {year} Made by One Studio",
   "footer.about": "Sobre",
-  "footer.github": "GitHub ↗"
+  "footer.github": "GitHub ↗",
+  "games.empty": "Ainda não há jogos",
+  "games.label.release": "Lançamento",
+  "games.label.genre": "Gênero",
+  "games.label.platform": "Plataforma",
+  "games.status.released": "Lançado",
+  "games.status.soon": "Em breve",
+  "news.release.tag": "Lançamento",
+  "news.release.title": "{product} {version} já está disponível",
+  "news.release.text": "A nova versão pode ser baixada na página de releases do GitHub.",
+  "news.release.more": "Página do release"
 }

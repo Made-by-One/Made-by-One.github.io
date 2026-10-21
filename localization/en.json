@@ -45,7 +45,7 @@
   "games.platform": "Platform: Windows 10/11",
   "games.returnme.desc": "Return Me is a surreal road movie about climbing out of a mental pit.",
   "games.progress": "Development Progress",
-  "games.notify": "🔔 Coming 2027",
+  "games.notify": "🔔 Coming {year}",
   "games.follow": "Follow for updates ↗",
   "news.title": "News",
   "news.subtitle": "Latest updates from the studio",
@@ -62,7 +62,17 @@
   "about.github": "GitHub ↗",
   "common.github": "View on GitHub ↗",
   "common.releases": "All releases ↗",
-  "footer.copyright": "© 2026 Made by One Studio",
+  "footer.copyright": "© {year} Made by One Studio",
   "footer.about": "About",
-  "footer.github": "GitHub ↗"
+  "footer.github": "GitHub ↗",
+  "games.empty": "No games yet",
+  "games.label.release": "Release",
+  "games.label.genre": "Genre",
+  "games.label.platform": "Platform",
+  "games.status.released": "Released",
+  "games.status.soon": "Coming soon",
+  "news.release.tag": "Release",
+  "news.release.title": "{product} {version} is out",
+  "news.release.text": "The new version is available to download on GitHub Releases.",
+  "news.release.more": "Release page"
 }

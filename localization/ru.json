@@ -1,14 +1,12 @@
 {
   "_name": "Русский",
   "_flag": "🇷🇺",
-
   "nav.home": "Главная",
   "nav.launcher": "Devers Launcher",
   "nav.packer": "Devers Packer",
   "nav.games": "Игры",
   "nav.news": "Новости",
   "nav.about": "О студии",
-
   "home.title": "Made by One",
   "home.sub": "Небольшая студия, делающая чистые и сфокусированные инструменты для игроков и разработчиков.",
   "home.btn.launcher": "▶ Devers Launcher",
@@ -17,7 +15,6 @@
   "home.stat.products": "Продукта",
   "home.stat.release": "Текущий релиз",
   "home.stat.license": "Лицензия",
-
   "launcher.title": "Devers Launcher",
   "launcher.subtitle": "Современный игровой лаунчер для архивов .dvp",
   "launcher.desc": "Чистый и современный лаунчер для игр в формате .dvp, созданных в Devers Packer. Распаковывает игру во временную папку, запускает её и очищает всё после закрытия — никакого мусора на диске.",
@@ -30,7 +27,6 @@
   "launcher.f7": "Трей",
   "launcher.f8": "Автоочистка",
   "launcher.download": "⬇ Скачать .zip",
-
   "packer.title": "Devers Packer",
   "packer.subtitle": "Упакуй любую папку с игрой в один .dvp архив",
   "packer.desc": "Превращает любую папку с игрой в один .dvp архив — ZIP-основа, максимальное сжатие, встроенный манифест и обложка. Редактор обложек позволяет обрезать и масштабировать изображение до 240×175 с живым превью.",
@@ -41,7 +37,6 @@
   "packer.f5": "Манифест",
   "packer.f6": "Мультиязычность",
   "packer.download": "⬇ Скачать .zip",
-
   "games.title": "Игры",
   "games.subtitle": "В разработке — скоро",
   "games.status.dev": "В разработке",
@@ -50,15 +45,13 @@
   "games.platform": "Платформа: Windows 10/11",
   "games.returnme.desc": "Return Me — это сюрреалистичное роуд-муви о выходе из ментальной ямы.",
   "games.progress": "Прогресс разработки",
-  "games.notify": "🔔 Выход в 2027",
+  "games.notify": "🔔 Выход в {year}",
   "games.follow": "Следить за обновлениями ↗",
-
   "news.title": "Новости",
   "news.subtitle": "Последние обновления студии",
   "news.loading": "Загрузка новостей…",
   "news.empty": "Пока нет новостей",
   "news.error": "Не удалось загрузить новости",
-
   "about.title": "О студии",
   "about.subtitle": "Made by One — небольшая, сфокусированная, открытая",
   "about.desc": "Made by One — небольшая студия, создающая чистые и минималистичные инструменты для игроков и разработчиков. Всё, что мы делаем, должно быть лёгким, приватным и честным — без телеметрии, без раздутых инсталляторов, без скрытых сервисов в фоне.",
@@ -67,11 +60,19 @@
   "about.f3": "Сначала Windows",
   "about.f4": "Без телеметрии",
   "about.github": "GitHub ↗",
-
   "common.github": "Открыть на GitHub ↗",
   "common.releases": "Все релизы ↗",
-
-  "footer.copyright": "© 2026 Made by One Studio",
+  "footer.copyright": "© {year} Made by One Studio",
   "footer.about": "О студии",
-  "footer.github": "GitHub ↗"
+  "footer.github": "GitHub ↗",
+  "games.empty": "Пока нет игр",
+  "games.label.release": "Выход",
+  "games.label.genre": "Жанр",
+  "games.label.platform": "Платформа",
+  "games.status.released": "Вышла",
+  "games.status.soon": "Скоро",
+  "news.release.tag": "Релиз",
+  "news.release.title": "Вышел {product} {version}",
+  "news.release.text": "Новую версию можно скачать на странице релизов GitHub.",
+  "news.release.more": "Страница релиза"
 }
