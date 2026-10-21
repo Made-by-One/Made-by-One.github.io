@@ -15,7 +15,6 @@
     letter-spacing: 0.5px;
   }
   :root {
-    /* --- NEW: cold glassy chrome palette, matches the brand logo --- */
     --bg: #05070c;
     --bg-2: #0a0e17;
     --glass: rgba(10, 14, 22, 0.55);
@@ -27,7 +26,6 @@
     --muted: rgba(215, 226, 245, 0.55);
     --muted-2: rgba(215, 226, 245, 0.32);
 
-    /* Accent — icy chrome blue, like the logo highlights */
     --accent: #cfe0ff;
     --accent-2: #ffffff;
     --accent-soft: rgba(180, 210, 255, 0.45);
@@ -63,7 +61,6 @@
   #custom-cursor.hovering { background-color: rgba(200, 220, 255, 0.18); width: 32px; height: 32px; border-color: #fff; }
   #custom-cursor.clicking  { width: 12px; height: 12px; background-color: rgba(255,255,255,0.9); }
 
-  /* --- NEW: professional cold grid + soft halo --- */
   .bg-grid {
     position: fixed; inset: 0; pointer-events: none; z-index: 0;
     background-color: var(--bg);
@@ -90,7 +87,6 @@
                               calc(var(--grid-size) * 5) calc(var(--grid-size) * 5),
                               calc(var(--grid-size) * 5) calc(var(--grid-size) * 5); }
   }
-  /* Ambient chrome glow behind everything */
   .bg-grid::after {
     content: '';
     position: absolute; inset: 0;
@@ -213,7 +209,6 @@
   }
   .app-container.collapsed .menu-list { padding: 0 10px; }
 
-  /* Active pill — glassy chrome slab */
   #active-pill {
     position: absolute;
     left: 20px;
@@ -689,6 +684,13 @@
   .site-footer a { color: var(--muted); transition: color .2s, text-shadow .2s; }
   .site-footer a:hover { color: #ffffff; text-shadow: 0 0 12px rgba(200,220,255,.7); }
 
+  .footer-links {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
   .game-card {
     position: relative;
     background: linear-gradient(180deg, rgba(14,18,28,.7), rgba(8,11,18,.6));
@@ -728,6 +730,15 @@
         rgba(200, 220, 255,.03) 20px,
         rgba(200, 220, 255,.03) 40px
       );
+    z-index: 0;
+  }
+  .game-cover-img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
   .game-cover-placeholder {
     position: relative;
@@ -871,6 +882,72 @@
     gap: 10px;
     cursor: not-allowed;
     opacity: .7;
+  }
+
+  /* ===== Новости ===== */
+  .news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .news-empty {
+    padding: 40px 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: var(--mono);
+  }
+  .news-card {
+    position: relative;
+    background: linear-gradient(180deg, rgba(14,18,28,.7), rgba(8,11,18,.6));
+    border: 1px solid rgba(200, 220, 255, .12);
+    border-radius: 16px;
+    padding: 24px 28px;
+    backdrop-filter: blur(10px);
+    transition: border-color .3s, transform .3s, box-shadow .3s;
+    box-shadow: 0 1px 0 rgba(255,255,255,.05) inset, 0 30px 60px -40px rgba(0,0,0,.95);
+  }
+  .news-card:hover {
+    border-color: rgba(200, 220, 255, .4);
+    transform: translateY(-2px);
+    box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 40px 70px -40px rgba(0,0,0,.95), 0 0 30px -14px var(--accent-soft);
+  }
+  .news-card .news-date {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-family: var(--mono);
+    margin-bottom: 8px;
+  }
+  .news-card .news-title {
+    font-size: 20px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #f2f6ff;
+    margin-bottom: 10px;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .news-card .news-text {
+    font-size: 14px;
+    line-height: 1.8;
+    color: rgba(225, 233, 250, .72);
+    white-space: pre-line;
+  }
+  .news-card .news-tag {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 10px;
+    border: 1px solid rgba(200, 220, 255, .2);
+    border-radius: 999px;
+    padding: 3px 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--muted);
+    font-family: var(--mono);
   }
 
   @media (min-width: 768px) and (max-width: 1024px) {
@@ -1142,6 +1219,10 @@
     .game-cover-placeholder .game-cover-title { font-size: 22px !important; letter-spacing: 3px !important; }
     .game-body { padding: 18px !important; }
     .game-body h2 { font-size: 22px !important; }
+
+    .news-card { padding: 18px 20px !important; }
+    .news-card .news-title { font-size: 17px !important; }
+    .footer-links { justify-content: center !important; }
   }
 </style>
 </head>
@@ -1185,11 +1266,11 @@
           </span>
           <span data-i18n="nav.games">Games</span>
         </div>
-        <div class="menu-item" data-page="about" onclick="switchPage('about', this)">
+        <div class="menu-item" data-page="news" onclick="switchPage('news', this)">
           <span class="menu-icon">
-            <img src="./data/icon-about.png" alt="" onerror="this.replaceWith(document.createTextNode('ℹ️'))">
+            <img src="./data/icon-about.png" alt="" onerror="this.replaceWith(document.createTextNode('📰'))">
           </span>
-          <span data-i18n="nav.about">About</span>
+          <span data-i18n="nav.news">News</span>
         </div>
       </div>
 
@@ -1210,6 +1291,7 @@
     <main class="main-content" id="mainContent">
       <div class="content-wrapper">
 
+        <!-- ================= HOME ================= -->
         <section class="page" id="page-home">
           <div class="hero">
             <h1 class="hero-title">
@@ -1249,10 +1331,14 @@
 
           <div class="site-footer">
             <span data-i18n="footer.copyright">© 2026 Made by One Studio</span>
-            <a href="https://github.com/Made-by-One" target="_blank" data-i18n="footer.github">GitHub ↗</a>
+            <div class="footer-links">
+              <a href="#" onclick="switchPageByKey('about'); return false;" data-i18n="footer.about">About</a>
+              <a href="https://github.com/Made-by-One" target="_blank" data-i18n="footer.github">GitHub ↗</a>
+            </div>
           </div>
         </section>
 
+        <!-- ================= LAUNCHER ================= -->
         <section class="page hidden" id="page-launcher">
           <div class="page-header">
             <h1 data-i18n="launcher.title">Devers Launcher</h1>
@@ -1301,6 +1387,7 @@
           </div>
         </section>
 
+        <!-- ================= PACKER ================= -->
         <section class="page hidden" id="page-packer">
           <div class="page-header">
             <h1 data-i18n="packer.title">Devers Packer</h1>
@@ -1347,6 +1434,7 @@
           </div>
         </section>
 
+        <!-- ================= GAMES ================= -->
         <section class="page hidden" id="page-games">
           <div class="page-header">
             <h1 data-i18n="games.title">Games</h1>
@@ -1359,7 +1447,10 @@
                 <span class="pulse-dot"></span>
                 <span data-i18n="games.status.dev">In Development</span>
               </div>
-              <div class="game-cover-placeholder">
+              <img src="./data/games/ReturnMe.png" alt="Return Me cover"
+                   class="game-cover-img"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+              <div class="game-cover-placeholder" style="display:none;">
                 <span class="game-icon">🎮</span>
                 <div class="game-cover-title">Return Me</div>
               </div>
@@ -1398,10 +1489,34 @@
 
           <div class="site-footer">
             <span data-i18n="footer.copyright">© 2026 Made by One Studio</span>
-            <a href="https://github.com/Made-by-One" target="_blank" data-i18n="footer.github">GitHub ↗</a>
+            <div class="footer-links">
+              <a href="#" onclick="switchPageByKey('about'); return false;" data-i18n="footer.about">About</a>
+              <a href="https://github.com/Made-by-One" target="_blank" data-i18n="footer.github">GitHub ↗</a>
+            </div>
           </div>
         </section>
 
+        <!-- ================= NEWS ================= -->
+        <section class="page hidden" id="page-news">
+          <div class="page-header">
+            <h1 data-i18n="news.title">News</h1>
+            <div class="subtitle" data-i18n="news.subtitle">Latest updates from the studio</div>
+          </div>
+
+          <div id="newsList" class="news-list">
+            <div class="news-empty" data-i18n="news.loading">Loading news…</div>
+          </div>
+
+          <div class="site-footer">
+            <span data-i18n="footer.copyright">© 2026 Made by One Studio</span>
+            <div class="footer-links">
+              <a href="#" onclick="switchPageByKey('about'); return false;" data-i18n="footer.about">About</a>
+              <a href="https://github.com/Made-by-One" target="_blank" data-i18n="footer.github">GitHub ↗</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= ABOUT (скрыт из меню, доступен через футер) ================= -->
         <section class="page hidden" id="page-about">
           <div class="page-header">
             <h1 data-i18n="about.title">About Studio</h1>
@@ -1438,7 +1553,9 @@
 
           <div class="site-footer">
             <span data-i18n="footer.copyright">© 2026 Made by One Studio</span>
-            <a href="https://github.com/Made-by-One" target="_blank" data-i18n="footer.github">GitHub ↗</a>
+            <div class="footer-links">
+              <a href="https://github.com/Made-by-One" target="_blank" data-i18n="footer.github">GitHub ↗</a>
+            </div>
           </div>
         </section>
 
@@ -1449,6 +1566,7 @@
 <script>
 const LAUNCHER_URL = "https://github.com/Made-by-One/Devers-Launcher/releases/download/v1.5/Devers-Launcher-Windows-v1.5.zip";
 const PACKER_URL   = "https://github.com/Made-by-One/Devers-Packer/releases/download/v1.1/Devers-Packer-Windows-v1.1.zip";
+const NEWS_URL     = "./data/news/news.json";
 
 document.getElementById('downloadLauncher').href = LAUNCHER_URL;
 document.getElementById('downloadPacker').href   = PACKER_URL;
@@ -1460,6 +1578,7 @@ const LANG_FILES = ["en", "ru", "uk", "es", "de", "fr", "pt", "zh"];
 
 let TRANSLATIONS = {};
 let currentLang = DEFAULT_LANG;
+let NEWS_CACHE = null;
 
 async function fetchLocale(lang) {
   const response = await fetch(`./localization/${lang}.json`);
@@ -1528,6 +1647,11 @@ function applyTranslations() {
       el.textContent = value;
     }
   });
+  // Если вкладка новостей открыта — перерисовываем на текущем языке
+  const newsPage = document.getElementById("page-news");
+  if (newsPage && !newsPage.classList.contains("hidden")) {
+    renderNews();
+  }
 }
 
 function renderLangMenu() {
@@ -1582,6 +1706,8 @@ function switchPage(key, el) {
   }
   positionPill();
   document.getElementById('mainContent').scrollTop = 0;
+
+  if (key === 'news') loadNews();
 }
 function switchPageByKey(key) { switchPage(key, null); }
 
@@ -1603,7 +1729,7 @@ function positionPill() {
 window.addEventListener('resize', positionPill);
 
 function bindCardGlow() {
-  document.querySelectorAll('.app-card, .game-card').forEach(card => {
+  document.querySelectorAll('.app-card, .game-card, .news-card').forEach(card => {
     card.addEventListener('mousemove', e => {
       const rect = card.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -1634,13 +1760,79 @@ if (window.matchMedia('(hover: hover)').matches) {
   document.addEventListener('mousedown', () => cursor.classList.add('clicking'));
   document.addEventListener('mouseup',   () => cursor.classList.remove('clicking'));
   document.addEventListener('mouseover', e => {
-    if (e.target.closest('button, .menu-item, a, .toggle-btn, .app-card, .game-card, .lang-btn, .lang-menu-item'))
+    if (e.target.closest('button, .menu-item, a, .toggle-btn, .app-card, .game-card, .news-card, .lang-btn, .lang-menu-item'))
       cursor.classList.add('hovering');
   });
   document.addEventListener('mouseout', e => {
-    if (e.target.closest('button, .menu-item, a, .toggle-btn, .app-card, .game-card, .lang-btn, .lang-menu-item'))
+    if (e.target.closest('button, .menu-item, a, .toggle-btn, .app-card, .game-card, .news-card, .lang-btn, .lang-menu-item'))
       cursor.classList.remove('hovering');
   });
+}
+
+/* ============ НОВОСТИ ============ */
+
+// Выбор значения из объекта переводов по текущему языку
+function pickLocalized(value) {
+  if (value == null) return "";
+  if (typeof value === "string") return value;
+  if (typeof value === "object") {
+    return value[currentLang] || value[DEFAULT_LANG] || Object.values(value)[0] || "";
+  }
+  return String(value);
+}
+
+async function loadNews() {
+  const container = document.getElementById("newsList");
+  if (!container) return;
+
+  // Если ещё не загружали — показываем "загрузка" и фетчим
+  if (!NEWS_CACHE) {
+    container.innerHTML = `<div class="news-empty" data-i18n="news.loading">${t("news.loading")}</div>`;
+    try {
+      const res = await fetch(NEWS_URL, { cache: "no-store" });
+      if (!res.ok) throw new Error("news.json not found");
+      const data = await res.json();
+      NEWS_CACHE = Array.isArray(data) ? data : [];
+    } catch (e) {
+      console.error("Failed to load news:", e);
+      container.innerHTML = `<div class="news-empty" data-i18n="news.error">${t("news.error")}</div>`;
+      return;
+    }
+  }
+  renderNews();
+}
+
+function renderNews() {
+  const container = document.getElementById("newsList");
+  if (!container) return;
+
+  if (!NEWS_CACHE || NEWS_CACHE.length === 0) {
+    container.innerHTML = `<div class="news-empty" data-i18n="news.empty">${t("news.empty")}</div>`;
+    return;
+  }
+
+  // Сортировка по дате (новые сверху)
+  const sorted = [...NEWS_CACHE].sort((a, b) => {
+    const da = new Date(a.date || 0).getTime();
+    const db = new Date(b.date || 0).getTime();
+    return db - da;
+  });
+
+  container.innerHTML = sorted.map(item => {
+    const title = pickLocalized(item.title);
+    const text  = pickLocalized(item.text);
+    const tagRaw = pickLocalized(item.tag);
+    const tag = tagRaw ? `<span class="news-tag">${tagRaw}</span>` : "";
+    return `
+      <article class="news-card">
+        <div class="news-date">${item.date || ""}</div>
+        <h3 class="news-title">${title}</h3>
+        <div class="news-text">${text}</div>
+        ${tag}
+      </article>`;
+  }).join("");
+
+  bindCardGlow();
 }
 
 async function init() {
