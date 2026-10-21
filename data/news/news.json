@@ -1,39 +1,5 @@
 [
   {
-    "date": "2026-10-18",
-    "products": ["launcher"],
-    "tag": {
-      "en": "Announcement",
-      "ru": "Анонс",
-      "uk": "Анонс",
-      "es": "Anuncio",
-      "de": "Ankündigung",
-      "fr": "Annonce",
-      "pt": "Anúncio",
-      "zh": "公告"
-    },
-    "title": {
-      "en": "Devers Launcher v1.5 is out",
-      "ru": "Вышел Devers Launcher v1.5",
-      "uk": "Вийшов Devers Launcher v1.5",
-      "es": "Ya está disponible Devers Launcher v1.5",
-      "de": "Devers Launcher v1.5 ist da",
-      "fr": "Devers Launcher v1.5 est sorti",
-      "pt": "Devers Launcher v1.5 já está disponível",
-      "zh": "Devers Launcher v1.5 已发布"
-    },
-    "text": {
-      "en": "New library view, cover support, favorites and playtime tracking.",
-      "ru": "Новый вид библиотеки, поддержка обложек, избранное и учёт времени игры.",
-      "uk": "Новий вигляд бібліотеки, підтримка обкладинок, обране та облік часу гри.",
-      "es": "Nueva vista de biblioteca, soporte de portadas, favoritos y seguimiento del tiempo de juego.",
-      "de": "Neue Bibliotheksansicht, Cover-Unterstützung, Favoriten und Spielzeitverfolgung.",
-      "fr": "Nouvelle vue de bibliothèque, prise en charge des couvertures, favoris et suivi du temps de jeu.",
-      "pt": "Nova visualização da biblioteca, suporte a capas, favoritos e rastreamento de tempo de jogo.",
-      "zh": "全新游戏库视图、封面支持、收藏和游玩时间追踪。"
-    }
-  },
-  {
     "date": "2026-10-21",
     "tag": {
       "en": "Devlog",
