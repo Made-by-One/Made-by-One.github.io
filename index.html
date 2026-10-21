@@ -492,6 +492,25 @@
     margin-top: 40px;
     display: flex; gap: 14px; flex-wrap: wrap;
   }
+  
+	  /* Иконки внутри главных кнопок */
+	.btn-icon {
+	  width: 18px;
+	  height: 18px;
+	  object-fit: contain;
+	  flex-shrink: 0;
+	  display: inline-block;
+	  vertical-align: middle;
+	  filter: brightness(0);                 /* тёмная иконка на светлой btn-retro */
+	  transition: filter .25s ease;
+	}
+	.btn-ghost .btn-icon {
+	  filter: brightness(0) invert(1) opacity(.85);  /* белая иконка на прозрачной btn-ghost */
+	}
+	.btn-ghost:hover .btn-icon {
+	  filter: brightness(0) invert(1) opacity(1);
+	}
+  
   .btn-retro {
     position: relative;
     background: linear-gradient(180deg, #ffffff 0%, #dfe9ff 45%, #a9c6f2 100%);
@@ -1268,24 +1287,18 @@
           </span>
           <span data-i18n="nav.home">Home</span>
         </div>
-        <div class="menu-item" data-page="launcher" onclick="switchPage('launcher', this)">
-          <span class="menu-icon">
-            <img src="./data/icon-launcher.png" alt="" onerror="this.replaceWith(document.createTextNode('✦'))">
-          </span>
-          <span data-i18n="nav.launcher">Devers Launcher</span>
-        </div>
-        <div class="menu-item" data-page="packer" onclick="switchPage('packer', this)">
-          <span class="menu-icon">
-            <img src="./data/icon-packer.png" alt="" onerror="this.replaceWith(document.createTextNode('📦'))">
-          </span>
-          <span data-i18n="nav.packer">Devers Packer</span>
-        </div>
-        <div class="menu-item" data-page="games" onclick="switchPage('games', this)">
-          <span class="menu-icon">
-            <img src="./data/icon-games.png" alt="" onerror="this.replaceWith(document.createTextNode('🎮'))">
-          </span>
-          <span data-i18n="nav.games">Games</span>
-        </div>
+        <div class="menu-item" data-page="projects" onclick="switchPage('projects', this)">
+		  <span class="menu-icon">
+			<img src="./data/icon-packer.png" alt="" onerror="this.replaceWith(document.createTextNode('📁'))">
+		  </span>
+		  <span data-i18n="nav.projects">Projects</span>
+		</div>
+		<div class="menu-item" data-page="games" onclick="switchPage('games', this)">
+		  <span class="menu-icon">
+			<img src="./data/icon-games.png" alt="" onerror="this.replaceWith(document.createTextNode('🎮'))">
+		  </span>
+		  <span data-i18n="nav.games">Games</span>
+		</div>
         <div class="menu-item" data-page="news" onclick="switchPage('news', this)">
           <span class="menu-icon">
             <img src="./data/icon-about.png" alt="" onerror="this.replaceWith(document.createTextNode('📰'))">
@@ -1321,18 +1334,20 @@
             <p class="hero-sub" data-i18n="home.sub">
               Small studio making clean, focused tools for gamers and developers.
             </p>
-            <div class="hero-actions">
-              <button class="btn-retro" onclick="switchPageByKey('launcher')" data-i18n="home.btn.launcher">
-                ▶ Devers Launcher
-              </button>
-              <button class="btn-ghost" onclick="switchPageByKey('packer')" data-i18n="home.btn.packer">
-                📦 Devers Packer
-              </button>
-              <button class="btn-ghost" onclick="switchPageByKey('games')" data-i18n="home.btn.games">
-                🎮 Games
-              </button>
-            </div>
-          </div>
+			<div class="hero-actions">
+			  <button class="btn-retro" onclick="switchPageByKey('projects')">
+				<img src="./data/icon-packer.png" alt=""
+					 class="btn-icon"
+					 onerror="this.replaceWith(document.createTextNode('📁'))">
+				<span data-i18n="home.btn.projects">Projects</span>
+			  </button>
+			  <button class="btn-ghost" onclick="switchPageByKey('games')">
+				<img src="./data/icon-games.png" alt=""
+					 class="btn-icon"
+					 onerror="this.replaceWith(document.createTextNode('🎮'))">
+				<span data-i18n="home.btn.games">Games</span>
+			  </button>
+			</div>
 
           <div class="stat-row">
             <div class="stat">
@@ -1358,98 +1373,20 @@
           </div>
         </section>
 
-        <!-- ================= LAUNCHER ================= -->
-        <section class="page hidden" id="page-launcher">
+        <!-- ================= PROJECTS (карточки рендерятся из data/site.json) ================= -->
+        <section class="page hidden" id="page-projects">
           <div class="page-header">
-            <h1 data-i18n="launcher.title">Devers Launcher</h1>
-            <div class="subtitle" data-i18n="launcher.subtitle">Modern game launcher for .dvp archives</div>
+            <h1 data-i18n="projects.title">Projects</h1>
+            <div class="subtitle" data-i18n="projects.subtitle">Tools for gamers and developers</div>
           </div>
 
-          <div class="app-card">
-            <div class="app-card-head">
-              <div class="app-badge">
-                <img src="./data/icon-launcher.png" alt="" onerror="this.replaceWith(document.createTextNode('✦'))">
-              </div>
-              <div class="app-meta">
-                <h2>Devers Launcher</h2>
-                <div class="app-version" id="launcherVersion">v1.5 · Windows · MIT</div>
-              </div>
-            </div>
+          <div id="projectsList"></div>
 
-            <p class="app-desc" data-i18n="launcher.desc">
-              A clean, modern launcher for .dvp games created with Devers Packer.
-              Extracts each game into a temp folder, runs it, and cleans everything up when
-              you close it — no leftover files on your disk.
-            </p>
-
-            <div class="app-features">
-              <span class="feature" data-i18n="launcher.f1">Library</span>
-              <span class="feature" data-i18n="launcher.f2">Covers</span>
-              <span class="feature" data-i18n="launcher.f3">Favorites</span>
-              <span class="feature" data-i18n="launcher.f4">Playtime</span>
-              <span class="feature" data-i18n="launcher.f5">Multi-language</span>
-              <span class="feature" data-i18n="launcher.f6">Drag &amp; Drop</span>
-              <span class="feature" data-i18n="launcher.f7">Tray</span>
-              <span class="feature" data-i18n="launcher.f8">Auto-cleanup</span>
-            </div>
-
-            <div class="app-actions">
-              <a class="btn-retro" id="downloadLauncher" href="#" target="_blank" data-i18n="launcher.download">
-                ⬇ Download .zip
-              </a>
-              <a class="btn-ghost" href="https://github.com/Made-by-One/Devers-Launcher" target="_blank" data-i18n="common.github">
-                View on GitHub ↗
-              </a>
-              <a class="btn-ghost" id="launcherReleases" href="https://github.com/Made-by-One/Devers-Launcher/releases" target="_blank" data-i18n="common.releases">
-                All releases ↗
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <!-- ================= PACKER ================= -->
-        <section class="page hidden" id="page-packer">
-          <div class="page-header">
-            <h1 data-i18n="packer.title">Devers Packer</h1>
-            <div class="subtitle" data-i18n="packer.subtitle">Pack any game folder into a single .dvp archive</div>
-          </div>
-
-          <div class="app-card">
-            <div class="app-card-head">
-              <div class="app-badge">
-                <img src="./data/icon-packer.png" alt="" onerror="this.replaceWith(document.createTextNode('📦'))">
-              </div>
-              <div class="app-meta">
-                <h2>Devers Packer</h2>
-                <div class="app-version" id="packerVersion">v1.1 · Windows · MIT</div>
-              </div>
-            </div>
-
-            <p class="app-desc" data-i18n="packer.desc">
-              Turns any game folder into a single .dvp archive — ZIP-based, maximum
-              compression, with an embedded manifest and a cover. The cover editor lets you
-              crop and scale any image to 240×175 with a live preview.
-            </p>
-
-            <div class="app-features">
-              <span class="feature" data-i18n="packer.f1">.dvp format</span>
-              <span class="feature" data-i18n="packer.f2">Max compression</span>
-              <span class="feature" data-i18n="packer.f3">Cover editor</span>
-              <span class="feature" data-i18n="packer.f4">Auto .exe detect</span>
-              <span class="feature" data-i18n="packer.f5">Manifest</span>
-              <span class="feature" data-i18n="packer.f6">Multi-language</span>
-            </div>
-
-            <div class="app-actions">
-              <a class="btn-retro" id="downloadPacker" href="#" target="_blank" data-i18n="packer.download">
-                ⬇ Download .zip
-              </a>
-              <a class="btn-ghost" href="https://github.com/Made-by-One/Devers-Packer" target="_blank" data-i18n="common.github">
-                View on GitHub ↗
-              </a>
-              <a class="btn-ghost" id="packerReleases" href="https://github.com/Made-by-One/Devers-Packer/releases" target="_blank" data-i18n="common.releases">
-                All releases ↗
-              </a>
+          <div class="site-footer">
+            <span data-i18n="footer.copyright">© 2026 Made by One Studio</span>
+            <div class="footer-links">
+              <a href="#" onclick="switchPageByKey('about'); return false;" data-i18n="footer.about">About</a>
+              <a href="https://github.com/Made-by-One" target="_blank" data-i18n="footer.github">GitHub ↗</a>
             </div>
           </div>
         </section>
@@ -1640,6 +1577,7 @@ function applyTranslations() {
       el.textContent = value;
     }
   });
+  renderProducts();
   renderGames();
   // Если вкладка новостей открыта — перерисовываем на текущем языке
   const newsPage = document.getElementById("page-news");
@@ -1828,23 +1766,8 @@ function productRelease(p) {
 }
 
 function applyProductMeta() {
+  // Статистика на главной (карточки проектов заполняются в renderProducts)
   const products = (SITE_CONFIG && SITE_CONFIG.products) || [];
-
-  products.forEach(p => {
-    const r = productRelease(p);
-    const cap = p.id.charAt(0).toUpperCase() + p.id.slice(1);
-
-    const meta = document.getElementById(p.id + "Version");
-    if (meta) meta.textContent = [r.version, p.platform, p.license].filter(Boolean).join(" · ");
-
-    const dl = document.getElementById("download" + cap);
-    if (dl) dl.href = r.downloadUrl;
-
-    const rel = document.getElementById(p.id + "Releases");
-    if (rel) rel.href = r.htmlUrl;
-  });
-
-  // Статистика на главной
   const statProducts = document.getElementById("statProducts");
   if (statProducts) statProducts.textContent = String(products.length).padStart(2, "0");
 
@@ -1856,6 +1779,66 @@ function applyProductMeta() {
       .sort((a, b) => new Date(b.r.publishedAt || 0) - new Date(a.r.publishedAt || 0))[0];
     if (latest) statRelease.textContent = latest.r.version;
   }
+}
+
+/* ============ ПРОЕКТЫ (из data/site.json) ============ */
+
+// Собирает фичи продукта из словаря переводов: ключи вида "launcher.f1", "launcher.f2"…
+function productFeatureKeys(id) {
+  const dict = TRANSLATIONS[currentLang] || TRANSLATIONS[DEFAULT_LANG] || {};
+  const fallback = TRANSLATIONS[DEFAULT_LANG] || {};
+  const keys = [];
+  for (let i = 1; ; i++) {
+    const key = `${id}.f${i}`;
+    if (!(key in dict) && !(key in fallback)) break;
+    keys.push(key);
+  }
+  return keys;
+}
+
+function renderProducts() {
+  const list = document.getElementById("projectsList");
+  if (!list) return;
+
+  const products = (SITE_CONFIG && SITE_CONFIG.products) || [];
+  if (!products.length) {
+    list.innerHTML = `<div class="news-empty">${escapeHtml(t("projects.empty"))}</div>`;
+    return;
+  }
+
+  list.innerHTML = products.map(p => {
+    const r = productRelease(p);
+    const icon = p.icon
+      ? `<img src="${p.icon}" alt="" onerror="this.replaceWith(document.createTextNode('${p.emoji || "✦"}'))">`
+      : (p.emoji || "✦");
+
+    const features = productFeatureKeys(p.id)
+      .map(key => `<span class="feature">${escapeHtml(t(key))}</span>`)
+      .join("");
+
+    return `
+      <div class="app-card">
+        <div class="app-card-head">
+          <div class="app-badge">${icon}</div>
+          <div class="app-meta">
+            <h2>${escapeHtml(p.name)}</h2>
+            <div class="app-version">${escapeHtml([r.version, p.platform, p.license].filter(Boolean).join(" · "))}</div>
+          </div>
+        </div>
+
+        <p class="app-desc">${escapeHtml(fillTemplate(t(p.id + ".desc"), { product: p.name }))}</p>
+
+        <div class="app-features">${features}</div>
+
+        <div class="app-actions">
+          <a class="btn-retro" href="${r.downloadUrl}" target="_blank">${escapeHtml(t(p.id + ".download"))}</a>
+          <a class="btn-ghost" href="https://github.com/${p.repo}" target="_blank">${escapeHtml(t("common.github"))}</a>
+          <a class="btn-ghost" href="${r.htmlUrl}" target="_blank">${escapeHtml(t("common.releases"))}</a>
+        </div>
+      </div>`;
+  }).join("");
+
+  bindCardGlow();
 }
 
 /* ============ ИГРЫ (из data/site.json) ============ */
