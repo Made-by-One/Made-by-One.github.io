@@ -39,7 +39,7 @@
       "icon": "🎮",
       "cover": "./data/games/ReturnMe.png",
       "status": "dev",
-      "progress": 15,
+      "progress": 35,
       "release": "2027",
       "genre": {
         "en": "TBA",
