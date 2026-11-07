@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Синхронизирует метаданные релизов GitHub → data/releases.json
+ * Синхронизирует метаданные релизов GitHub → data/releases.json 
  *
  * Запуск:
  *   node scripts/sync-releases.mjs
