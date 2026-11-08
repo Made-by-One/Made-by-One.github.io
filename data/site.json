@@ -15,8 +15,8 @@
       "platform": "Windows",
       "license": "MIT",
       "assetPattern": "Windows",
-      "fallbackVersion": "v1.5",
-      "fallbackDownload": "https://github.com/Made-by-One/Devers-Launcher/releases/download/v1.5/Devers-Launcher-Windows-v1.5.zip"
+      "fallbackVersion": "v1.6",
+      "fallbackDownload": "https://github.com/Made-by-One/Devers-Launcher/releases/download/v1.5/Devers-Launcher-Windows-v1.6.zip"
     },
     {
       "id": "packer",
