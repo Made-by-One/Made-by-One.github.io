@@ -90,7 +90,7 @@
       "license": "MIT",
       "assetPattern": "Windows",
       "fallbackVersion": "v1.6",
-      "fallbackDownload": "https://github.com/Made-by-One/Devers-Launcher/releases/download/v1.5/Devers-Launcher-Windows-v1.6.zip",
+      "fallbackDownload": "https://github.com/Made-by-One/Devers-Launcher/releases/download/v1.6/Devers-Launcher-Windows-v1.6.zip",
       "desc": {
         "en": "A clean, modern launcher for .dvp games created with Devers Packer. Extracts each game into a temp folder, runs it, and cleans everything up when you close it — no leftover files on your disk.",
         "ru": "Чистый и современный лаунчер для игр в формате .dvp, созданных в Devers Packer. Распаковывает игру во временную папку, запускает её и очищает всё после закрытия — никакого мусора на диске.",

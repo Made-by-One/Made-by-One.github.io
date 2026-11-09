@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-21T15:10:00.630Z",
+  "generatedAt": "2026-11-09T17:45:31.247Z",
   "products": {
     "launcher": {
       "repo": "Made-by-One/Devers-Launcher",
-      "version": "v1.5",
-      "name": "Devers Launcher v1.5",
-      "publishedAt": "2026-10-18T15:52:55Z",
-      "htmlUrl": "https://github.com/Made-by-One/Devers-Launcher/releases/tag/v1.5",
-      "downloadUrl": "https://github.com/Made-by-One/Devers-Launcher/releases/download/v1.5/Devers-Launcher-Windows-v1.5.zip",
-      "assetName": "Devers-Launcher-Windows-v1.5.zip"
+      "version": "v1.6",
+      "name": "Devers Launcher v1.6",
+      "publishedAt": "2026-11-07T20:29:43Z",
+      "htmlUrl": "https://github.com/Made-by-One/Devers-Launcher/releases/tag/v1.6",
+      "downloadUrl": "https://github.com/Made-by-One/Devers-Launcher/releases/download/v1.6/Devers-Launcher-Windows-v1.6.zip",
+      "assetName": "Devers-Launcher-Windows-v1.6.zip"
     },
     "packer": {
       "repo": "Made-by-One/Devers-Packer",

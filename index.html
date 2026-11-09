@@ -483,9 +483,13 @@
   /* ============================================================
      GAMES
      ============================================================ */
+  /* Карточка игры: баннер не режется и не растягивается */
+  .game-card { padding: 0; }
+
   .game-cover {
     position: relative;
-    height: 280px;
+    min-height: 240px;
+    padding: var(--s3);
     border-bottom: 1px solid var(--line);
     background: var(--panel-2);
     display: flex;
@@ -495,17 +499,29 @@
   }
 
   .cover-img {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: grayscale(1) contrast(1.02);
-    opacity: .88;
-    transition: filter .25s ease, opacity .25s ease;
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 420px;
+    object-fit: contain;
+    border: 1px solid var(--line-soft);
+    background: var(--panel-2);
   }
-  .card:hover .cover-img { filter: grayscale(.15); opacity: 1; }
+
+  @media (min-width: 861px) {
+    .game-card {
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      align-items: stretch;
+    }
+    .game-card .game-cover {
+      min-height: 0;
+      border-bottom: 0;
+      border-right: 1px solid var(--line);
+    }
+    .game-card .cover-img { max-width: 100%; max-height: 360px; }
+  }
 
   .cover-fallback {
     font-size: 11px;
@@ -590,10 +606,28 @@
   .news-item {
     border: 1px solid var(--line);
     background: var(--panel);
-    padding: var(--s3) var(--s4);
+    padding: 0;
     transition: border-color .15s ease;
   }
   .news-item:hover { border-color: var(--line-strong); }
+
+  /* Необязательный фото-баннер новости: целиком, без обрезки и растягивания */
+  .news-media {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel-2);
+  }
+  .news-media img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 420px;
+    object-fit: contain;
+  }
+
+  .news-body { padding: var(--s3) var(--s4); }
 
   .news-meta {
     display: flex;
@@ -728,14 +762,16 @@
     .stat { border-left: 0; border-top: 1px solid var(--line); }
     .stat:first-child { border-top: 0; }
 
-    .card,
+    .card:not(.game-card),
     .game-body { padding: var(--s3); }
     .card-meta { margin-left: 0; width: 100%; }
     .feature-list { grid-template-columns: minmax(0, 1fr); }
     .card-actions .btn { flex: 1 1 auto; }
 
-    .game-cover { height: 200px; }
-    .news-item { padding: var(--s3); }
+    .game-cover { min-height: 0; padding: var(--s3); }
+    .cover-img { max-height: 360px; }
+    .news-body { padding: var(--s3); }
+    .news-media img { max-height: 320px; }
     .hero-sub { font-size: 14px; }
     .terminal-body { padding: var(--s2); font-size: 12px; }
   }
@@ -1302,7 +1338,7 @@ function renderGames() {
       : "";
 
     return `
-      <article class="card">
+      <article class="card game-card">
         <div class="game-cover">
           <span class="cover-fallback" aria-hidden="true">[ no cover ]</span>
           ${cover}
@@ -1415,15 +1451,22 @@ function renderNews() {
     const link = item.link
       ? `<a class="news-link" href="${item.link}" target="_blank" rel="noopener">${escapeHtml(t("news.release.more"))} ↗</a>`
       : "";
+    const image = item.image
+      ? `<div class="news-media"><img src="${escapeHtml(item.image)}" alt="${title}" loading="lazy" onerror="this.parentElement.remove()"></div>`
+      : "";
+
     return `
       <article class="news-item">
-        <div class="news-meta">
-          ${item.date ? `<span class="news-date">${escapeHtml(item.date)}</span>` : ""}
-          ${tag}
+        ${image}
+        <div class="news-body">
+          <div class="news-meta">
+            ${item.date ? `<span class="news-date">${escapeHtml(item.date)}</span>` : ""}
+            ${tag}
+          </div>
+          <h3 class="news-title">${title}</h3>
+          <div class="news-text">${text}</div>
+          ${link}
         </div>
-        <h3 class="news-title">${title}</h3>
-        <div class="news-text">${text}</div>
-        ${link}
       </article>`;
   }).join("");
 }
