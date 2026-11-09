@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>content editor — made by one</title>
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --panel: #0e0d0f;
+    --panel-2: #111013;
+    --fg: #fdfcfc;
+    --fg-dim: #c9c5c7;
+    --muted: #858080;
+    --muted-2: #5f5b5e;
+    --line: #262326;
+    --line-soft: #1b191c;
+    --line-strong: #3a3438;
+    --accent: #a78bfa;
+    --accent-strong: #c9b8ff;
+    --accent-line: #4a3b7a;
+    --accent-bg: rgba(167, 139, 250, .07);
+    --accent-bg-2: rgba(167, 139, 250, .13);
+    --mono: 'Berkeley Mono', 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { background: var(--bg); }
+
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.6;
+    font-variant-ligatures: none;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  button { background: none; border: 0; cursor: pointer; }
+  ::selection { background: var(--accent); color: #0a0a0b; }
+  :focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
+
+  * { scrollbar-width: thin; scrollbar-color: #2a2629 transparent; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #2a2629; border: 2px solid var(--bg); }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .topbar-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 12px 24px;
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .brand { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+  .brand .mark { color: var(--accent); }
+  .brand .muted { color: var(--muted-2); text-transform: none; letter-spacing: 0; }
+
+  .state { font-size: 12px; color: var(--muted); letter-spacing: .04em; }
+  .state[data-kind="dirty"] { color: var(--accent-strong); }
+  .state[data-kind="ok"] { color: var(--accent-strong); }
+  .state[data-kind="err"] { color: var(--muted); font-style: italic; }
+
+  .actions { margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 16px;
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    color: var(--fg-dim);
+    font-size: 12px;
+    letter-spacing: .02em;
+    white-space: nowrap;
+    transition: color .15s ease, border-color .15s ease, background-color .15s ease;
+  }
+  .btn:hover { color: var(--fg); border-color: var(--muted); background: var(--panel-2); }
+  .btn-primary { color: var(--accent-strong); border-color: var(--accent-line); background: var(--accent-bg); }
+  .btn-primary:hover { color: var(--fg); border-color: var(--accent); background: var(--accent-bg-2); }
+  .btn-quiet { color: var(--muted); border-color: var(--line); }
+  .btn-quiet:hover { color: var(--fg-dim); }
+
+  .wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 288px minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .panel { border: 1px solid var(--line); background: var(--panel); }
+
+  .side { position: sticky; top: 88px; }
+
+  .tabs { display: flex; flex-direction: column; border-bottom: 1px solid var(--line); }
+
+  .tab {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 13px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--line-soft);
+    transition: color .15s ease, background-color .15s ease;
+  }
+  .tab:last-child { border-bottom: 0; }
+  .tab:hover { color: var(--fg); }
+  .tab.active { color: var(--accent-strong); background: var(--accent-bg); }
+
+  .list { display: flex; flex-direction: column; max-height: 46vh; overflow-y: auto; }
+
+  .list-item { display: flex; align-items: stretch; border-bottom: 1px solid var(--line-soft); }
+  .list-item.active { background: var(--panel-2); }
+
+  .open {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .list-item.active .open { color: var(--fg); }
+  .open .idx { color: var(--accent); font-size: 11px; flex: 0 0 auto; }
+  .open .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .remove { padding: 0 12px; color: var(--muted-2); font-size: 11px; flex: 0 0 auto; }
+  .remove:hover { color: var(--accent-strong); }
+
+  .add { width: 100%; padding: 12px 16px; text-align: left; font-size: 12px; color: var(--accent-strong); }
+  .add:hover { background: var(--accent-bg); }
+
+  .main-panel .panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel);
+    position: sticky;
+    top: 64px;
+    z-index: 10;
+  }
+
+  .panel-title { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+  .langs { display: flex; flex-wrap: wrap; gap: 4px; }
+  .lang-btn {
+    padding: 4px 8px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font-size: 11px;
+    color: var(--muted);
+    transition: color .15s ease, border-color .15s ease, background-color .15s ease;
+  }
+  .lang-btn:hover { color: var(--fg); }
+  .lang-btn.active { color: var(--accent-strong); border-color: var(--accent-line); background: var(--accent-bg); }
+
+  .form { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+
+  .form-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .form-head .title { font-size: 16px; overflow: hidden; text-overflow: ellipsis; }
+
+  .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+
+  .field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .label { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .hint { font-size: 11px; color: var(--muted-2); }
+
+  input, select, textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--fg);
+  }
+  input:hover, select:hover, textarea:hover { border-color: var(--line-strong); }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent-line); }
+  textarea { resize: vertical; min-height: 80px; line-height: 1.7; }
+  input[type="date"] { color-scheme: dark; }
+
+  .note {
+    border: 1px solid var(--line);
+    padding: 16px;
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+
+  .footer-hint {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 16px 24px 48px;
+    font-size: 11px;
+    line-height: 1.8;
+    color: var(--muted-2);
+  }
+  .footer-hint code { color: var(--fg-dim); }
+
+  @media (max-width: 900px) {
+    .wrap { grid-template-columns: minmax(0, 1fr); padding: 16px; }
+    .side { position: static; }
+    .list { max-height: none; }
+    .main-panel .panel-head { position: static; }
+    .grid2 { grid-template-columns: minmax(0, 1fr); }
+    .form { padding: 16px; }
+    .actions { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="./index.html"><span class="mark">▌</span> made-by-one <span class="muted">/ content</span></a>
+      <span class="state" id="state">[ loading ]</span>
+      <div class="actions">
+        <button class="btn" id="saveSite" type="button">site.json ↓</button>
+        <button class="btn" id="saveNews" type="button">news.json ↓</button>
+        <button class="btn btn-primary" id="copySite" type="button">copy site.json</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <aside class="panel side">
+      <nav class="tabs" id="tabs">
+        <button class="tab" data-tab="studio" type="button">[ studio ]</button>
+        <button class="tab active" data-tab="products" type="button">[ products ]</button>
+        <button class="tab" data-tab="games" type="button">[ games ]</button>
+        <button class="tab" data-tab="news" type="button">[ news ]</button>
+      </nav>
+      <div class="list" id="list"></div>
+      <button class="add" id="addItem" type="button">[ + добавить ]</button>
+    </aside>
+
+    <section class="panel main-panel">
+      <div class="panel-head">
+        <span class="panel-title" id="panelTitle">[ products ]</span>
+        <div class="langs" id="langs"></div>
+      </div>
+      <div class="form" id="form"></div>
+    </section>
+  </main>
+
+  <p class="footer-hint">
+    Скачайте <code>site.json</code> и положите его в <code>data/</code>, <code>news.json</code> — в <code>data/news/</code>, затем закоммитьте.
+    Пустое поле перевода → показывается английский вариант. Редактор работает только с файлами в браузере.
+  </p>
+
+<script>
+const LANGS = ["en", "ru", "uk", "es", "de", "fr", "pt", "zh"];
+const LANG_SHORT = { en: "EN", ru: "RU", uk: "UA", es: "ES", de: "DE", fr: "FR", pt: "PT", zh: "ZH" };
+const SINGULAR = { products: "product", games: "game", news: "news" };
+
+const state = {
+  site: null,
+  news: [],
+  tab: "products",
+  index: 0,
+  lang: "en",
+  dirty: false
+};
+let newsLoaded = false;
+
+const $ = (sel, root = document) => root.querySelector(sel);
+
+function make(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text != null) node.textContent = text;
+  return node;
+}
+
+function pad(n) {
+  return String(n).padStart(2, "0");
+}
+
+function setState(text, kind = "") {
+  const el = $("#state");
+  el.textContent = "[ " + text + " ]";
+  el.dataset.kind = kind;
+}
+
+function markDirty() {
+  state.dirty = true;
+  setState("не сохранено", "dirty");
+}
+
+function pick(value) {
+  if (value == null) return "";
+  if (typeof value === "string") return value;
+  if (Array.isArray(value)) return value.join(", ");
+  if (typeof value === "object") {
+    return value[state.lang] ?? value.en ?? Object.values(value)[0] ?? "";
+  }
+  return String(value);
+}
+
+async function fetchJson(url) {
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error(url + " → HTTP " + res.status);
+  return res.json();
+}
+
+async function loadAll() {
+  const [site, news] = await Promise.all([
+    fetchJson("./data/site.json"),
+    fetchJson("./data/news/news.json")
+      .then(data => { newsLoaded = true; return data; })
+      .catch(() => [])
+  ]);
+
+  state.site = site || {};
+  state.site.studio = state.site.studio || { name: "Made by One" };
+  state.site.products = Array.isArray(state.site.products) ? state.site.products : [];
+  state.site.games = Array.isArray(state.site.games) ? state.site.games : [];
+  state.news = Array.isArray(news) ? news : [];
+
+  setState("загружено");
+  renderTabs();
+  renderLangs();
+  renderList();
+  renderForm();
+}
+
+/* ============ НАВИГАЦИЯ ============ */
+
+function renderTabs() {
+  document.querySelectorAll(".tab").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.tab === state.tab);
+  });
+
+  const add = $("#addItem");
+  add.hidden = state.tab === "studio";
+  add.textContent = "[ + " + (SINGULAR[state.tab] || "item") + " ]";
+  $("#panelTitle").textContent = "[ " + state.tab + " ]";
+}
+
+function renderLangs() {
+  const box = $("#langs");
+  box.innerHTML = "";
+  box.hidden = state.tab === "studio";
+  if (state.tab === "studio") return;
+
+  LANGS.forEach(code => {
+    const btn = make("button", "lang-btn" + (code === state.lang ? " active" : ""), LANG_SHORT[code]);
+    btn.type = "button";
+    btn.addEventListener("click", () => {
+      state.lang = code;
+      renderLangs();
+      renderForm();
+    });
+    box.append(btn);
+  });
+}
+
+/* ============ СПИСОК ============ */
+
+function currentItems() {
+  if (state.tab === "studio") return [state.site.studio];
+  if (state.tab === "news") return state.news;
+  return state.site[state.tab] || [];
+}
+
+function itemLabel(item, i) {
+  if (state.tab === "studio") return "studio";
+  if (state.tab === "news") return pick(item.title) || item.date || "news " + (i + 1);
+  return item.name || item.id || state.tab.slice(0, -1) + " " + (i + 1);
+}
+
+function renderList() {
+  const list = $("#list");
+  list.innerHTML = "";
+
+  const items = currentItems();
+  if (!items.length) {
+    list.append(make("div", "note", "Пусто."));
+    return;
+  }
+
+  items.forEach((item, i) => {
+    const row = make("div", "list-item" + (i === state.index ? " active" : ""));
+    const open = make("button", "open");
+    open.type = "button";
+    open.append(
+      make("span", "idx", "[" + pad(i + 1) + "]"),
+      make("span", "name", itemLabel(item, i))
+    );
+    open.addEventListener("click", () => {
+      state.index = i;
+      renderList();
+      renderForm();
+    });
+    row.append(open);
+
+    if (state.tab !== "studio") {
+      const remove = make("button", "remove", "[x]");
+      remove.type = "button";
+      remove.title = "Удалить";
+      remove.addEventListener("click", () => removeItem(i));
+      row.append(remove);
+    }
+
+    list.append(row);
+  });
+}
+
+/* ============ ФОРМЫ ============ */
+
+function field(label, control, hint) {
+  const wrap = make("div", "field");
+  wrap.append(make("span", "label", label), control);
+  if (hint) wrap.append(make("span", "hint", hint));
+  return wrap;
+}
+
+function textInput(value, onChange, opts = {}) {
+  const input = make("input");
+  input.type = opts.type || "text";
+  input.value = value == null ? "" : String(value);
+  input.spellcheck = false;
+  if (opts.placeholder) input.placeholder = opts.placeholder;
+  input.addEventListener("input", () => {
+    onChange(input.value);
+    markDirty();
+    renderList();
+  });
+  return input;
+}
+
+function textarea(value, onChange, rows = 4) {
+  const area = make("textarea");
+  area.rows = rows;
+  area.value = value == null ? "" : String(value);
+  area.spellcheck = false;
+  area.addEventListener("input", () => {
+    onChange(area.value);
+    markDirty();
+  });
+  return area;
+}
+
+function selectInput(value, options, onChange) {
+  const select = make("select");
+  options.forEach(([val, label]) => {
+    const option = make("option", null, label);
+    option.value = val;
+    select.append(option);
+  });
+  select.value = value;
+  if (select.value !== value) select.value = options[0][0];
+  select.addEventListener("change", () => {
+    onChange(select.value);
+    markDirty();
+  });
+  return select;
+}
+
+function locObject(container, key) {
+  if (!container[key] || typeof container[key] !== "object" || Array.isArray(container[key])) {
+    container[key] = {};
+  }
+  return container[key];
+}
+
+function locField(container, key, label, hint) {
+  const obj = locObject(container, key);
+  return field(
+    label + " · " + LANG_SHORT[state.lang],
+    textInput(obj[state.lang] ?? "", value => { obj[state.lang] = value; }),
+    hint
+  );
+}
+
+function locArea(container, key, label, hint) {
+  const obj = locObject(container, key);
+  return field(
+    label + " · " + LANG_SHORT[state.lang],
+    textarea(obj[state.lang] ?? "", value => { obj[state.lang] = value; }, 6),
+    hint
+  );
+}
+
+function locLines(container, key, label, hint) {
+  const obj = locObject(container, key);
+  const current = Array.isArray(obj[state.lang]) ? obj[state.lang].join("\n") : "";
+  return field(
+    label + " · " + LANG_SHORT[state.lang],
+    textarea(current, value => {
+      obj[state.lang] = value.split("\n").map(line => line.trim()).filter(Boolean);
+    }, 6),
+    hint
+  );
+}
+
+function formHead(title, onRemove) {
+  const head = make("div", "form-head");
+  head.append(make("div", "title", title));
+
+  if (onRemove) {
+    const btn = make("button", "btn btn-quiet", "[ удалить ]");
+    btn.type = "button";
+    btn.addEventListener("click", onRemove);
+    head.append(btn);
+  }
+  return head;
+}
+
+function noteBox(text) {
+  return make("div", "note", text);
+}
+
+function renderForm() {
+  const form = $("#form");
+  form.innerHTML = "";
+  if (!state.site) return;
+
+  const items = currentItems();
+  if (!items.length) {
+    form.append(noteBox("Пока пусто. Нажмите [ + добавить ] слева."));
+    return;
+  }
+
+  if (state.index >= items.length) state.index = items.length - 1;
+
+  if (state.tab === "studio") return renderStudioForm(items[0]);
+  if (state.tab === "products") return renderProductForm(items[state.index], state.index);
+  if (state.tab === "games") return renderGameForm(items[state.index], state.index);
+  return renderNewsForm(items[state.index], state.index);
+}
+
+function renderStudioForm(studio) {
+  const form = $("#form");
+  form.append(formHead("studio", null));
+  form.append(field("Название студии", textInput(studio.name || "", value => { studio.name = value; })));
+  form.append(field("GitHub", textInput(studio.github || "", value => { studio.github = value.trim(); }), "Полный URL."));
+  form.append(field("itch.io", textInput(studio.itch || "", value => { studio.itch = value.trim(); }), "Полный URL."));
+  form.append(noteBox("Эти ссылки используются в данных студии. Тексты интерфейса (заголовки, меню, футер) живут в localization/<lang>.json."));
+}
+
+function renderProductForm(product, index) {
+  const form = $("#form");
+  form.append(formHead("[" + pad(index + 1) + "] " + (product.name || "product"), () => removeItem(index)));
+
+  const grid = make("div", "grid2");
+  grid.append(
+    field("Название", textInput(product.name, value => { product.name = value; })),
+    field("ID (slug)", textInput(product.id, value => { product.id = value.trim(); }), "Латиница, цифры, дефис."),
+    field("Репозиторий", textInput(product.repo, value => { product.repo = value.trim(); }), "owner/name на GitHub."),
+    field("Лицензия", textInput(product.license || "", value => { product.license = value; })),
+    field("Платформа", textInput(product.platform || "", value => {
+      if (value.trim()) product.platform = value.trim();
+      else delete product.platform;
+    }), "Пусто — не показывать."),
+    field("Статус", selectInput(product.status || "dev", [
+      ["dev", "в разработке"],
+      ["released", "выпущен"],
+      ["soon", "скоро"]
+    ], value => { product.status = value; })),
+    field("Ссылка на скачивание", textInput(product.fallbackDownload || "", value => {
+      if (value.trim()) product.fallbackDownload = value.trim();
+      else delete product.fallbackDownload;
+    }), "Пусто → вместо кнопки будет [ In Development ].")
+  );
+  form.append(grid);
+
+  form.append(locArea(product, "desc", "Описание", "Текст карточки проекта."));
+  form.append(locLines(product, "features", "Фичи", "Одна фича на строку."));
+  form.append(locField(product, "download", "Кнопка скачивания", "Без эмодзи, например: Download .zip"));
+}
+
+function renderGameForm(game, index) {
+  const form = $("#form");
+  form.append(formHead("[" + pad(index + 1) + "] " + (game.name || "game"), () => removeItem(index)));
+
+  const grid = make("div", "grid2");
+  grid.append(
+    field("Название", textInput(game.name, value => { game.name = value; })),
+    field("Обложка", textInput(game.cover || "", value => { game.cover = value.trim(); }), "Путь: ./data/games/Cover.png"),
+    field("Статус", selectInput(game.status || "dev", [
+      ["dev", "в разработке"],
+      ["soon", "скоро"],
+      ["released", "выпущена"]
+    ], value => { game.status = value; })),
+    field("Прогресс, %", textInput(game.progress ?? 0, value => {
+      game.progress = Math.max(0, Math.min(100, Number(value) || 0));
+    }, { type: "number" }), "0–100."),
+    field("Год выхода", textInput(game.release || "", value => { game.release = value.trim(); }), "Например: 2027."),
+    field("Ссылка", textInput(game.link || "", value => { game.link = value.trim(); }), "itch.io или страница игры.")
+  );
+  form.append(grid);
+
+  form.append(locArea(game, "desc", "Описание"));
+  form.append(locField(game, "genre", "Жанр"));
+  form.append(locField(game, "platform", "Платформа"));
+}
+
+function renderNewsForm(item, index) {
+  const form = $("#form");
+  const title = pick(item.title) || item.date || "news " + (index + 1);
+  form.append(formHead("[" + pad(index + 1) + "] " + title, () => removeItem(index)));
+
+  const grid = make("div", "grid2");
+  grid.append(
+    field("Дата", textInput(item.date || "", value => { item.date = value.trim(); }, { type: "date" })),
+    field("Ссылка", textInput(item.link || "", value => {
+      if (value.trim()) item.link = value.trim();
+      else delete item.link;
+    }), "Необязательно.")
+  );
+  form.append(grid);
+
+  form.append(locField(item, "tag", "Тег", "Например: Devlog."));
+  form.append(locField(item, "title", "Заголовок"));
+  form.append(locArea(item, "text", "Текст"));
+}
+
+/* ============ ДЕЙСТВИЯ ============ */
+
+function uniqueId(base, items) {
+  const used = new Set(items.map(item => item.id));
+  if (!used.has(base)) return base;
+  let n = 2;
+  while (used.has(base + "-" + n)) n++;
+  return base + "-" + n;
+}
+
+function addItem() {
+  if (state.tab === "products") {
+    state.site.products.push({
+      id: uniqueId("product", state.site.products),
+      name: "New product",
+      repo: "Made-by-One/",
+      status: "dev",
+      license: "MIT",
+      desc: { en: "" },
+      features: { en: [] },
+      download: { en: "Download .zip" }
+    });
+    state.index = state.site.products.length - 1;
+  } else if (state.tab === "games") {
+    state.site.games.push({
+      id: uniqueId("game", state.site.games),
+      name: "New game",
+      cover: "",
+      status: "dev",
+      progress: 0,
+      release: "",
+      link: "",
+      desc: { en: "" },
+      genre: { en: "" },
+      platform: { en: "PC" }
+    });
+    state.index = state.site.games.length - 1;
+  } else if (state.tab === "news") {
+    state.news.unshift({
+      date: new Date().toISOString().slice(0, 10),
+      tag: { en: "News" },
+      title: { en: "" },
+      text: { en: "" }
+    });
+    state.index = 0;
+  } else {
+    return;
+  }
+
+  markDirty();
+  renderList();
+  renderForm();
+}
+
+function removeItem(index) {
+  const items = currentItems();
+  if (state.tab === "studio") return;
+
+  const item = items[index];
+  const label = state.tab === "news"
+    ? (pick(item.title) || item.date || "news #" + (index + 1))
+    : (item.name || item.id || "item #" + (index + 1));
+
+  if (!window.confirm("Удалить «" + label + "»?")) return;
+
+  items.splice(index, 1);
+  state.index = Math.max(0, Math.min(state.index, items.length - 1));
+  markDirty();
+  renderList();
+  renderForm();
+}
+
+function downloadJson(filename, data) {
+  const blob = new Blob([JSON.stringify(data, null, 2) + "\n"], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = make("a");
+  link.href = url;
+  link.download = filename;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  state.dirty = false;
+  setState("сохранено: " + filename, "ok");
+}
+
+/* ============ СОБЫТИЯ ============ */
+
+document.querySelectorAll(".tab").forEach(btn => {
+  btn.addEventListener("click", () => {
+    state.tab = btn.dataset.tab;
+    state.index = 0;
+    renderTabs();
+    renderLangs();
+    renderList();
+    renderForm();
+  });
+});
+
+$("#addItem").addEventListener("click", addItem);
+
+$("#saveSite").addEventListener("click", () => downloadJson("site.json", state.site));
+
+$("#saveNews").addEventListener("click", () => {
+  if (!newsLoaded) {
+    setState("news.json не загружен", "err");
+    return;
+  }
+  downloadJson("news.json", state.news);
+});
+
+$("#copySite").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(JSON.stringify(state.site, null, 2) + "\n");
+    setState("site.json скопирован", "ok");
+  } catch (e) {
+    setState("буфер обмена недоступен", "err");
+  }
+});
+
+window.addEventListener("beforeunload", event => {
+  if (!state.dirty) return;
+  event.preventDefault();
+  event.returnValue = "";
+});
+
+loadAll().catch(error => {
+  const form = $("#form");
+  form.innerHTML = "";
+  form.append(noteBox(
+    "Не удалось загрузить данные: " + error.message +
+    ". Откройте редактор через локальный сервер (python3 -m http.server) или с GitHub Pages — file:// не поддерживается."
+  ));
+  setState("load failed", "err");
+});
+</script>
+</body>
+</html>

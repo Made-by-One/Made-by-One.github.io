@@ -4,34 +4,293 @@
     "github": "https://github.com/Made-by-One",
     "itch": "https://madebyone.itch.io/"
   },
-
   "products": [
     {
+      "id": "workmods",
+      "name": "Devers-Workmods",
+      "repo": "Made-by-One/Devers-Workmods",
+      "status": "dev",
+      "license": "MIT",
+      "desc": {
+        "en": "Devers Workmods is the newest project in the Devers line. The repository is public under the MIT license; the first build has not been published yet.",
+        "ru": "Devers Workmods — самый новый проект линейки Devers. Репозиторий открыт по лицензии MIT; первая сборка пока не опубликована.",
+        "uk": "Devers Workmods — найновіший проєкт лінійки Devers. Репозиторій відкритий за ліцензією MIT; перша збірка ще не опублікована.",
+        "es": "Devers Workmods es el proyecto más reciente de la línea Devers. El repositorio es público bajo licencia MIT; todavía no se ha publicado ninguna compilación.",
+        "de": "Devers Workmods ist das neueste Projekt der Devers-Reihe. Das Repository ist unter der MIT-Lizenz öffentlich; ein erster Build wurde noch nicht veröffentlicht.",
+        "fr": "Devers Workmods est le projet le plus récent de la gamme Devers. Le dépôt est public sous licence MIT ; aucune version n'a encore été publiée.",
+        "pt": "Devers Workmods é o projeto mais recente da linha Devers. O repositório é público sob a licença MIT; nenhuma compilação foi publicada ainda.",
+        "zh": "Devers Workmods 是 Devers 系列中最新的项目。仓库以 MIT 许可证公开，首个构建版本尚未发布。"
+      },
+      "features": {
+        "en": [
+          "MIT license",
+          "Public repository",
+          "Early development",
+          "Devers ecosystem"
+        ],
+        "ru": [
+          "MIT-лицензия",
+          "Открытый репозиторий",
+          "Ранняя разработка",
+          "Экосистема Devers"
+        ],
+        "uk": [
+          "MIT-ліцензія",
+          "Відкритий репозиторій",
+          "Рання розробка",
+          "Екосистема Devers"
+        ],
+        "es": [
+          "Licencia MIT",
+          "Repositorio público",
+          "Desarrollo temprano",
+          "Ecosistema Devers"
+        ],
+        "de": [
+          "MIT-Lizenz",
+          "Öffentliches Repository",
+          "Frühe Entwicklung",
+          "Devers-Ökosystem"
+        ],
+        "fr": [
+          "Licence MIT",
+          "Dépôt public",
+          "Développement précoce",
+          "Écosystème Devers"
+        ],
+        "pt": [
+          "Licença MIT",
+          "Repositório público",
+          "Desenvolvimento inicial",
+          "Ecossistema Devers"
+        ],
+        "zh": [
+          "MIT 许可证",
+          "公开仓库",
+          "早期开发",
+          "Devers 生态"
+        ]
+      },
+      "download": {
+        "en": "⬇ Download .zip",
+        "ru": "⬇ Скачать .zip",
+        "uk": "⬇ Завантажити .zip",
+        "es": "⬇ Descargar .zip",
+        "de": "⬇ .zip herunterladen",
+        "fr": "⬇ Télécharger .zip",
+        "pt": "⬇ Baixar .zip",
+        "zh": "⬇ 下载 .zip"
+      }
+    },
+    {
       "id": "launcher",
-      "name": "Devers Launcher",
+      "name": "Devers-Launcher",
       "repo": "Made-by-One/Devers-Launcher",
-      "icon": "./data/icon-launcher.png",
-      "emoji": "✦",
       "platform": "Windows",
       "license": "MIT",
       "assetPattern": "Windows",
       "fallbackVersion": "v1.6",
-      "fallbackDownload": "https://github.com/Made-by-One/Devers-Launcher/releases/download/v1.5/Devers-Launcher-Windows-v1.6.zip"
+      "fallbackDownload": "https://github.com/Made-by-One/Devers-Launcher/releases/download/v1.5/Devers-Launcher-Windows-v1.6.zip",
+      "desc": {
+        "en": "A clean, modern launcher for .dvp games created with Devers Packer. Extracts each game into a temp folder, runs it, and cleans everything up when you close it — no leftover files on your disk.",
+        "ru": "Чистый и современный лаунчер для игр в формате .dvp, созданных в Devers Packer. Распаковывает игру во временную папку, запускает её и очищает всё после закрытия — никакого мусора на диске.",
+        "uk": "Чистий і сучасний лаунчер для ігор у форматі .dvp, створених у Devers Packer. Розпаковує кожну гру в тимчасову папку, запускає її та прибирає все після закриття — жодних залишкових файлів на диску.",
+        "es": "Un lanzador limpio y moderno para juegos .dvp creados con Devers Packer. Extrae cada juego en una carpeta temporal, lo ejecuta y limpia todo al cerrarlo — sin archivos sobrantes en tu disco.",
+        "de": "Ein sauberer, moderner Launcher für .dvp-Spiele, die mit Devers Packer erstellt wurden. Entpackt jedes Spiel in einen temporären Ordner, führt es aus und räumt alles beim Schließen auf — keine Restdateien auf deiner Festplatte.",
+        "fr": "Un lanceur propre et moderne pour les jeux .dvp créés avec Devers Packer. Extrait chaque jeu dans un dossier temporaire, le lance et nettoie tout à la fermeture — aucun fichier résiduel sur votre disque.",
+        "pt": "Um launcher limpo e moderno para jogos .dvp criados com o Devers Packer. Extrai cada jogo para uma pasta temporária, executa-o e limpa tudo ao fechar — sem arquivos deixados no seu disco.",
+        "zh": "为 Devers Packer 创建的 .dvp 游戏打造的简洁现代启动器。将每个游戏解压到临时文件夹，运行它，关闭时清理所有内容——磁盘上不留任何残留文件。"
+      },
+      "features": {
+        "en": [
+          "Library",
+          "Covers",
+          "Favorites",
+          "Playtime",
+          "Multi-language",
+          "Drag & Drop",
+          "Tray",
+          "Auto-cleanup"
+        ],
+        "ru": [
+          "Библиотека",
+          "Обложки",
+          "Избранное",
+          "Время игры",
+          "Мультиязычность",
+          "Drag & Drop",
+          "Трей",
+          "Автоочистка"
+        ],
+        "uk": [
+          "Бібліотека",
+          "Обкладинки",
+          "Обране",
+          "Час гри",
+          "Багатомовність",
+          "Drag & Drop",
+          "Трей",
+          "Автоочищення"
+        ],
+        "es": [
+          "Biblioteca",
+          "Portadas",
+          "Favoritos",
+          "Tiempo de juego",
+          "Multi-idioma",
+          "Drag & Drop",
+          "Bandeja",
+          "Limpieza automática"
+        ],
+        "de": [
+          "Bibliothek",
+          "Cover",
+          "Favoriten",
+          "Spielzeit",
+          "Mehrsprachig",
+          "Drag & Drop",
+          "Tray",
+          "Auto-Aufräumen"
+        ],
+        "fr": [
+          "Bibliothèque",
+          "Couvertures",
+          "Favoris",
+          "Temps de jeu",
+          "Multi-langue",
+          "Glisser-déposer",
+          "Barre système",
+          "Nettoyage auto"
+        ],
+        "pt": [
+          "Biblioteca",
+          "Capas",
+          "Favoritos",
+          "Tempo de jogo",
+          "Multi-idioma",
+          "Arrastar e soltar",
+          "Bandeja",
+          "Limpeza automática"
+        ],
+        "zh": [
+          "游戏库",
+          "封面",
+          "收藏",
+          "游玩时间",
+          "多语言",
+          "拖放",
+          "系统托盘",
+          "自动清理"
+        ]
+      },
+      "download": {
+        "en": "⬇ Download .zip",
+        "ru": "⬇ Скачать .zip",
+        "uk": "⬇ Завантажити .zip",
+        "es": "⬇ Descargar .zip",
+        "de": "⬇ .zip herunterladen",
+        "fr": "⬇ Télécharger .zip",
+        "pt": "⬇ Baixar .zip",
+        "zh": "⬇ 下载 .zip"
+      }
     },
     {
       "id": "packer",
-      "name": "Devers Packer",
+      "name": "Devers-Packer",
       "repo": "Made-by-One/Devers-Packer",
-      "icon": "./data/icon-packer.png",
-      "emoji": "📦",
       "platform": "Windows",
       "license": "MIT",
       "assetPattern": "Windows",
       "fallbackVersion": "v1.1",
-      "fallbackDownload": "https://github.com/Made-by-One/Devers-Packer/releases/download/v1.1/Devers-Packer-Windows-v1.1.zip"
+      "fallbackDownload": "https://github.com/Made-by-One/Devers-Packer/releases/download/v1.1/Devers-Packer-Windows-v1.1.zip",
+      "desc": {
+        "en": "Turns any game folder into a single .dvp archive — ZIP-based, maximum compression, with an embedded manifest and a cover. The cover editor lets you crop and scale any image to 240×175 with a live preview.",
+        "ru": "Превращает любую папку с игрой в один .dvp архив — ZIP-основа, максимальное сжатие, встроенный манифест и обложка. Редактор обложек позволяет обрезать и масштабировать изображение до 240×175 с живым превью.",
+        "uk": "Перетворює будь-яку папку з грою на один .dvp архів — на основі ZIP, максимальне стиснення, вбудований маніфест та обкладинка. Редактор обкладинок дозволяє обрізати й масштабувати будь-яке зображення до 240×175 з живим превʼю.",
+        "es": "Convierte cualquier carpeta de juego en un único archivo .dvp — basado en ZIP, compresión máxima, con manifiesto integrado y portada. El editor de portadas permite recortar y escalar cualquier imagen a 240×175 con vista previa en vivo.",
+        "de": "Verwandelt jeden Spielordner in ein einziges .dvp-Archiv — ZIP-basiert, maximale Kompression, mit eingebettetem Manifest und Cover. Der Cover-Editor ermöglicht Zuschneiden und Skalieren beliebiger Bilder auf 240×175 mit Live-Vorschau.",
+        "fr": "Transforme n'importe quel dossier de jeu en une seule archive .dvp — basée sur ZIP, compression maximale, avec manifeste intégré et couverture. L'éditeur de couverture permet de rogner et redimensionner n'importe quelle image en 240×175 avec aperçu en direct.",
+        "pt": "Transforma qualquer pasta de jogo em um único arquivo .dvp — baseado em ZIP, compressão máxima, com manifesto integrado e capa. O editor de capas permite recortar e redimensionar qualquer imagem para 240×175 com pré-visualização ao vivo.",
+        "zh": "将任意游戏文件夹转换为单个 .dvp 归档——基于 ZIP、最大压缩，内置清单和封面。封面编辑器可让你裁剪和缩放任意图片至 240×175，并实时预览。"
+      },
+      "features": {
+        "en": [
+          ".dvp format",
+          "Max compression",
+          "Cover editor",
+          "Auto .exe detect",
+          "Manifest",
+          "Multi-language"
+        ],
+        "ru": [
+          "Формат .dvp",
+          "Макс. сжатие",
+          "Редактор обложек",
+          "Авто-поиск .exe",
+          "Манифест",
+          "Мультиязычность"
+        ],
+        "uk": [
+          "Формат .dvp",
+          "Макс. стиснення",
+          "Редактор обкладинок",
+          "Авто-пошук .exe",
+          "Маніфест",
+          "Багатомовність"
+        ],
+        "es": [
+          "Formato .dvp",
+          "Compresión máx.",
+          "Editor de portadas",
+          "Detección auto .exe",
+          "Manifiesto",
+          "Multi-idioma"
+        ],
+        "de": [
+          ".dvp-Format",
+          "Max. Kompression",
+          "Cover-Editor",
+          "Auto-.exe-Erkennung",
+          "Manifest",
+          "Mehrsprachig"
+        ],
+        "fr": [
+          "Format .dvp",
+          "Compression max",
+          "Éditeur de couverture",
+          "Détection auto .exe",
+          "Manifeste",
+          "Multi-langue"
+        ],
+        "pt": [
+          "Formato .dvp",
+          "Compressão máx.",
+          "Editor de capas",
+          "Detecção auto .exe",
+          "Manifesto",
+          "Multi-idioma"
+        ],
+        "zh": [
+          ".dvp 格式",
+          "最大压缩",
+          "封面编辑器",
+          "自动检测 .exe",
+          "清单",
+          "多语言"
+        ]
+      },
+      "download": {
+        "en": "⬇ Download .zip",
+        "ru": "⬇ Скачать .zip",
+        "uk": "⬇ Завантажити .zip",
+        "es": "⬇ Descargar .zip",
+        "de": "⬇ .zip herunterladen",
+        "fr": "⬇ Télécharger .zip",
+        "pt": "⬇ Baixar .zip",
+        "zh": "⬇ 下载 .zip"
+      }
     }
   ],
-
   "games": [
     {
       "id": "returnme",

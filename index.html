@@ -4,1478 +4,921 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MADE BY ONE — STUDIO</title>
+<meta name="description" content="Made by One — a small studio building clean, focused developer tools. Devers-Workmods, Devers-Launcher, Devers-Packer.">
 <link rel="icon" type="image/x-icon" href="./data/website.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  * {
-    margin: 0; padding: 0; box-sizing: border-box;
-    font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    letter-spacing: 0.5px;
-  }
+  /* ============================================================
+     DESIGN TOKENS — terminal-native, monospace-first
+     ============================================================ */
   :root {
-    --bg: #05070c;
-    --bg-2: #0a0e17;
-    --glass: rgba(10, 14, 22, 0.55);
-    --glass-hover: rgba(255, 255, 255, 0.06);
-    --border: rgba(255, 255, 255, 0.14);
-    --border-strong: rgba(255, 255, 255, 0.55);
+    --bg:          #0a0a0b;
+    --panel:       #0e0d0f;
+    --panel-2:     #111013;
 
-    --text: #f4f7ff;
-    --muted: rgba(215, 226, 245, 0.55);
-    --muted-2: rgba(215, 226, 245, 0.32);
+    --fg:          #fdfcfc;
+    --fg-dim:      #c9c5c7;
+    --muted:       #858080;
+    --muted-2:     #5f5b5e;
 
-    --accent: #cfe0ff;
-    --accent-2: #ffffff;
-    --accent-soft: rgba(180, 210, 255, 0.45);
-    --accent-glow: rgba(170, 205, 255, 0.14);
-    --accent-line: rgba(190, 215, 255, 0.55);
+    --line:        #262326;
+    --line-soft:   #1b191c;
+    --line-strong: #3a3438;
 
-    --grid-size: 44px;
-    --grid-speed: 28s;
-    --mono: 'JetBrains Mono', ui-monospace, monospace;
-  }
-  html, body {
-    height: 100%; background: var(--bg); color: var(--text);
-    overflow: hidden;
-  }
-  @media (hover: hover) {
-    html, body, a, button, .menu-item, .app-card, .dl-btn, .toggle-btn,
-    .lang-btn, .lang-menu-item { cursor: none; }
-  }
-  a { color: inherit; text-decoration: none; }
-  button { font-family: inherit; }
+    --accent:        #a78bfa;
+    --accent-strong: #c9b8ff;
+    --accent-line:   #4a3b7a;
+    --accent-bg:     rgba(167, 139, 250, .07);
+    --accent-bg-2:   rgba(167, 139, 250, .13);
 
-  #custom-cursor {
-    position: fixed; top: 0; left: 0;
-    width: 22px; height: 22px;
-    border: 1.5px solid rgba(220, 235, 255, 0.95); border-radius: 50%;
-    pointer-events: none; z-index: 10000;
-    transition: transform .1s ease, background-color .3s, width .2s, height .2s, border-color .3s;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 18px rgba(180, 210, 255, 0.45), inset 0 0 10px rgba(255,255,255,0.15);
-    mix-blend-mode: screen;
-    display: none;
-  }
-  #custom-cursor.hovering { background-color: rgba(200, 220, 255, 0.18); width: 32px; height: 32px; border-color: #fff; }
-  #custom-cursor.clicking  { width: 12px; height: 12px; background-color: rgba(255,255,255,0.9); }
+    --mono: 'Berkeley Mono', 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
 
-  .bg-grid {
-    position: fixed; inset: 0; pointer-events: none; z-index: 0;
-    background-color: var(--bg);
-    background-image:
-      linear-gradient(rgba(150, 185, 235, 0.055) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(150, 185, 235, 0.055) 1px, transparent 1px),
-      linear-gradient(rgba(150, 185, 235, 0.11) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(150, 185, 235, 0.11) 1px, transparent 1px);
-    background-size:
-      var(--grid-size) var(--grid-size),
-      var(--grid-size) var(--grid-size),
-      calc(var(--grid-size) * 5) calc(var(--grid-size) * 5),
-      calc(var(--grid-size) * 5) calc(var(--grid-size) * 5);
-    background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
-    animation: gridMove var(--grid-speed) linear infinite;
-    will-change: background-position;
-    mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 40%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 40%, transparent 100%);
-  }
-  @keyframes gridMove {
-    from { background-position: 0 0, 0 0, 0 0, 0 0; }
-    to   { background-position: var(--grid-size) var(--grid-size),
-                              var(--grid-size) var(--grid-size),
-                              calc(var(--grid-size) * 5) calc(var(--grid-size) * 5),
-                              calc(var(--grid-size) * 5) calc(var(--grid-size) * 5); }
-  }
-  .bg-grid::after {
-    content: '';
-    position: absolute; inset: 0;
-    background:
-      radial-gradient(60% 45% at 50% 15%, rgba(120, 160, 220, 0.10), transparent 70%),
-      radial-gradient(40% 30% at 85% 85%, rgba(90, 130, 200, 0.08), transparent 70%),
-      radial-gradient(50% 35% at 10% 90%, rgba(200, 220, 255, 0.05), transparent 70%);
-    pointer-events: none;
+    /* 8px module */
+    --s1: 8px;  --s2: 16px; --s3: 24px; --s4: 32px;
+    --s5: 40px; --s6: 48px; --s7: 56px; --s8: 64px;
+    --s9: 72px; --s10: 80px; --s11: 88px; --s12: 96px;
+
+    --measure: 1120px;
   }
 
-  .vignette {
-    position: fixed; inset: 0; pointer-events: none; z-index: 1;
-    background: radial-gradient(circle at 50% 45%, transparent 30%, rgba(2,4,8,0.85) 75%, rgba(0,0,0,0.98) 100%);
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  .app-container {
-    position: relative; z-index: 10;
-    display: flex; width: 100vw; height: 100vh;
-    background: rgba(4,6,11,.25);
-    backdrop-filter: blur(2px);
-  }
+  html { background: var(--bg); -webkit-text-size-adjust: 100%; }
 
-  .sidebar-wrap {
-    position: relative;
-    width: 280px;
-    flex-shrink: 0;
-    background: linear-gradient(180deg, rgba(8,11,18,.85), rgba(4,6,11,.75));
-    border-right: 1px solid rgba(180, 205, 240, .12);
-    display: flex;
-    flex-direction: column;
-    transition: width .4s ease;
-    z-index: 20;
-    overflow: hidden;
-    box-shadow: 1px 0 0 rgba(255,255,255,.03) inset, 20px 0 60px -40px rgba(150,190,255,.25);
-  }
-  .app-container.collapsed .sidebar-wrap { width: 60px; }
-
-  .sidebar {
-    display: flex; flex-direction: column;
-    flex-shrink: 0;
-    padding: 20px 20px 0 20px;
-    min-width: 0;
-  }
-  .app-container.collapsed .sidebar { padding: 20px 10px 0 10px; }
-
-  .app-container.collapsed .menu-item > span:not(.menu-icon),
-  .app-container.collapsed .sidebar-title,
-  .app-container.collapsed .sidebar-footer,
-  .app-container.collapsed .lang-label,
-  .app-container.collapsed .lang-chevron { display: none; }
-
-  .app-container.collapsed #active-pill { opacity: 0 !important; }
-
-  .app-container.collapsed .menu-item {
-    width: 40px;
-    height: 40px;
-    margin: 3px auto;
-    padding: 0;
-    border-radius: 10px;
-    justify-content: center;
-    align-items: center;
-    transition: background-color .2s ease, color .3s ease, box-shadow .3s ease;
-  }
-  .app-container.collapsed .menu-item:hover {
-    background: rgba(180, 210, 255, .08);
-  }
-  .app-container.collapsed .menu-item.active {
-    background: linear-gradient(180deg, #ffffff 0%, #cfdffd 45%, #8fb4ea 100%);
-    color: #0a1220;
-    box-shadow:
-      0 0 0 1px rgba(255,255,255,.6) inset,
-      0 0 18px var(--accent-soft),
-      0 6px 16px -8px rgba(0,0,0,.9);
-  }
-  .app-container.collapsed .menu-item.active:hover {
-    background: linear-gradient(180deg, #ffffff 0%, #dbe7ff 45%, #9dbfee 100%);
-  }
-  .app-container.collapsed .menu-item.active .menu-icon img {
-    filter: brightness(0) opacity(1);
-  }
-  .app-container.collapsed .lang-btn { justify-content: center; padding: 8px; }
-
-  .sidebar-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 30px;
-    border-bottom: 1px solid rgba(200, 220, 255, .12);
-    padding-bottom: 15px;
-  }
-  .sidebar-title {
-    font-size: 15px; font-weight: 300;
-    text-transform: uppercase; letter-spacing: 2px;
-    color: #e8efff;
-    text-shadow: 0 0 14px rgba(180, 210, 255, .35), 0 1px 0 rgba(255,255,255,.15);
-  }
-  .toggle-btn {
-    width: 30px; height: 30px;
-    background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
-    border: 1px solid rgba(200, 220, 255, .22);
-    color: #eaf1ff; font-size: 16px;
-    display: flex; justify-content: center; align-items: center;
-    border-radius: 8px;
-    transition: transform .4s ease, background-color .3s, border-color .3s, color .3s, box-shadow .3s;
-  }
-  .toggle-btn:hover {
-    background: linear-gradient(180deg, #ffffff, #cfdffd);
-    color: #0a1220;
-    border-color: #fff;
-    box-shadow: 0 0 18px var(--accent-soft);
-  }
-  .app-container.collapsed .toggle-btn { transform: rotate(180deg); }
-
-  .menu-list {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    flex-shrink: 0;
-    padding: 0 20px;
-    min-width: 0;
-  }
-  .app-container.collapsed .menu-list { padding: 0 10px; }
-
-  #active-pill {
-    position: absolute;
-    left: 20px;
-    right: 20px;
-    height: 46px;
-    background:
-      linear-gradient(180deg, #ffffff 0%, #dfe9ff 40%, #a9c6f2 100%);
-    border-radius: 10px;
-    transition: top .4s cubic-bezier(.4,0,.2,1), opacity .3s;
-    box-shadow:
-      0 0 0 1px rgba(255,255,255,.7) inset,
-      0 -1px 0 rgba(255,255,255,.6) inset,
-      0 1px 0 rgba(120,150,200,.4) inset,
-      0 0 24px var(--accent-soft),
-      0 10px 24px -12px rgba(0,0,0,.9);
-    z-index: 1;
-  }
-  #active-pill::after {
-    content: '';
-    position: absolute; inset: 1px;
-    border-radius: 9px;
-    background: linear-gradient(180deg, rgba(255,255,255,.65), transparent 55%);
-    pointer-events: none;
-  }
-  .app-container.collapsed #active-pill { left: 10px; right: 10px; }
-
-  .menu-item {
-    position: relative; z-index: 2;
-    display: flex; align-items: center; gap: 12px;
-    padding: 12px; color: rgba(215, 226, 245, .55);
-    text-transform: uppercase; font-size: 13px; letter-spacing: 1.2px;
-    height: 46px; transition: color .3s ease, text-shadow .3s ease;
-  }
-  .menu-item:hover { color: #eaf1ff; }
-  .menu-item.active {
-    color: #0a1220;
-    font-weight: 600;
-    text-shadow: 0 1px 0 rgba(255,255,255,.5);
-  }
-
-  .menu-icon {
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    line-height: 1;
-    color: currentColor;
-    transition: color .3s ease, filter .3s ease;
-  }
-  .menu-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-    filter: brightness(0) invert(1) opacity(.55);
-    transition: filter .3s ease, drop-shadow .3s ease;
-  }
-  .menu-item:hover .menu-icon img {
-    filter: brightness(0) invert(1) opacity(.9) drop-shadow(0 0 8px rgba(180,210,255,.6));
-  }
-  .menu-item.active .menu-icon img {
-    filter: brightness(0) opacity(1);
-  }
-
-  .sidebar-bottom {
-    margin-top: auto;
-    padding: 0 20px 20px 20px;
-    flex-shrink: 0;
-  }
-  .app-container.collapsed .sidebar-bottom { padding: 0 10px 20px 10px; }
-
-  .lang-wrapper {
-    padding-top: 16px;
-    border-top: 1px solid rgba(200, 220, 255, .12);
-    position: relative;
-  }
-  .lang-btn {
-    width: 100%;
-    display: flex; align-items: center; gap: 12px;
-    padding: 10px 12px;
-    background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
-    border: 1px solid rgba(200, 220, 255, .18);
-    border-radius: 10px;
-    color: rgba(230, 238, 255, .78);
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    transition: .2s;
-  }
-  .lang-btn:hover {
-    background: linear-gradient(180deg, rgba(200,220,255,.10), rgba(200,220,255,.03));
-    border-color: var(--accent-line);
-    color: #fff;
-    box-shadow: 0 0 18px -6px var(--accent-soft);
-  }
-  .lang-btn .flag { font-size: 14px; flex-shrink: 0; }
-  .lang-btn .lang-label { flex: 1; text-align: left; }
-  .lang-btn .lang-chevron {
-    font-size: 9px; transition: transform .3s;
-  }
-  .lang-btn.open .lang-chevron { transform: rotate(180deg); }
-
-  .lang-menu {
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 0;
-    min-width: 100%;
-    width: max-content;
-    background: linear-gradient(180deg, rgba(14,18,28,.98), rgba(8,11,18,.98));
-    border: 1px solid rgba(200, 220, 255, .18);
-    border-radius: 12px;
-    padding: 6px;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    display: none;
-    flex-direction: column;
-    gap: 2px;
-    max-height: 260px;
-    overflow-y: auto;
-    z-index: 100;
-    box-shadow: 0 24px 60px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.04) inset;
-  }
-  .lang-menu.open { display: flex; }
-
-  .app-container.collapsed .lang-menu {
-    bottom: 0;
-    left: calc(100% + 8px);
-    top: auto;
-  }
-
-  .lang-menu-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 9px 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    color: rgba(230, 238, 255, .72);
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    background: transparent;
-    border: none;
-    width: 100%;
-    text-align: left;
-    transition: .15s;
-    white-space: nowrap;
-  }
-  .lang-menu-item:hover { background: rgba(180, 210, 255, .08); color: #fff; }
-  .lang-menu-item.active {
-    background: linear-gradient(180deg, #ffffff, #cfdffd);
-    color: #0a1220;
-    font-weight: 600;
-  }
-  .lang-menu-item .flag { font-size: 14px; }
-
-  .lang-menu {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(200,220,255,.18) transparent;
-  }
-  .lang-menu::-webkit-scrollbar { width: 6px; }
-  .lang-menu::-webkit-scrollbar-track { background: transparent; }
-  .lang-menu::-webkit-scrollbar-thumb {
-    background: rgba(200,220,255,.18);
-    border-radius: 999px;
-  }
-  .lang-menu::-webkit-scrollbar-thumb:hover {
-    background: rgba(200,220,255,.4);
-  }
-
-  .sidebar-footer {
-    margin-top: 10px;
-    font-size: 11px; color: var(--muted-2);
-    letter-spacing: 1.5px;
-    border-top: 1px solid rgba(200, 220, 255, .1);
-    padding-top: 10px;
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--fg);
     font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.7;
+    font-variant-ligatures: none;
+    -webkit-font-smoothing: antialiased;
   }
 
-  .main-content {
-    flex-grow: 1; padding: 40px;
-    overflow-y: auto;
-    position: relative;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(200,220,255,.15) transparent;
-  }
-  .main-content::-webkit-scrollbar { width: 8px; }
-  .main-content::-webkit-scrollbar-track { background: transparent; }
-  .main-content::-webkit-scrollbar-thumb {
-    background: rgba(200,220,255,.12);
-    border-radius: 999px;
-    border: 2px solid transparent;
-    background-clip: padding-box;
-  }
-  .main-content:hover::-webkit-scrollbar-thumb {
-    background: rgba(200,220,255,.28);
-    background-clip: padding-box;
-  }
-  .main-content::-webkit-scrollbar-thumb:hover {
-    background: rgba(200,220,255,.6);
-    background-clip: padding-box;
+  a { color: inherit; text-decoration: none; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  button { background: none; border: 0; cursor: pointer; }
+  img { display: block; max-width: 100%; }
+
+  ::selection { background: var(--accent); color: #0a0a0b; }
+
+  :focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: 4px;
   }
 
-  .content-wrapper { max-width: 1000px; margin: 0 auto; }
-
-  .page-header {
-    margin-bottom: 40px;
-    border-bottom: 1px solid var(--border-strong);
-    padding-bottom: 20px;
-    position: relative;
-  }
-  .page-header::after {
-    content: '';
-    position: absolute; left: 0; bottom: -1px;
-    width: 120px; height: 1px;
-    background: linear-gradient(90deg, #fff, transparent);
-    box-shadow: 0 0 14px rgba(200,220,255,.7);
-  }
-  h1 {
-    font-size: 48px; font-weight: 300;
-    text-transform: uppercase; letter-spacing: -0.5px;
-    line-height: 1.05;
-    font-family: 'Space Grotesk', sans-serif;
-    color: #f6f9ff;
-    text-shadow: 0 0 30px rgba(180, 210, 255, .18), 0 1px 0 rgba(255,255,255,.15);
-  }
-  .subtitle {
-    font-size: 13px; color: var(--muted);
-    margin-top: 10px; text-transform: uppercase; letter-spacing: 3px;
-  }
+  * { scrollbar-width: thin; scrollbar-color: #2a2629 transparent; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #2a2629; border: 2px solid var(--bg); }
 
   .hidden { display: none !important; }
 
-  .page:not(.hidden) > * {
-    animation: fadeUp .6s cubic-bezier(.2,.7,.2,1) backwards;
-  }
-  .page:not(.hidden) > *:nth-child(1) { animation-delay: .04s; }
-  .page:not(.hidden) > *:nth-child(2) { animation-delay: .12s; }
-  .page:not(.hidden) > *:nth-child(3) { animation-delay: .20s; }
-  .page:not(.hidden) > *:nth-child(4) { animation-delay: .28s; }
-  .page:not(.hidden) > *:nth-child(5) { animation-delay: .36s; }
-  .page:not(.hidden) > *:nth-child(6) { animation-delay: .44s; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
+  /* ============================================================
+     HEADER
+     ============================================================ */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
   }
 
-  .hero { padding: 40px 0; }
+  .header-inner {
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: 0 var(--s4);
+    height: 64px;
+    display: flex;
+    align-items: center;
+    gap: var(--s5);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s1);
+    font-size: 13px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .brand-mark { color: var(--accent); font-size: 15px; line-height: 1; }
+  .brand-sub {
+    color: var(--muted-2);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: none;
+  }
+  .brand:hover .brand-mark { color: var(--accent-strong); }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: var(--s3);
+  }
+
+  .nav-item {
+    display: inline-flex;
+    align-items: center;
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: .04em;
+    padding: var(--s1) 0;
+    transition: color .15s ease;
+  }
+  .nav-item::before { content: "[ "; }
+  .nav-item::after  { content: " ]"; }
+  .nav-item:hover   { color: var(--fg); }
+  .nav-item.active  { color: var(--accent-strong); }
+
+  .header-tools {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+  }
+
+  .lang { position: relative; }
+
+  .lang-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s1);
+    padding: 6px var(--s1);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: .06em;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .lang-btn:hover { color: var(--fg); border-color: var(--line); }
+  .lang-code { color: var(--accent); }
+  .lang-chevron { color: var(--muted-2); font-size: 10px; line-height: 1; }
+
+  .lang-menu {
+    position: absolute;
+    top: calc(100% + var(--s1));
+    right: 0;
+    z-index: 60;
+    min-width: 208px;
+    padding: var(--s1) 0;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    display: none;
+  }
+  .lang-menu.open { display: block; }
+
+  .lang-item {
+    display: flex;
+    align-items: center;
+    gap: var(--s1);
+    width: 100%;
+    padding: var(--s1) var(--s2);
+    text-align: left;
+    color: var(--muted);
+    font-size: 13px;
+    transition: color .15s ease, background-color .15s ease;
+  }
+  .lang-item:hover { color: var(--fg); background: var(--panel-2); }
+  .lang-item.active { color: var(--accent-strong); }
+  .lang-item .flag { color: var(--accent); font-size: 11px; letter-spacing: .06em; }
+
+  /* ============================================================
+     LAYOUT
+     ============================================================ */
+  main {
+    width: 100%;
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: 0 var(--s4);
+  }
+
+  .page { padding-top: var(--s12); }
+  .page:not(.hidden) { animation: page-in .2s ease both; }
+
+  @keyframes page-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .eyebrow .br { color: var(--accent); }
+  .eyebrow .sep { color: var(--muted-2); }
+  .eyebrow .val { color: var(--fg-dim); }
+
   .hero-title {
-    font-size: 72px; font-weight: 300;
-    text-transform: uppercase; letter-spacing: -1.5px;
-    line-height: 1;
-    font-family: 'Space Grotesk', sans-serif;
-    color: #f4f8ff;
-    text-shadow:
-      0 0 40px rgba(180, 210, 255, .22),
-      0 1px 0 rgba(255,255,255,.25),
-      0 -1px 0 rgba(120,160,220,.25);
-  }
-  .hero-title .accent {
-    color: #ffffff;
-    text-shadow:
-      0 0 20px rgba(210, 228, 255, .9),
-      0 0 50px rgba(160, 200, 255, .55);
-  }
-  .hero-title .hero-name {
+    margin-top: var(--s3);
+    font-size: clamp(40px, 7vw, 72px);
     font-weight: 500;
-    background: linear-gradient(180deg, #ffffff 0%, #dbe7ff 45%, #90b2e6 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 2px 20px rgba(160, 200, 255, .3));
-  }
-  .hero-sub {
-    font-size: 15px; color: var(--muted);
-    margin-top: 22px; text-transform: uppercase; letter-spacing: 4px;
-    max-width: 620px;
-  }
-  .hero-actions {
-    margin-top: 40px;
-    display: flex; gap: 14px; flex-wrap: wrap;
-  }
-  
-	  /* Иконки внутри главных кнопок */
-	.btn-icon {
-	  width: 18px;
-	  height: 18px;
-	  object-fit: contain;
-	  flex-shrink: 0;
-	  display: inline-block;
-	  vertical-align: middle;
-	  filter: brightness(0);                 /* тёмная иконка на светлой btn-retro */
-	  transition: filter .25s ease;
-	}
-	.btn-ghost .btn-icon {
-	  filter: brightness(0) invert(1) opacity(.85);  /* белая иконка на прозрачной btn-ghost */
-	}
-	.btn-ghost:hover .btn-icon {
-	  filter: brightness(0) invert(1) opacity(1);
-	}
-  
-  .btn-retro {
-    position: relative;
-    background: linear-gradient(180deg, #ffffff 0%, #dfe9ff 45%, #a9c6f2 100%);
-    color: #0a1220; border: none;
-    padding: 14px 28px; font-size: 13px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 1.4px;
-    transition: .25s; border-radius: 12px;
-    box-shadow:
-      0 0 0 1px rgba(255,255,255,.6) inset,
-      0 1px 0 rgba(255,255,255,.7) inset,
-      0 12px 28px -14px rgba(0,0,0,.95),
-      0 0 22px -8px var(--accent-soft);
-    display: inline-flex; align-items: center; gap: 10px;
-  }
-  .btn-retro:hover {
-    background: linear-gradient(180deg, #ffffff 0%, #eaf1ff 45%, #b7d0f7 100%);
-    transform: translateY(-2px);
-    box-shadow:
-      0 0 0 1px rgba(255,255,255,.85) inset,
-      0 1px 0 rgba(255,255,255,.9) inset,
-      0 18px 34px -14px rgba(0,0,0,.95),
-      0 0 36px -6px var(--accent-soft);
-  }
-  .btn-ghost {
-    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01));
-    color: #eaf1ff;
-    border: 1px solid rgba(200, 220, 255, .28);
-    padding: 14px 28px; font-size: 13px; font-weight: 500;
-    text-transform: uppercase; letter-spacing: 1.4px;
-    transition: .25s; border-radius: 12px;
-    display: inline-flex; align-items: center; gap: 10px;
-  }
-  .btn-ghost:hover {
-    background: linear-gradient(180deg, rgba(200,220,255,.12), rgba(200,220,255,.04));
-    border-color: #ffffff;
-    color: #fff;
-    box-shadow: 0 0 24px -8px var(--accent-soft);
+    line-height: 1.02;
+    letter-spacing: -.03em;
   }
 
-  .stat-row {
-    margin-top: 60px;
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  .caret {
+    display: inline-block;
+    width: .5em;
+    height: .76em;
+    margin-left: .14em;
+    background: var(--accent);
+    vertical-align: baseline;
+    animation: blink 1.1s steps(2, start) infinite;
   }
-  .stat {
-    background: linear-gradient(180deg, rgba(14,18,28,.65), rgba(8,11,18,.55));
-    border: 1px solid rgba(200, 220, 255, .12);
-    border-radius: 14px;
-    padding: 24px;
-    backdrop-filter: blur(10px);
-    transition: border-color .3s, background .3s, transform .3s, box-shadow .3s;
-    position: relative;
-    overflow: hidden;
+  .caret-sm { width: .55em; height: .8em; vertical-align: -1px; }
+
+  @keyframes blink {
+    0%, 49%   { opacity: 1; }
+    50%, 100% { opacity: 0; }
   }
-  .stat::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(255,255,255,.06), transparent 50%);
-    pointer-events: none;
+
+  .hero-sub {
+    margin-top: var(--s3);
+    max-width: 62ch;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.8;
   }
-  .stat:hover {
-    border-color: rgba(200, 220, 255, .45);
-    transform: translateY(-2px);
-    box-shadow: 0 18px 40px -22px rgba(0,0,0,.95), 0 0 24px -10px var(--accent-soft);
+
+  .hero-actions {
+    margin-top: var(--s5);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s1);
+  }
+
+  /* ============================================================
+     BUTTONS — 4px radius only
+     ============================================================ */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 40px;
+    padding: 0 var(--s2);
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--fg-dim);
+    font-size: 13px;
+    letter-spacing: .02em;
+    white-space: nowrap;
+    transition: color .15s ease, border-color .15s ease, background-color .15s ease;
+  }
+  .btn::before { content: "["; color: var(--muted-2); }
+  .btn::after  { content: "]"; color: var(--muted-2); }
+  .btn:hover { color: var(--fg); border-color: var(--muted); background: var(--panel-2); }
+  .btn:hover::before, .btn:hover::after { color: var(--muted); }
+
+  .btn-primary {
+    color: var(--accent-strong);
+    border-color: var(--accent-line);
+    background: var(--accent-bg);
+  }
+  .btn-primary::before, .btn-primary::after { color: var(--accent-line); }
+  .btn-primary:hover {
+    color: var(--fg);
+    border-color: var(--accent);
+    background: var(--accent-bg-2);
+  }
+  .btn-primary:hover::before, .btn-primary:hover::after { color: var(--accent); }
+
+  .btn-quiet { color: var(--muted); border-color: var(--line); }
+  .btn-quiet:hover { color: var(--fg-dim); }
+
+  .btn-disabled {
+    color: var(--muted-2);
+    border-color: var(--line-soft);
+    cursor: not-allowed;
+  }
+  .btn-disabled:hover { color: var(--muted-2); border-color: var(--line-soft); background: transparent; }
+  .btn-disabled::before, .btn-disabled::after { color: var(--muted-2); }
+
+  /* ============================================================
+     TERMINAL BLOCK — the command line
+     ============================================================ */
+  .terminal {
+    margin-top: var(--s12);
+    border: 1px solid var(--line);
+    background: var(--panel);
+  }
+
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s2);
+    padding: var(--s1) var(--s2);
+    border-bottom: 1px solid var(--line);
+    background: var(--panel-2);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+  }
+  .terminal-path { color: var(--muted); letter-spacing: .04em; text-transform: none; }
+
+  .terminal-body {
+    padding: var(--s3);
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--fg-dim);
+    white-space: pre;
+    tab-size: 2;
+  }
+  .terminal-body code { font-family: inherit; }
+
+  .t-prompt { color: var(--accent); }
+  .t-cmd    { color: var(--fg); }
+  .t-arg    { color: var(--muted); }
+  .t-out    { color: var(--muted); }
+
+  /* ============================================================
+     STATS
+     ============================================================ */
+  .stats {
+    margin-top: var(--s12);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border: 1px solid var(--line);
+  }
+
+  .stat { padding: var(--s3); border-left: 1px solid var(--line); }
+  .stat:first-child { border-left: 0; }
+
+  .stat-index {
+    font-size: 11px;
+    letter-spacing: .08em;
+    color: var(--accent);
   }
   .stat-value {
-    font-size: 32px; font-weight: 400; letter-spacing: -0.5px;
-    font-family: var(--mono);
-    background: linear-gradient(180deg, #ffffff 0%, #dfe9ff 50%, #a9c6f2 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 14px rgba(180, 210, 255, .35));
+    margin-top: var(--s1);
+    font-size: 28px;
+    line-height: 1.2;
+    font-weight: 500;
+    letter-spacing: -.01em;
+    color: var(--fg);
   }
   .stat-label {
-    font-size: 10px; color: var(--muted); margin-top: 8px;
-    text-transform: uppercase; letter-spacing: 3px;
-    font-family: var(--mono);
-  }
-
-  .app-card {
-    position: relative;
-    background: linear-gradient(180deg, rgba(14,18,28,.7), rgba(8,11,18,.6));
-    border: 1px solid rgba(200, 220, 255, .12);
-    border-radius: 18px;
-    padding: 32px;
-    margin-bottom: 20px;
-    transition: border-color .3s, transform .3s, background-color .3s, box-shadow .3s;
-    backdrop-filter: blur(10px);
-    overflow: hidden;
-    box-shadow: 0 1px 0 rgba(255,255,255,.05) inset, 0 30px 60px -40px rgba(0,0,0,.95);
-  }
-  .app-card::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(
-      520px circle at var(--mx, 50%) var(--my, 50%),
-      var(--accent-glow),
-      transparent 45%
-    );
-    opacity: 0;
-    transition: opacity .3s ease;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .app-card:hover {
-    border-color: rgba(200, 220, 255, .4);
-    transform: translateY(-2px);
-    box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 40px 70px -40px rgba(0,0,0,.95), 0 0 30px -14px var(--accent-soft);
-  }
-  .app-card:hover::before { opacity: 1; }
-  .app-card > * { position: relative; z-index: 1; }
-
-  .app-card-head {
-    display: flex; align-items: center; gap: 20px; margin-bottom: 20px;
-  }
-  .app-badge {
-    width: 64px; height: 64px;
-    border-radius: 14px;
-    background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.02));
-    border: 1px solid rgba(200, 220, 255, .22);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 28px;
-    flex-shrink: 0;
-    overflow: hidden;
-    transition: border-color .3s, box-shadow .3s, background .3s;
-    box-shadow: 0 1px 0 rgba(255,255,255,.15) inset, 0 8px 20px -14px rgba(0,0,0,.95);
-  }
-  .app-card:hover .app-badge {
-    border-color: rgba(220, 235, 255, .65);
-    background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.03));
-    box-shadow: 0 1px 0 rgba(255,255,255,.25) inset, 0 0 26px -4px var(--accent-soft);
-  }
-  .app-badge img {
-    width: 60%;
-    height: 60%;
-    object-fit: contain;
-    filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(180,210,255,.4));
-  }
-  .app-meta h2 {
-    font-size: 24px; font-weight: 400;
+    margin-top: var(--s1);
+    font-size: 11px;
+    letter-spacing: .12em;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-family: 'Space Grotesk', sans-serif;
-    color: #f2f6ff;
-  }
-  .app-meta .app-version {
-    font-size: 11px; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 2px; margin-top: 6px;
-    font-family: var(--mono);
-  }
-  .app-desc {
-    font-size: 14px; color: rgba(225, 233, 250, .72);
-    line-height: 1.8;
-    margin-bottom: 24px;
-  }
-  .app-features {
-    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;
-  }
-  .feature {
-    font-size: 11px; color: rgba(225, 233, 250, .68);
-    border: 1px solid rgba(200, 220, 255, .16);
-    background: linear-gradient(180deg, rgba(255,255,255,.03), transparent);
-    border-radius: 999px;
-    padding: 5px 12px;
-    text-transform: uppercase; letter-spacing: 1.2px;
-    font-family: var(--mono);
-    transition: border-color .25s, color .25s, background .25s, box-shadow .25s;
-  }
-  .feature:hover {
-    border-color: rgba(220, 235, 255, .65);
-    color: #ffffff;
-    background: rgba(200, 220, 255, .08);
-    box-shadow: 0 0 20px -8px var(--accent-soft);
-  }
-  .app-actions {
-    display: flex; gap: 12px; flex-wrap: wrap;
-    padding-top: 20px;
-    border-top: 1px solid rgba(200, 220, 255, .08);
+    color: var(--muted);
   }
 
-  .site-footer {
-    margin-top: 60px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(200, 220, 255, .1);
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 11px; color: var(--muted-2);
-    text-transform: uppercase; letter-spacing: 2px;
-    font-family: var(--mono);
+  /* ============================================================
+     PAGE HEADING
+     ============================================================ */
+  .page-head {
+    padding-top: var(--s12);
+    padding-bottom: var(--s4);
+    border-bottom: 1px solid var(--line);
   }
-  .site-footer a { color: var(--muted); transition: color .2s, text-shadow .2s; }
-  .site-footer a:hover { color: #ffffff; text-shadow: 0 0 12px rgba(200,220,255,.7); }
 
-  .footer-links {
+  .page-title {
+    margin-top: var(--s2);
+    font-size: clamp(28px, 4.5vw, 44px);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -.02em;
+  }
+
+  .page-sub {
+    margin-top: var(--s2);
+    max-width: 72ch;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* ============================================================
+     CARDS — 0 radius, 1px borders, no shadows
+     ============================================================ */
+  .stack {
+    margin-top: var(--s5);
     display: flex;
-    gap: 16px;
-    align-items: center;
+    flex-direction: column;
+    gap: var(--s2);
+  }
+
+  .card {
+    border: 1px solid var(--line);
+    border-radius: 0;
+    background: var(--panel);
+    padding: var(--s4);
+    transition: border-color .15s ease;
+  }
+  .card:hover { border-color: var(--line-strong); }
+
+  .card-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s2);
     flex-wrap: wrap;
   }
 
-  .game-card {
-    position: relative;
-    background: linear-gradient(180deg, rgba(14,18,28,.7), rgba(8,11,18,.6));
-    border: 1px solid rgba(200, 220, 255, .12);
-    border-radius: 18px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    transition: border-color .3s, transform .3s, box-shadow .3s;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 1px 0 rgba(255,255,255,.05) inset, 0 30px 60px -40px rgba(0,0,0,.95);
+  .index {
+    font-size: 12px;
+    letter-spacing: .04em;
+    color: var(--accent);
   }
-  .game-card:hover {
-    border-color: rgba(200, 220, 255, .4);
-    transform: translateY(-2px);
-    box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 40px 70px -40px rgba(0,0,0,.95), 0 0 30px -14px var(--accent-soft);
+
+  .card-title {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -.01em;
   }
+
+  .card-meta {
+    margin-left: auto;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+  }
+
+  .card-desc {
+    margin-top: var(--s2);
+    max-width: 88ch;
+    color: var(--fg-dim);
+    line-height: 1.85;
+  }
+
+  .feature-list {
+    margin-top: var(--s3);
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s1) var(--s3);
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .feature-list li { display: flex; gap: var(--s1); }
+  .feature-list .plus { color: var(--accent); flex: 0 0 auto; }
+
+  .card-actions {
+    margin-top: var(--s4);
+    padding-top: var(--s3);
+    border-top: 1px solid var(--line-soft);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s1);
+  }
+
+  /* ============================================================
+     GAMES
+     ============================================================ */
   .game-cover {
     position: relative;
-    height: 320px;
-    background:
-      radial-gradient(70% 90% at 50% 0%, rgba(120, 160, 220, .22), transparent 70%),
-      linear-gradient(160deg, #0a0f1a 0%, #131a29 50%, #070a12 100%);
+    height: 280px;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel-2);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
   }
-  .game-cover::before {
-    content: '';
+
+  .cover-img {
     position: absolute;
     inset: 0;
-    background:
-      repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 20px,
-        rgba(200, 220, 255,.03) 20px,
-        rgba(200, 220, 255,.03) 40px
-      );
-    z-index: 0;
-  }
-  .game-cover-img {
-    position: relative;
     z-index: 1;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
+    filter: grayscale(1) contrast(1.02);
+    opacity: .88;
+    transition: filter .25s ease, opacity .25s ease;
   }
-  .game-cover-placeholder {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    padding: 40px;
-  }
-  .game-cover-placeholder .game-icon {
-    font-size: 72px;
-    margin-bottom: 16px;
-    display: block;
-    filter: drop-shadow(0 0 30px rgba(180,210,255,.55));
-  }
-  .game-cover-placeholder .game-cover-title {
-    font-size: 36px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 6px;
-    background: linear-gradient(180deg, #ffffff 0%, #dbe7ff 45%, #90b2e6 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 2px 24px rgba(160, 200, 255, .35));
-  }
-  .game-status-badge {
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    z-index: 2;
-    background: rgba(6,10,18,.8);
-    border: 1px solid rgba(220, 235, 255, .6);
-    color: #eaf1ff;
-    padding: 6px 14px;
-    border-radius: 999px;
+  .card:hover .cover-img { filter: grayscale(.15); opacity: 1; }
+
+  .cover-fallback {
     font-size: 11px;
+    letter-spacing: .14em;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    font-family: var(--mono);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 22px -8px var(--accent-soft);
+    color: var(--muted-2);
   }
-  .game-status-badge .pulse-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #ffffff;
-    box-shadow: 0 0 12px rgba(200,220,255,.9);
-    animation: pulse 1.5s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--accent-soft); }
-    50% { opacity: .5; box-shadow: 0 0 0 6px transparent; }
-  }
-  .game-body {
-    padding: 28px 32px;
-  }
-  .game-body h2 {
-    font-size: 28px;
-    font-weight: 400;
+
+  .status {
+    position: absolute;
+    top: var(--s2);
+    left: var(--s2);
+    z-index: 2;
+    padding: 4px var(--s1);
+    background: var(--bg);
+    border: 1px solid var(--line-strong);
+    color: var(--accent);
+    font-size: 11px;
+    letter-spacing: .1em;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-family: 'Space Grotesk', sans-serif;
-    margin-bottom: 6px;
-    color: #f2f6ff;
   }
-  .game-meta-line {
+
+  .game-body { padding: var(--s4); }
+
+  .game-meta {
+    margin-top: var(--s1);
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
-    margin-bottom: 16px;
-    font-size: 11px;
-    color: var(--muted);
+    gap: var(--s1) var(--s3);
+    font-size: 12px;
+    color: var(--fg-dim);
+  }
+  .game-meta .meta-key {
+    color: var(--muted-2);
+    letter-spacing: .1em;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    font-family: var(--mono);
+    font-size: 11px;
+    margin-right: 6px;
   }
-  .game-meta-line span {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+
   .game-desc {
-    font-size: 14px;
-    color: rgba(225, 233, 250, .72);
-    line-height: 1.8;
-    margin-bottom: 24px;
+    margin-top: var(--s2);
+    max-width: 82ch;
+    color: var(--fg-dim);
+    line-height: 1.85;
   }
-  .game-progress {
-    margin-bottom: 24px;
-  }
-  .game-progress-label {
+
+  .progress { margin-top: var(--s3); }
+
+  .progress-head {
     display: flex;
     justify-content: space-between;
+    gap: var(--s2);
     font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
     color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-family: var(--mono);
-    margin-bottom: 8px;
   }
-  .game-progress-bar {
-    height: 6px;
-    background: rgba(200, 220, 255,.08);
-    border-radius: 999px;
-    overflow: hidden;
-  }
-  .game-progress-fill {
-    height: 100%;
-    width: 15%;
-    background: linear-gradient(90deg, #a9c6f2, #ffffff 50%, #a9c6f2);
-    border-radius: 999px;
-    box-shadow: 0 0 14px rgba(180,210,255,.65);
-    animation: progressPulse 3s ease-in-out infinite;
-  }
-  @keyframes progressPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: .7; }
-  }
-  .game-actions {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    padding-top: 20px;
-    border-top: 1px solid rgba(200, 220, 255,.08);
-  }
-  .btn-disabled {
-    background: rgba(200, 220, 255,.05);
-    color: var(--muted-2);
-    border: 1px solid rgba(200, 220, 255,.1);
-    padding: 14px 28px;
+  .progress-pct { color: var(--accent-strong); }
+
+  .ascii-bar {
+    display: block;
+    margin-top: var(--s1);
     font-size: 13px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 1.4px;
-    border-radius: 12px;
-    display: inline-flex;
+    line-height: 1;
+    letter-spacing: 1px;
+    white-space: pre;
+  }
+  .bar-fill { color: var(--accent); }
+  .bar-rest { color: var(--line-strong); }
+
+  /* ============================================================
+     NEWS
+     ============================================================ */
+  .news-item {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    padding: var(--s3) var(--s4);
+    transition: border-color .15s ease;
+  }
+  .news-item:hover { border-color: var(--line-strong); }
+
+  .news-meta {
+    display: flex;
     align-items: center;
-    gap: 10px;
-    cursor: not-allowed;
-    opacity: .7;
+    gap: var(--s2);
+    font-size: 11px;
+    letter-spacing: .1em;
+    color: var(--muted-2);
+  }
+  .news-date { text-transform: none; letter-spacing: .06em; }
+  .news-tag { color: var(--accent); text-transform: uppercase; }
+
+  .news-title {
+    margin-top: var(--s1);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.45;
   }
 
-  /* ===== Новости ===== */
-  .news-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .news-empty {
-    padding: 40px 0;
-    text-align: center;
-    color: var(--muted);
-    font-size: 13px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    font-family: var(--mono);
-  }
-  .news-card {
-    position: relative;
-    background: linear-gradient(180deg, rgba(14,18,28,.7), rgba(8,11,18,.6));
-    border: 1px solid rgba(200, 220, 255, .12);
-    border-radius: 16px;
-    padding: 24px 28px;
-    backdrop-filter: blur(10px);
-    transition: border-color .3s, transform .3s, box-shadow .3s;
-    box-shadow: 0 1px 0 rgba(255,255,255,.05) inset, 0 30px 60px -40px rgba(0,0,0,.95);
-  }
-  .news-card:hover {
-    border-color: rgba(200, 220, 255, .4);
-    transform: translateY(-2px);
-    box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 40px 70px -40px rgba(0,0,0,.95), 0 0 30px -14px var(--accent-soft);
-  }
-  .news-card .news-date {
-    font-size: 10px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    font-family: var(--mono);
-    margin-bottom: 8px;
-  }
-  .news-card .news-title {
-    font-size: 20px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #f2f6ff;
-    margin-bottom: 10px;
-    font-family: 'Space Grotesk', sans-serif;
-  }
-  .news-card .news-text {
-    font-size: 14px;
+  .news-text {
+    margin-top: var(--s1);
+    color: var(--fg-dim);
     line-height: 1.8;
-    color: rgba(225, 233, 250, .72);
     white-space: pre-line;
   }
-  .news-card .news-tag {
-    display: inline-block;
-    margin-top: 12px;
-    font-size: 10px;
-    border: 1px solid rgba(200, 220, 255, .2);
-    border-radius: 999px;
-    padding: 3px 10px;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    color: var(--muted);
-    font-family: var(--mono);
-  }
-  .news-card .news-link {
+
+  .news-link {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    margin-top: 14px;
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    font-family: var(--mono);
+    margin-top: var(--s2);
+    font-size: 12px;
+    color: var(--accent-strong);
+  }
+  .news-link::before { content: "[ "; color: var(--accent-line); }
+  .news-link::after  { content: " ]"; color: var(--accent-line); }
+  .news-link:hover { color: var(--fg); }
+
+  .empty {
+    border: 1px solid var(--line);
+    padding: var(--s6) var(--s4);
+    text-align: center;
     color: var(--muted);
-    border: 1px solid rgba(200, 220, 255, .2);
-    border-radius: 999px;
-    padding: 5px 12px;
-    transition: color .2s, border-color .2s, box-shadow .2s;
-  }
-  .news-card .news-link:hover {
-    color: #fff;
-    border-color: #fff;
-    box-shadow: 0 0 18px -6px var(--accent-soft);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
   }
 
-  @media (min-width: 768px) and (max-width: 1024px) {
-    h1 { font-size: 38px; }
-    .hero-title { font-size: 54px; }
-    .sidebar-wrap { width: 240px; }
+  /* ============================================================
+     ABOUT — key/value table
+     ============================================================ */
+  .kv {
+    margin-top: var(--s3);
+    border: 1px solid var(--line);
+    font-size: 13px;
+  }
+  .kv-row {
+    display: flex;
+    gap: var(--s2);
+    padding: var(--s1) var(--s2);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .kv-row:last-child { border-bottom: 0; }
+  .kv-key {
+    flex: 0 0 104px;
+    padding-top: 2px;
+    color: var(--muted-2);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  .kv-val { min-width: 0; color: var(--fg-dim); word-break: break-word; }
+  .kv-val a:hover { color: var(--accent-strong); }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  .site-footer {
+    margin-top: var(--s12);
+    padding: var(--s3) 0 var(--s6);
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--s2);
+    font-size: 12px;
+    color: var(--muted-2);
   }
 
-  @media (max-width: 767px) {
-    html, body, a, button, .menu-item, .app-card, .dl-btn, .toggle-btn,
-    .lang-btn, .lang-menu-item { cursor: auto; }
-    #custom-cursor { display: none !important; }
+  .footer-links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--s3);
+  }
+  .site-footer a { color: var(--muted); }
+  .site-footer a:hover { color: var(--accent-strong); }
 
-    html, body {
-      overflow: hidden !important;
-      height: 100dvh !important;
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 760px) {
+    .header-inner {
+      height: auto;
+      padding: var(--s2);
+      flex-wrap: wrap;
+      gap: var(--s1) var(--s2);
     }
 
-    .bg-grid {
-      mask-image: none;
-      -webkit-mask-image: none;
+    .brand { font-size: 12px; }
+    .brand-sub { display: none; }
+
+    .nav {
+      order: 3;
+      width: 100%;
+      gap: var(--s2);
+      padding-top: var(--s1);
+      border-top: 1px solid var(--line-soft);
+      overflow-x: auto;
     }
 
-    .app-container {
-      position: relative !important;
-      display: block !important;
-      width: 100vw !important;
-      height: 100dvh !important;
-      padding: 0 !important;
-    }
+    main { padding: 0 var(--s2); }
 
-    .sidebar-wrap,
-    .app-container.collapsed .sidebar-wrap {
-      background: transparent !important;
-      border-right: none !important;
-      display: contents !important;
-      width: auto !important;
-      overflow: visible !important;
-      box-shadow: none !important;
-    }
+    .page,
+    .page-head { padding-top: var(--s7); }
 
-    .sidebar,
-    .app-container.collapsed .sidebar {
-      position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      bottom: auto !important;
-      width: 100% !important;
-      max-width: 100% !important;
-      height: 56px !important;
-      min-height: 56px !important;
-      max-height: 56px !important;
-      padding: 0 14px !important;
-      margin: 0 !important;
-      display: flex !important;
-      flex-direction: row !important;
-      align-items: center !important;
-      justify-content: space-between !important;
-      border-right: none !important;
-      border-bottom: 1px solid rgba(200,220,255,.1) !important;
-      background: linear-gradient(180deg, rgba(8,11,18,.95), rgba(4,6,11,.92)) !important;
-      backdrop-filter: blur(14px) !important;
-      -webkit-backdrop-filter: blur(14px) !important;
-      overflow: visible !important;
-      z-index: 9998 !important;
-      flex: none !important;
-    }
+    .terminal,
+    .stats,
+    .site-footer { margin-top: var(--s8); }
 
-    .sidebar-header,
-    .app-container.collapsed .sidebar-header {
-      position: static !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border: none !important;
-      width: auto !important;
-      height: 100% !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: flex-start !important;
-      gap: 10px !important;
-    }
-    .sidebar-title,
-    .app-container.collapsed .sidebar-title {
-      display: block !important;
-      font-size: 13px !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-      border: none !important;
-      padding: 0 !important;
-      margin: 0 !important;
-    }
-    .toggle-btn { display: none !important; }
+    .stats { grid-template-columns: minmax(0, 1fr); }
+    .stat { border-left: 0; border-top: 1px solid var(--line); }
+    .stat:first-child { border-top: 0; }
 
-    .sidebar-bottom,
-    .app-container.collapsed .sidebar-bottom {
-      padding: 0 !important;
-      margin: 0 !important;
-    }
+    .card,
+    .game-body { padding: var(--s3); }
+    .card-meta { margin-left: 0; width: 100%; }
+    .feature-list { grid-template-columns: minmax(0, 1fr); }
+    .card-actions .btn { flex: 1 1 auto; }
 
-    .lang-wrapper,
-    .app-container.collapsed .lang-wrapper {
-      position: fixed !important;
-      top: 8px !important;
-      right: 14px !important;
-      left: auto !important;
-      bottom: auto !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border: none !important;
-      width: auto !important;
-      height: auto !important;
-      display: flex !important;
-      align-items: center !important;
-      z-index: 9999 !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-    }
+    .game-cover { height: 200px; }
+    .news-item { padding: var(--s3); }
+    .hero-sub { font-size: 14px; }
+    .terminal-body { padding: var(--s2); font-size: 12px; }
+  }
 
-    .lang-btn,
-    .app-container.collapsed .lang-btn {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      width: 40px !important;
-      height: 40px !important;
-      padding: 0 !important;
-      gap: 0 !important;
-      border-radius: 10px !important;
-      background: rgba(200,220,255,.06) !important;
-      border: 1px solid rgba(200,220,255,.22) !important;
-      opacity: 1 !important;
-      visibility: visible !important;
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
     }
-    .lang-btn .flag {
-      font-size: 20px !important;
-      line-height: 1 !important;
-      display: inline-block !important;
-    }
-    .lang-btn .lang-label,
-    .app-container.collapsed .lang-btn .lang-label { display: none !important; }
-    .lang-btn .lang-chevron,
-    .app-container.collapsed .lang-btn .lang-chevron { display: none !important; }
-
-    .lang-menu,
-    .app-container.collapsed .lang-menu {
-      position: fixed !important;
-      top: 54px !important;
-      right: 14px !important;
-      left: auto !important;
-      bottom: auto !important;
-      min-width: 180px !important;
-      width: auto !important;
-      max-width: calc(100vw - 28px) !important;
-      max-height: 60vh !important;
-      border-radius: 14px !important;
-      z-index: 10000 !important;
-    }
-
-    .menu-list,
-    .app-container.collapsed .menu-list {
-      position: fixed !important;
-      left: 0 !important;
-      right: 0 !important;
-      bottom: 0 !important;
-      top: auto !important;
-      display: flex !important;
-      flex-direction: row !important;
-      justify-content: space-around !important;
-      align-items: center !important;
-      gap: 0 !important;
-      padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px)) !important;
-      margin: 0 !important;
-      background: linear-gradient(180deg, rgba(8,11,18,.95), rgba(4,6,11,.98)) !important;
-      backdrop-filter: blur(16px) !important;
-      -webkit-backdrop-filter: blur(16px) !important;
-      border-top: 1px solid rgba(200,220,255,.12) !important;
-      border-bottom: none !important;
-      border-left: none !important;
-      border-right: none !important;
-      z-index: 9999 !important;
-      width: 100vw !important;
-      height: auto !important;
-      min-height: 62px !important;
-      overflow: visible !important;
-      flex: none !important;
-    }
-    #active-pill { display: none !important; }
-
-    .menu-item,
-    .app-container.collapsed .menu-item {
-      position: relative !important;
-      flex-direction: column !important;
-      gap: 3px !important;
-      padding: 6px 6px !important;
-      height: auto !important;
-      width: auto !important;
-      min-width: 54px !important;
-      margin: 0 !important;
-      font-size: 9px !important;
-      line-height: 1.1 !important;
-      border-radius: 10px !important;
-      color: rgba(215,226,245,.55) !important;
-      justify-content: center !important;
-      align-items: center !important;
-      flex: 0 0 auto !important;
-      background: transparent !important;
-      box-shadow: none !important;
-      text-align: center !important;
-    }
-    .menu-item > span:not(.menu-icon),
-    .app-container.collapsed .menu-item > span:not(.menu-icon) {
-      display: inline !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-      white-space: nowrap !important;
-    }
-    .menu-item.active,
-    .app-container.collapsed .menu-item.active {
-      color: #ffffff !important;
-      background: rgba(200,220,255,.12) !important;
-      box-shadow: 0 0 0 1px rgba(200,220,255,.35) inset !important;
-    }
-    .menu-item.active .menu-icon img,
-    .app-container.collapsed .menu-item.active .menu-icon img {
-      filter: brightness(0) invert(1) opacity(1) !important;
-    }
-    .menu-icon,
-    .app-container.collapsed .menu-icon {
-      width: 22px !important;
-      height: 22px !important;
-      font-size: 20px !important;
-    }
-
-    .sidebar-footer { display: none !important; }
-
-    .main-content {
-      position: absolute !important;
-      top: 56px !important;
-      left: 0 !important;
-      right: 0 !important;
-      bottom: 70px !important;
-      width: 100% !important;
-      height: auto !important;
-      padding: 16px !important;
-      margin: 0 !important;
-      overflow-y: auto !important;
-      -webkit-overflow-scrolling: touch !important;
-    }
-
-    .content-wrapper { padding-bottom: 20px !important; }
-
-    h1 { font-size: 30px !important; }
-    .hero-title { font-size: 40px !important; }
-    .hero-sub { font-size: 12px !important; letter-spacing: 2px !important; }
-    .stat-row { grid-template-columns: 1fr !important; }
-
-    .app-card { padding: 20px !important; }
-    .app-badge { width: 52px !important; height: 52px !important; font-size: 22px !important; }
-    .hero-actions { flex-direction: column !important; align-items: stretch !important; }
-    .btn-retro, .btn-ghost { justify-content: center !important; }
-    .app-actions { flex-direction: column !important; align-items: stretch !important; }
-    .game-actions { flex-direction: column !important; align-items: stretch !important; }
-    .btn-disabled { justify-content: center !important; }
-    .site-footer { flex-direction: column !important; gap: 8px !important; text-align: center !important; }
-
-    .game-cover { height: 200px !important; }
-    .game-cover-placeholder .game-icon { font-size: 44px !important; }
-    .game-cover-placeholder .game-cover-title { font-size: 22px !important; letter-spacing: 3px !important; }
-    .game-body { padding: 18px !important; }
-    .game-body h2 { font-size: 22px !important; }
-
-    .news-card { padding: 18px 20px !important; }
-    .news-card .news-title { font-size: 17px !important; }
-    .footer-links { justify-content: center !important; }
   }
 </style>
 </head>
 <body>
-  <div class="bg-grid"></div>
-  <div class="vignette"></div>
-  <div id="custom-cursor"></div>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#" onclick="switchPageByKey('home'); return false;">
+        <span class="brand-mark" aria-hidden="true">▌</span>
+        <span>Made by One</span>
+        <span class="brand-sub">/ studio</span>
+      </a>
 
-  <div class="app-container" id="appContainer">
-    <div class="sidebar-wrap">
-      <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-          <div class="sidebar-title">MADE BY ONE</div>
-          <button class="toggle-btn" onclick="toggleSidebar()">&lt;</button>
-        </div>
-      </aside>
+      <nav class="nav" id="menuList" aria-label="Main">
+        <button class="nav-item active" data-page="home" onclick="switchPage('home', this)" data-i18n="nav.home">Home</button>
+        <button class="nav-item" data-page="projects" onclick="switchPage('projects', this)" data-i18n="nav.projects">Projects</button>
+        <button class="nav-item" data-page="games" onclick="switchPage('games', this)" data-i18n="nav.games">Games</button>
+        <button class="nav-item" data-page="news" onclick="switchPage('news', this)" data-i18n="nav.news">News</button>
+      </nav>
 
-      <div class="menu-list" id="menuList">
-        <div id="active-pill"></div>
-        <div class="menu-item active" data-page="home" onclick="switchPage('home', this)">
-          <span class="menu-icon">
-            <img src="./data/icon-home.png" alt="" onerror="this.replaceWith(document.createTextNode('🏠'))">
-          </span>
-          <span data-i18n="nav.home">Home</span>
-        </div>
-        <div class="menu-item" data-page="projects" onclick="switchPage('projects', this)">
-		  <span class="menu-icon">
-			<img src="./data/icon-packer.png" alt="" onerror="this.replaceWith(document.createTextNode('📁'))">
-		  </span>
-		  <span data-i18n="nav.projects">Projects</span>
-		</div>
-		<div class="menu-item" data-page="games" onclick="switchPage('games', this)">
-		  <span class="menu-icon">
-			<img src="./data/icon-games.png" alt="" onerror="this.replaceWith(document.createTextNode('🎮'))">
-		  </span>
-		  <span data-i18n="nav.games">Games</span>
-		</div>
-        <div class="menu-item" data-page="news" onclick="switchPage('news', this)">
-          <span class="menu-icon">
-            <img src="./data/icon-about.png" alt="" onerror="this.replaceWith(document.createTextNode('📰'))">
-          </span>
-          <span data-i18n="nav.news">News</span>
-        </div>
-      </div>
-
-      <div class="sidebar-bottom">
-        <div class="lang-wrapper">
-          <div class="lang-menu" id="langMenu"></div>
-          <button class="lang-btn" id="langBtn" aria-label="Language">
-            <span class="flag" id="langFlag">🌐</span>
+      <div class="header-tools">
+        <div class="lang">
+          <button class="lang-btn" id="langBtn" aria-label="Language" aria-haspopup="true" aria-expanded="false">
+            <span class="lang-code" id="langFlag">EN</span>
             <span class="lang-label" id="langLabel">English</span>
-            <span class="lang-chevron">▲</span>
+            <span class="lang-chevron" aria-hidden="true">▾</span>
           </button>
+          <div class="lang-menu" id="langMenu" role="menu"></div>
         </div>
-
-        <div class="sidebar-footer"><span>© 2026 / MADE BY ONE</span></div>
       </div>
     </div>
+  </header>
 
-    <main class="main-content" id="mainContent">
-      <div class="content-wrapper">
-
-        <!-- ================= HOME ================= -->
-        <section class="page" id="page-home">
-          <div class="hero">
-            <h1 class="hero-title">
-              <span class="accent">✦</span>
-              <span class="hero-name" data-i18n="home.title">Made by One</span>
-            </h1>
-            <p class="hero-sub" data-i18n="home.sub">
-              Small studio making clean, focused tools for gamers and developers.
-            </p>
-			<div class="hero-actions">
-			  <button class="btn-retro" onclick="switchPageByKey('projects')">
-				<img src="./data/icon-packer.png" alt=""
-					 class="btn-icon"
-					 onerror="this.replaceWith(document.createTextNode('📁'))">
-				<span data-i18n="home.btn.projects">Projects</span>
-			  </button>
-			  <button class="btn-ghost" onclick="switchPageByKey('games')">
-				<img src="./data/icon-games.png" alt=""
-					 class="btn-icon"
-					 onerror="this.replaceWith(document.createTextNode('🎮'))">
-				<span data-i18n="home.btn.games">Games</span>
-			  </button>
-			</div>
-
-          <div class="stat-row">
-            <div class="stat">
-              <div class="stat-value" id="statProducts">02</div>
-              <div class="stat-label" data-i18n="home.stat.products">Products</div>
-            </div>
-            <div class="stat">
-              <div class="stat-value" id="statRelease">v1.5</div>
-              <div class="stat-label" data-i18n="home.stat.release">Current release</div>
-            </div>
-            <div class="stat">
-              <div class="stat-value">MIT</div>
-              <div class="stat-label" data-i18n="home.stat.license">License</div>
-            </div>
-          </div>
-
-          <div class="site-footer">
-            <span data-i18n="footer.copyright">© 2026 Made by One Studio</span>
-            <div class="footer-links">
-              <a href="#" onclick="switchPageByKey('about'); return false;" data-i18n="footer.about">About</a>
-              <a href="https://github.com/Made-by-One" target="_blank" data-i18n="footer.github">GitHub ↗</a>
-            </div>
-          </div>
-        </section>
-
-        <!-- ================= PROJECTS (карточки рендерятся из data/site.json) ================= -->
-        <section class="page hidden" id="page-projects">
-          <div class="page-header">
-            <h1 data-i18n="projects.title">Projects</h1>
-            <div class="subtitle" data-i18n="projects.subtitle">Tools for gamers and developers</div>
-          </div>
-
-          <div id="projectsList"></div>
-
-          <div class="site-footer">
-            <span data-i18n="footer.copyright">© 2026 Made by One Studio</span>
-            <div class="footer-links">
-              <a href="#" onclick="switchPageByKey('about'); return false;" data-i18n="footer.about">About</a>
-              <a href="https://github.com/Made-by-One" target="_blank" data-i18n="footer.github">GitHub ↗</a>
-            </div>
-          </div>
-        </section>
-
-        <!-- ================= GAMES ================= -->
-        <section class="page hidden" id="page-games">
-          <div class="page-header">
-            <h1 data-i18n="games.title">Games</h1>
-            <div class="subtitle" data-i18n="games.subtitle">In development — coming soon</div>
-          </div>
-
-          <!-- Игры рендерятся автоматически из data/site.json -->
-          <div id="gamesList"></div>
-
-          <div class="site-footer">
-            <span data-i18n="footer.copyright">© 2026 Made by One Studio</span>
-            <div class="footer-links">
-              <a href="#" onclick="switchPageByKey('about'); return false;" data-i18n="footer.about">About</a>
-              <a href="https://github.com/Made-by-One" target="_blank" data-i18n="footer.github">GitHub ↗</a>
-            </div>
-          </div>
-        </section>
-
-        <!-- ================= NEWS ================= -->
-        <section class="page hidden" id="page-news">
-          <div class="page-header">
-            <h1 data-i18n="news.title">News</h1>
-            <div class="subtitle" data-i18n="news.subtitle">Latest updates from the studio</div>
-          </div>
-
-          <div id="newsList" class="news-list">
-            <div class="news-empty" data-i18n="news.loading">Loading news…</div>
-          </div>
-
-          <div class="site-footer">
-            <span data-i18n="footer.copyright">© 2026 Made by One Studio</span>
-            <div class="footer-links">
-              <a href="#" onclick="switchPageByKey('about'); return false;" data-i18n="footer.about">About</a>
-              <a href="https://github.com/Made-by-One" target="_blank" data-i18n="footer.github">GitHub ↗</a>
-            </div>
-          </div>
-        </section>
-
-        <!-- ================= ABOUT (скрыт из меню, доступен через футер) ================= -->
-        <section class="page hidden" id="page-about">
-          <div class="page-header">
-            <h1 data-i18n="about.title">About Studio</h1>
-            <div class="subtitle" data-i18n="about.subtitle">Made by One — small, focused, open</div>
-          </div>
-
-          <div class="app-card">
-            <p class="app-desc" data-i18n="about.desc">
-              Made by One is a small studio building clean, minimal tools for gamers and
-              developers. Everything we ship is designed to feel light, private, and
-              honest — no telemetry, no bloated installers, no hidden services running
-              in the background.
-            </p>
-
-            <div class="app-features">
-              <span class="feature" data-i18n="about.f1">MIT License</span>
-              <span class="feature" data-i18n="about.f2">Open source</span>
-              <span class="feature" data-i18n="about.f3">Windows-first</span>
-              <span class="feature" data-i18n="about.f4">No telemetry</span>
-            </div>
-
-            <div class="app-actions">
-              <a class="btn-retro" href="https://github.com/Made-by-One" target="_blank" data-i18n="about.github">
-                GitHub ↗
-              </a>
-              <a class="btn-ghost" href="https://github.com/Made-by-One/Devers-Launcher" target="_blank">
-                Devers Launcher ↗
-              </a>
-              <a class="btn-ghost" href="https://github.com/Made-by-One/Devers-Packer" target="_blank">
-                Devers Packer ↗
-              </a>
-            </div>
-          </div>
-
-          <div class="site-footer">
-            <span data-i18n="footer.copyright">© 2026 Made by One Studio</span>
-            <div class="footer-links">
-              <a href="https://github.com/Made-by-One" target="_blank" data-i18n="footer.github">GitHub ↗</a>
-            </div>
-          </div>
-        </section>
-
+  <main id="mainContent">
+    <!-- ================= HOME ================= -->
+    <section class="page" id="page-home">
+      <div class="eyebrow">
+        <span class="br">[</span> <span class="val">made-by-one</span> <span class="br">]</span>
+        <span class="sep">//</span> studio
       </div>
-    </main>
-  </div>
+
+      <h1 class="hero-title">
+        <span data-i18n="home.title">Made by One</span><span class="caret" aria-hidden="true"></span>
+      </h1>
+
+      <p class="hero-sub" data-i18n="home.sub">
+        Small studio making clean, focused tools for gamers and developers.
+      </p>
+
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="switchPageByKey('projects')">
+          <span data-i18n="home.btn.projects">Projects</span>
+          <span aria-hidden="true">→</span>
+        </button>
+        <button class="btn" onclick="switchPageByKey('games')">
+          <span data-i18n="home.btn.games">Games</span>
+        </button>
+      </div>
+
+      <!-- Командная строка -->
+      <section class="terminal" aria-label="Terminal">
+        <div class="terminal-bar">
+          <span class="terminal-path">~/made-by-one</span>
+          <span>bash</span>
+        </div>
+        <pre class="terminal-body"><code><span class="t-prompt">$</span> <span class="t-cmd">made-by-one</span> <span class="t-arg">--list</span>
+
+<span class="t-out" id="terminalList">  loading…</span>
+
+<span class="t-prompt">$</span> <span class="caret caret-sm" aria-hidden="true"></span></code></pre>
+      </section>
+
+      <section class="stats" aria-label="Studio facts">
+        <div class="stat">
+          <div class="stat-index">[01]</div>
+          <div class="stat-value" id="statProducts">03</div>
+          <div class="stat-label" data-i18n="home.stat.products">Products</div>
+        </div>
+        <div class="stat">
+          <div class="stat-index">[02]</div>
+          <div class="stat-value">MIT</div>
+          <div class="stat-label" data-i18n="home.stat.license">License</div>
+        </div>
+        <div class="stat">
+          <div class="stat-index">[03]</div>
+          <div class="stat-value">Windows 10/11</div>
+          <div class="stat-label" data-i18n="games.label.platform">Platform</div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ================= PROJECTS ================= -->
+    <section class="page hidden" id="page-projects">
+      <div class="page-head">
+        <div class="eyebrow"><span class="br">[</span> ~/projects <span class="br">]</span></div>
+        <h1 class="page-title" data-i18n="projects.title">Projects</h1>
+        <p class="page-sub" data-i18n="projects.subtitle">Tools for gamers and developers</p>
+      </div>
+      <div id="projectsList" class="stack"></div>
+    </section>
+
+    <!-- ================= GAMES ================= -->
+    <section class="page hidden" id="page-games">
+      <div class="page-head">
+        <div class="eyebrow"><span class="br">[</span> ~/games <span class="br">]</span></div>
+        <h1 class="page-title" data-i18n="games.title">Games</h1>
+        <p class="page-sub" data-i18n="games.subtitle">In development — coming soon</p>
+      </div>
+      <div id="gamesList" class="stack"></div>
+    </section>
+
+    <!-- ================= NEWS ================= -->
+    <section class="page hidden" id="page-news">
+      <div class="page-head">
+        <div class="eyebrow"><span class="br">[</span> ~/news <span class="br">]</span></div>
+        <h1 class="page-title" data-i18n="news.title">News</h1>
+        <p class="page-sub" data-i18n="news.subtitle">Latest updates from the studio</p>
+      </div>
+      <div id="newsList" class="stack">
+        <div class="empty" data-i18n="news.loading">Loading news…</div>
+      </div>
+    </section>
+
+    <!-- ================= ABOUT ================= -->
+    <section class="page hidden" id="page-about">
+      <div class="page-head">
+        <div class="eyebrow"><span class="br">[</span> ~/about <span class="br">]</span></div>
+        <h1 class="page-title" data-i18n="about.title">About Studio</h1>
+        <p class="page-sub" data-i18n="about.subtitle">Made by One — small, focused, open</p>
+      </div>
+
+      <div class="stack">
+        <article class="card">
+          <p class="card-desc" data-i18n="about.desc">
+            Made by One is a small studio building clean, minimal tools for gamers and
+            developers. Everything we ship is designed to feel light, private, and
+            honest — no telemetry, no bloated installers, no hidden services running
+            in the background.
+          </p>
+
+          <ul class="feature-list">
+            <li><span class="plus" aria-hidden="true">+</span><span data-i18n="about.f1">MIT License</span></li>
+            <li><span class="plus" aria-hidden="true">+</span><span data-i18n="about.f2">Open source</span></li>
+            <li><span class="plus" aria-hidden="true">+</span><span data-i18n="about.f3">Windows-first</span></li>
+            <li><span class="plus" aria-hidden="true">+</span><span data-i18n="about.f4">No telemetry</span></li>
+          </ul>
+
+          <div class="kv">
+            <div class="kv-row">
+              <div class="kv-key">repo</div>
+              <div class="kv-val"><a href="https://github.com/Made-by-One" target="_blank" rel="noopener">github.com/Made-by-One ↗</a></div>
+            </div>
+            <div class="kv-row">
+              <div class="kv-key">itch.io</div>
+              <div class="kv-val"><a href="https://madebyone.itch.io/" target="_blank" rel="noopener">madebyone.itch.io ↗</a></div>
+            </div>
+            <div class="kv-row">
+              <div class="kv-key">contact</div>
+              <div class="kv-val">open an issue on GitHub</div>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <a class="btn btn-primary" href="https://github.com/Made-by-One" target="_blank" rel="noopener" data-i18n="about.github">GitHub ↗</a>
+            <a class="btn btn-quiet" href="https://github.com/Made-by-One/Devers-Workmods" target="_blank" rel="noopener">Devers-Workmods ↗</a>
+            <a class="btn btn-quiet" href="https://github.com/Made-by-One/Devers-Launcher" target="_blank" rel="noopener">Devers-Launcher ↗</a>
+            <a class="btn btn-quiet" href="https://github.com/Made-by-One/Devers-Packer" target="_blank" rel="noopener">Devers-Packer ↗</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <span data-i18n="footer.copyright">© 2026 Made by One Studio</span>
+      <div class="footer-links">
+        <a href="#" onclick="switchPageByKey('about'); return false;" data-i18n="footer.about">About</a>
+        <a href="https://github.com/Made-by-One" target="_blank" rel="noopener" data-i18n="footer.github">GitHub ↗</a>
+        <a href="https://madebyone.itch.io/" target="_blank" rel="noopener">itch.io ↗</a>
+      </div>
+    </footer>
+  </main>
 
 <script>
 const SITE_URL     = "./data/site.json";
@@ -1567,6 +1010,13 @@ function escapeHtml(str) {
     .replace(/'/g, "&#39;");
 }
 
+/* Убирает ведущие эмодзи/символы из подписей кнопок — в дизайне только ASCII */
+function cleanLabel(str) {
+  return String(str == null ? "" : str)
+    .replace(/^[^\p{L}\p{N}\[]+/u, "")
+    .trim();
+}
+
 function applyTranslations() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
@@ -1591,13 +1041,13 @@ function renderLangMenu() {
   menu.innerHTML = '';
   Object.entries(TRANSLATIONS).forEach(([code, dict]) => {
     const btn = document.createElement('button');
-    btn.className = 'lang-menu-item' + (code === currentLang ? ' active' : '');
-    btn.innerHTML = `<span class="flag">${dict._flag || '🌐'}</span><span>${dict._name || code}</span>`;
+    btn.className = 'lang-item' + (code === currentLang ? ' active' : '');
+    btn.setAttribute('role', 'menuitem');
+    btn.innerHTML = `<span class="flag">[${escapeHtml(code)}]</span><span>${escapeHtml(dict._name || code)}</span>`;
     btn.onclick = () => {
       setLang(code);
       localStorage.setItem(MANUAL_KEY, "1");
-      menu.classList.remove('open');
-      document.getElementById('langBtn').classList.remove('open');
+      closeLangMenu();
     };
     menu.appendChild(btn);
   });
@@ -1605,20 +1055,25 @@ function renderLangMenu() {
 
 function updateLangButton() {
   const dict = TRANSLATIONS[currentLang] || TRANSLATIONS[DEFAULT_LANG] || {};
-  document.getElementById('langFlag').textContent = dict._flag || '🌐';
+  document.getElementById('langFlag').textContent = String(currentLang).toUpperCase();
   document.getElementById('langLabel').textContent = dict._name || currentLang;
+}
+
+function closeLangMenu() {
+  document.getElementById('langMenu').classList.remove('open');
+  document.getElementById('langBtn').setAttribute('aria-expanded', 'false');
 }
 
 document.getElementById('langBtn').addEventListener('click', e => {
   e.stopPropagation();
   const menu = document.getElementById('langMenu');
-  const btn = document.getElementById('langBtn');
-  menu.classList.toggle('open');
-  btn.classList.toggle('open');
+  const open = !menu.classList.contains('open');
+  menu.classList.toggle('open', open);
+  document.getElementById('langBtn').setAttribute('aria-expanded', String(open));
 });
-document.addEventListener('click', () => {
-  document.getElementById('langMenu').classList.remove('open');
-  document.getElementById('langBtn').classList.remove('open');
+document.addEventListener('click', closeLangMenu);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLangMenu();
 });
 
 function switchPage(key, el) {
@@ -1629,77 +1084,19 @@ function switchPage(key, el) {
     void page.offsetWidth;
   }
 
-  document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
   if (el) el.classList.add('active');
   else {
-    document.querySelectorAll('.menu-item').forEach(i => {
+    document.querySelectorAll('.nav-item').forEach(i => {
       if (i.dataset.page === key) i.classList.add('active');
     });
   }
-  positionPill();
-  document.getElementById('mainContent').scrollTop = 0;
+
+  window.scrollTo(0, 0);
 
   if (key === 'news') loadNews();
 }
 function switchPageByKey(key) { switchPage(key, null); }
-
-function toggleSidebar() {
-  document.getElementById('appContainer').classList.toggle('collapsed');
-  setTimeout(positionPill, 50);
-}
-
-function positionPill() {
-  const pill = document.getElementById('active-pill');
-  const active = document.querySelector('.menu-item.active');
-  const collapsed = document.getElementById('appContainer').classList.contains('collapsed');
-  const isMobile = window.matchMedia('(max-width: 767px)').matches;
-  if (!active || collapsed || isMobile) { pill.style.opacity = '0'; return; }
-  pill.style.opacity = '1';
-  pill.style.top = active.offsetTop + 'px';
-}
-
-window.addEventListener('resize', positionPill);
-
-function bindCardGlow() {
-  document.querySelectorAll('.app-card, .game-card, .news-card').forEach(card => {
-    card.addEventListener('mousemove', e => {
-      const rect = card.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      card.style.setProperty('--mx', x + '%');
-      card.style.setProperty('--my', y + '%');
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.setProperty('--mx', '50%');
-      card.style.setProperty('--my', '50%');
-    });
-  });
-}
-
-const cursor = document.getElementById('custom-cursor');
-if (window.matchMedia('(hover: hover)').matches) {
-  cursor.style.display = 'block';
-  let tx = 0, ty = 0, cx = 0, cy = 0;
-  document.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
-  function animateCursor() {
-    cx += (tx - cx) * 0.2;
-    cy += (ty - cy) * 0.2;
-    cursor.style.left = cx + 'px';
-    cursor.style.top  = cy + 'px';
-    requestAnimationFrame(animateCursor);
-  }
-  animateCursor();
-  document.addEventListener('mousedown', () => cursor.classList.add('clicking'));
-  document.addEventListener('mouseup',   () => cursor.classList.remove('clicking'));
-  document.addEventListener('mouseover', e => {
-    if (e.target.closest('button, .menu-item, a, .toggle-btn, .app-card, .game-card, .news-card, .lang-btn, .lang-menu-item'))
-      cursor.classList.add('hovering');
-  });
-  document.addEventListener('mouseout', e => {
-    if (e.target.closest('button, .menu-item, a, .toggle-btn, .app-card, .game-card, .news-card, .lang-btn, .lang-menu-item'))
-      cursor.classList.remove('hovering');
-  });
-}
 
 /* ============ АВТОМАТИЗАЦИЯ: КОНФИГ + РЕЛИЗЫ GITHUB ============ */
 
@@ -1723,6 +1120,7 @@ async function loadSiteConfig() {
     console.error("Не удалось загрузить site.json:", e);
     SITE_CONFIG = { products: [], games: [] };
   }
+  renderTerminalList();
 }
 
 async function loadReleases() {
@@ -1766,34 +1164,36 @@ function productRelease(p) {
 }
 
 function applyProductMeta() {
-  // Статистика на главной (карточки проектов заполняются в renderProducts)
   const products = (SITE_CONFIG && SITE_CONFIG.products) || [];
   const statProducts = document.getElementById("statProducts");
   if (statProducts) statProducts.textContent = String(products.length).padStart(2, "0");
+}
 
-  const statRelease = document.getElementById("statRelease");
-  if (statRelease && products.length) {
-    const latest = products
-      .map(p => ({ r: productRelease(p) }))
-      .filter(x => x.r.publishedAt || x.r.version)
-      .sort((a, b) => new Date(b.r.publishedAt || 0) - new Date(a.r.publishedAt || 0))[0];
-    if (latest) statRelease.textContent = latest.r.version;
-  }
+function renderTerminalList() {
+  const el = document.getElementById("terminalList");
+  if (!el) return;
+  const products = (SITE_CONFIG && SITE_CONFIG.products) || [];
+  el.textContent = products.length
+    ? products.map(p => "  " + p.name).join("\n")
+    : "  no products";
 }
 
 /* ============ ПРОЕКТЫ (из data/site.json) ============ */
 
-// Собирает фичи продукта из словаря переводов: ключи вида "launcher.f1", "launcher.f2"…
-function productFeatureKeys(id) {
+// Фичи продукта: сначала данные из site.json, затем старые ключи локализации
+function productFeatures(p) {
+  const inline = pickLocalized(p.features);
+  if (Array.isArray(inline) && inline.length) return inline;
+
   const dict = TRANSLATIONS[currentLang] || TRANSLATIONS[DEFAULT_LANG] || {};
   const fallback = TRANSLATIONS[DEFAULT_LANG] || {};
   const keys = [];
   for (let i = 1; ; i++) {
-    const key = `${id}.f${i}`;
+    const key = `${p.id}.f${i}`;
     if (!(key in dict) && !(key in fallback)) break;
     keys.push(key);
   }
-  return keys;
+  return keys.map(key => t(key));
 }
 
 function renderProducts() {
@@ -1802,43 +1202,44 @@ function renderProducts() {
 
   const products = (SITE_CONFIG && SITE_CONFIG.products) || [];
   if (!products.length) {
-    list.innerHTML = `<div class="news-empty">${escapeHtml(t("projects.empty"))}</div>`;
+    list.innerHTML = `<div class="empty">${escapeHtml(t("projects.empty"))}</div>`;
     return;
   }
 
-  list.innerHTML = products.map(p => {
+  list.innerHTML = products.map((p, i) => {
     const r = productRelease(p);
-    const icon = p.icon
-      ? `<img src="${p.icon}" alt="" onerror="this.replaceWith(document.createTextNode('${p.emoji || "✦"}'))">`
-      : (p.emoji || "✦");
+    const hasDownload = Boolean((RELEASES[p.id] && RELEASES[p.id].downloadUrl) || p.fallbackDownload);
 
-    const features = productFeatureKeys(p.id)
-      .map(key => `<span class="feature">${escapeHtml(t(key))}</span>`)
+    const meta = [p.platform, p.license]
+      .filter(Boolean)
+      .map(v => escapeHtml(v))
+      .join(" · ");
+
+    const features = productFeatures(p)
+      .map(text => `<li><span class="plus" aria-hidden="true">+</span><span>${escapeHtml(text)}</span></li>`)
       .join("");
 
     return `
-      <div class="app-card">
-        <div class="app-card-head">
-          <div class="app-badge">${icon}</div>
-          <div class="app-meta">
-            <h2>${escapeHtml(p.name)}</h2>
-            <div class="app-version">${escapeHtml([r.version, p.platform, p.license].filter(Boolean).join(" · "))}</div>
-          </div>
+      <article class="card">
+        <header class="card-head">
+          <span class="index">[${String(i + 1).padStart(2, "0")}]</span>
+          <h2 class="card-title">${escapeHtml(p.name)}</h2>
+          <span class="card-meta">${meta}</span>
+        </header>
+
+        <p class="card-desc">${escapeHtml(pickLocalized(p.desc) || "")}</p>
+
+        <ul class="feature-list">${features}</ul>
+
+        <div class="card-actions">
+          ${hasDownload
+            ? `<a class="btn btn-primary" href="${r.downloadUrl}" target="_blank" rel="noopener">${escapeHtml(cleanLabel(pickLocalized(p.download) || "Download .zip"))}</a>`
+            : `<span class="btn btn-disabled" aria-disabled="true">${escapeHtml(t("games.status.dev"))}</span>`}
+          <a class="btn" href="https://github.com/${p.repo}" target="_blank" rel="noopener">${escapeHtml(t("common.github"))}</a>
+          <a class="btn btn-quiet" href="${r.htmlUrl}" target="_blank" rel="noopener">${escapeHtml(t("common.releases"))}</a>
         </div>
-
-        <p class="app-desc">${escapeHtml(fillTemplate(t(p.id + ".desc"), { product: p.name }))}</p>
-
-        <div class="app-features">${features}</div>
-
-        <div class="app-actions">
-          <a class="btn-retro" href="${r.downloadUrl}" target="_blank">${escapeHtml(t(p.id + ".download"))}</a>
-          <a class="btn-ghost" href="https://github.com/${p.repo}" target="_blank">${escapeHtml(t("common.github"))}</a>
-          <a class="btn-ghost" href="${r.htmlUrl}" target="_blank">${escapeHtml(t("common.releases"))}</a>
-        </div>
-      </div>`;
+      </article>`;
   }).join("");
-
-  bindCardGlow();
 }
 
 /* ============ ИГРЫ (из data/site.json) ============ */
@@ -1849,70 +1250,70 @@ function renderGames() {
 
   const games = (SITE_CONFIG && SITE_CONFIG.games) || [];
   if (!games.length) {
-    list.innerHTML = `<div class="news-empty">${escapeHtml(t("games.empty"))}</div>`;
+    list.innerHTML = `<div class="empty">${escapeHtml(t("games.empty"))}</div>`;
     return;
   }
 
   list.innerHTML = games.map(g => {
-    const placeholder = `
-      <div class="game-cover-placeholder" ${g.cover ? 'style="display:none;"' : ""}>
-        <span class="game-icon">${g.icon || "🎮"}</span>
-        <div class="game-cover-title">${escapeHtml(g.name)}</div>
-      </div>`;
-    const coverHtml = g.cover
-      ? `<img src="${g.cover}" alt="${escapeHtml(g.name)} cover" class="game-cover-img"
-             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">${placeholder}`
-      : placeholder.replace('style="display:none;"', "");
-
-    const meta = [
-      ["📅", "games.label.release", g.release],
-      ["🎯", "games.label.genre", pickLocalized(g.genre)],
-      ["💻", "games.label.platform", pickLocalized(g.platform)]
-    ]
-      .filter(m => m[2])
-      .map(([icon, key, val]) => `<span>${icon} ${escapeHtml(t(key))}: ${escapeHtml(String(val))}</span>`)
-      .join("");
-
-    const progress = (typeof g.progress === "number")
-      ? `<div class="game-progress">
-           <div class="game-progress-label">
-             <span>${escapeHtml(t("games.progress"))}</span>
-             <span>${g.progress}%</span>
-           </div>
-           <div class="game-progress-bar">
-             <div class="game-progress-fill" style="width:${Math.min(100, Math.max(2, g.progress))}%"></div>
-           </div>
-         </div>`
+    const cover = g.cover
+      ? `<img class="cover-img" src="${g.cover}" alt="${escapeHtml(g.name)}" loading="lazy" onerror="this.remove()">`
       : "";
 
-    const notify = `<span class="btn-disabled">${escapeHtml(fillTemplate(t("games.notify"), { year: g.release || "" }))}</span>`;
+    const meta = [
+      ["games.label.release", g.release],
+      ["games.label.genre", pickLocalized(g.genre)],
+      ["games.label.platform", pickLocalized(g.platform)]
+    ]
+      .filter(m => m[1])
+      .map(([key, val]) =>
+        `<span class="meta-item"><span class="meta-key">${escapeHtml(t(key))}</span>${escapeHtml(String(val))}</span>`
+      )
+      .join("");
+
+    let progress = "";
+    if (typeof g.progress === "number") {
+      const pct = Math.min(100, Math.max(0, g.progress));
+      const cells = 24;
+      const filled = Math.round((pct / 100) * cells);
+      progress = `
+        <div class="progress">
+          <div class="progress-head">
+            <span>${escapeHtml(t("games.progress"))}</span>
+            <span class="progress-pct">${pct}%</span>
+          </div>
+          <span class="ascii-bar" role="img" aria-label="${pct}%">
+            <span class="bar-fill">${"█".repeat(filled)}</span><span class="bar-rest">${"░".repeat(cells - filled)}</span>
+          </span>
+        </div>`;
+    }
+
+    const notify = `<span class="btn btn-disabled" aria-disabled="true">${escapeHtml(cleanLabel(fillTemplate(t("games.notify"), { year: g.release || "" })))}</span>`;
     const follow = g.link
-      ? `<a class="btn-ghost" href="${g.link}" target="_blank">${escapeHtml(t("games.follow"))}</a>`
+      ? `<a class="btn" href="${g.link}" target="_blank" rel="noopener">${escapeHtml(cleanLabel(t("games.follow")))}</a>`
       : "";
 
     return `
-      <div class="game-card">
+      <article class="card">
         <div class="game-cover">
-          <div class="game-status-badge">
-            <span class="pulse-dot"></span>
-            <span>${escapeHtml(t("games.status." + (g.status || "dev")))}</span>
-          </div>
-          ${coverHtml}
+          <span class="cover-fallback" aria-hidden="true">[ no cover ]</span>
+          ${cover}
+          <span class="status">[ ${escapeHtml(t("games.status." + (g.status || "dev")))} ]</span>
         </div>
         <div class="game-body">
-          <h2>${escapeHtml(g.name)}</h2>
-          <div class="game-meta-line">${meta}</div>
+          <header class="card-head">
+            <h2 class="card-title">${escapeHtml(g.name)}</h2>
+            <span class="card-meta">${escapeHtml(g.release || "")}</span>
+          </header>
+          <div class="game-meta">${meta}</div>
           <p class="game-desc">${escapeHtml(pickLocalized(g.desc) || "")}</p>
           ${progress}
-          <div class="game-actions">
+          <div class="card-actions">
             ${notify}
             ${follow}
           </div>
         </div>
-      </div>`;
+      </article>`;
   }).join("");
-
-  bindCardGlow();
 }
 
 /* ============ НОВОСТИ ============ */
@@ -1933,7 +1334,7 @@ async function loadNews() {
 
   // Если ещё не загружали — показываем "загрузка" и фетчим
   if (!NEWS_CACHE) {
-    container.innerHTML = `<div class="news-empty" data-i18n="news.loading">${t("news.loading")}</div>`;
+    container.innerHTML = `<div class="empty">${escapeHtml(t("news.loading"))}</div>`;
     try {
       const res = await fetch(NEWS_URL, { cache: "no-store" });
       if (!res.ok) throw new Error("news.json not found");
@@ -1941,7 +1342,7 @@ async function loadNews() {
       NEWS_CACHE = Array.isArray(data) ? data : [];
     } catch (e) {
       console.error("Failed to load news:", e);
-      container.innerHTML = `<div class="news-empty" data-i18n="news.error">${t("news.error")}</div>`;
+      container.innerHTML = `<div class="empty">${escapeHtml(t("news.error"))}</div>`;
       return;
     }
   }
@@ -1950,7 +1351,7 @@ async function loadNews() {
 
 // Автоматические новости из релизов GitHub (публикуются без ручного редактирования)
 // Если ручная новость уже освещает продукт (поле "products": ["launcher"]),
-// авто-новость для него не дублируется.
+// авто-новость для него не дублируется. Версии в заголовке не показываем.
 function autoReleaseNews() {
   const covered = new Set();
   (NEWS_CACHE || []).forEach(item =>
@@ -1962,7 +1363,8 @@ function autoReleaseNews() {
     const r = productRelease(p);
     if (!r.publishedAt && !r.version) return null;
 
-    const vars = { product: p.name, version: r.version };
+    const vars = { product: p.name };
+    const titleTemplate = String(t("news.release.title")).replace(/\s*\{version\}/g, "").trim();
     const text = (currentLang === DEFAULT_LANG && r.body)
       ? r.body.replace(/\r/g, "").trim().slice(0, 600)
       : fillTemplate(t("news.release.text"), vars);
@@ -1970,7 +1372,7 @@ function autoReleaseNews() {
     return {
       date: r.publishedAt ? String(r.publishedAt).slice(0, 10) : "",
       tag: t("news.release.tag"),
-      title: fillTemplate(t("news.release.title"), vars),
+      title: fillTemplate(titleTemplate, vars),
       text,
       link: r.htmlUrl
     };
@@ -1985,7 +1387,7 @@ function renderNews() {
   const all = [...(NEWS_CACHE || []), ...autoReleaseNews()];
 
   if (all.length === 0) {
-    container.innerHTML = `<div class="news-empty" data-i18n="news.empty">${t("news.empty")}</div>`;
+    container.innerHTML = `<div class="empty">${escapeHtml(t("news.empty"))}</div>`;
     return;
   }
 
@@ -1998,23 +1400,23 @@ function renderNews() {
 
   container.innerHTML = sorted.map(item => {
     const title = escapeHtml(pickLocalized(item.title));
-    const text  = escapeHtml(pickLocalized(item.text));
+    const text = escapeHtml(pickLocalized(item.text));
     const tagRaw = pickLocalized(item.tag);
-    const tag = tagRaw ? `<span class="news-tag">${escapeHtml(tagRaw)}</span>` : "";
+    const tag = tagRaw ? `<span class="news-tag">[ ${escapeHtml(tagRaw)} ]</span>` : "";
     const link = item.link
-      ? `<a class="news-link" href="${item.link}" target="_blank">↗ ${escapeHtml(t("news.release.more"))}</a>`
+      ? `<a class="news-link" href="${item.link}" target="_blank" rel="noopener">${escapeHtml(t("news.release.more"))} ↗</a>`
       : "";
     return `
-      <article class="news-card">
-        <div class="news-date">${escapeHtml(item.date || "")}</div>
+      <article class="news-item">
+        <div class="news-meta">
+          ${item.date ? `<span class="news-date">${escapeHtml(item.date)}</span>` : ""}
+          ${tag}
+        </div>
         <h3 class="news-title">${title}</h3>
         <div class="news-text">${text}</div>
-        ${tag}
         ${link}
       </article>`;
   }).join("");
-
-  bindCardGlow();
 }
 
 async function init() {
@@ -2036,8 +1438,6 @@ async function init() {
 
   setLang(langToUse);
   applyProductMeta();
-  positionPill();
-  bindCardGlow();
 }
 
 window.addEventListener('load', init);
