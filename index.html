@@ -553,29 +553,36 @@
     line-height: 1.85;
   }
 
-  .progress { margin-top: var(--s3); }
+  .progress { margin-top: var(--s3); min-width: 0; }
 
   .progress-head {
     display: flex;
+    align-items: baseline;
     justify-content: space-between;
-    gap: var(--s2);
+    flex-wrap: wrap;
+    gap: var(--s1) var(--s2);
     font-size: 11px;
     letter-spacing: .12em;
     text-transform: uppercase;
     color: var(--muted);
   }
-  .progress-pct { color: var(--accent-strong); }
+  .progress-pct { color: var(--accent-strong); flex: 0 0 auto; }
 
-  .ascii-bar {
-    display: block;
+  /* Сегментная полоса: ячейки одинаковой ширины, без зависимости от глифов шрифта */
+  .meter {
+    display: flex;
+    gap: 2px;
+    width: 100%;
+    min-width: 0;
     margin-top: var(--s1);
-    font-size: 13px;
-    line-height: 1;
-    letter-spacing: 1px;
-    white-space: pre;
   }
-  .bar-fill { color: var(--accent); }
-  .bar-rest { color: var(--line-strong); }
+  .meter-cell {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 8px;
+    background: var(--line-strong);
+  }
+  .meter-cell.is-filled { background: var(--accent); }
 
   /* ============================================================
      NEWS
@@ -1275,15 +1282,17 @@ function renderGames() {
       const pct = Math.min(100, Math.max(0, g.progress));
       const cells = 24;
       const filled = Math.round((pct / 100) * cells);
+      const cellsHtml = Array.from({ length: cells }, (_, idx) =>
+        `<span class="meter-cell${idx < filled ? " is-filled" : ""}"></span>`
+      ).join("");
+
       progress = `
         <div class="progress">
           <div class="progress-head">
             <span>${escapeHtml(t("games.progress"))}</span>
             <span class="progress-pct">${pct}%</span>
           </div>
-          <span class="ascii-bar" role="img" aria-label="${pct}%">
-            <span class="bar-fill">${"█".repeat(filled)}</span><span class="bar-rest">${"░".repeat(cells - filled)}</span>
-          </span>
+          <div class="meter" role="img" aria-label="${escapeHtml(t("games.progress"))}: ${pct}%">${cellsHtml}</div>
         </div>`;
     }
 
