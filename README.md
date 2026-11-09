@@ -13,13 +13,13 @@ All product and game content lives in **`data/site.json`**:
 - `products[]` — `id`, `name`, `repo`, `license`, `platform`, `status`, `fallbackDownload`, plus localized `desc`, `features` and `download` objects keyed by language (`en`, `ru`, `uk`, `es`, `de`, `fr`, `pt`, `zh`)
 - `games[]` — `name`, `cover`, `status`, `progress`, `release`, `link`, plus localized `desc`, `genre` and `platform`
 
-News lives in **`data/news/news.json`** (same localized-object format). Release news is generated automatically from GitHub: `data/releases.json` is refreshed by `scripts/sync-releases.mjs`.
+News lives in **`data/news/news.json`** (same localized-object format). An optional `image` field adds a photo banner above the text, e.g. `"image": "./data/news/launch.jpg"`; put the file in `data/news/`. Release news is generated automatically from GitHub: `data/releases.json` is refreshed by `scripts/sync-releases.mjs`.
 
 Interface strings (navigation, buttons, page headings) live in `localization/<lang>.json`. A missing translation falls back to English.
 
-### Fast editing
+## Editing
 
-Open **`editor.html`** in a browser (locally through a static server, or on the deployed site). It reads `site.json` and `news.json`, lets you edit studio info, add or remove products, games and news, and edit every translation. Save the downloaded files back into `data/` and `data/news/` and commit.
+Content is plain JSON. Edit `data/site.json`, `data/news/news.json` or `localization/<lang>.json` and commit — nothing is generated or compiled.
 
 ## Local preview
 
