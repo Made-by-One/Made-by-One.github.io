@@ -643,18 +643,21 @@
     overflow: hidden;
     background: linear-gradient(
       90deg,
-      #241a3d 0%,
-      #5b3fc4 20%,
-      #a78bfa 40%,
-      #e2d8ff 50%,
-      #a78bfa 60%,
-      #5b3fc4 80%,
-      #241a3d 100%
+      #1a1230 0%,
+      #3b2578 15%,
+      #5b3fc4 30%,
+      #7c5ce0 45%,
+      #a78bfa 55%,
+      #c9b8ff 68%,
+      #e2d8ff 80%,
+      #c9b8ff 90%,
+      #a78bfa 100%
     );
-    background-size: 200% 100%;
+    background-size: 250% 100%;
     transform-origin: left center;
     transition: transform .9s cubic-bezier(.22, .61, .36, 1) .1s;
-    animation: meter-flow 6s linear infinite;
+    animation: meter-flow 4s linear infinite;
+    box-shadow: 0 0 6px rgba(167, 139, 250, .35);
   }
 
   /* Градиент переливается слева направо; концы совпадают, поэтому цикл без рывка */
