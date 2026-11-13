@@ -45,7 +45,7 @@
   "games.label.platform": "平台",
   "games.status.released": "已发行",
   "games.status.soon": "即将推出",
-  "news.release.tag": "预发布",
+  "news.release.tag": "发布",
   "news.release.title": "{product} {version} 已发布",
   "news.release.text": "新版本可在 GitHub Releases 页面下载。",
   "news.release.more": "发布页面",

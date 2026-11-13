@@ -45,7 +45,7 @@
   "games.label.platform": "Платформа",
   "games.status.released": "Вышла",
   "games.status.soon": "Скоро",
-  "news.release.tag": "Пре-релиз",
+  "news.release.tag": "Релиз",
   "news.release.title": "Вышел {product} {version}",
   "news.release.text": "Новую версию можно скачать на странице релизов GitHub.",
   "news.release.more": "Страница релиза",
