@@ -68,5 +68,38 @@
       "workmods"
     ],
     "link": "https://github.com/Made-by-One/Devers-Workmods/releases"
+  },
+  {
+    "date": "2026-11-13",
+    "tag": {
+      "en": "Devlog",
+      "ru": "Девлог",
+      "uk": "Девлог",
+      "es": "Devlog",
+      "de": "Devlog",
+      "fr": "Devlog",
+      "pt": "Devlog",
+      "zh": "开发日志"
+    },
+    "title": {
+      "en": "Return Me — devlog #2",
+      "ru": "Return Me — девлог #2",
+      "uk": "Return Me — девлог #2",
+      "es": "Return Me — devlog #2",
+      "de": "Return Me — Devlog #2",
+      "fr": "Return Me — devlog #2",
+      "pt": "Return Me — devlog #2",
+      "zh": "《Return Me》— 开发日志 #2"
+    },
+    "text": {
+      "en": "Development has reached 35%. All core mechanics are complete. Work on level creation and level design has begun.",
+      "ru": "Разработка дошла до 35%. Все основные механики завершены. Начата работа над созданием уровней и левел-дизайном.",
+      "uk": "Розробка дійшла до 35%. Усі основні механіки завершені. Розпочато роботу над створенням рівнів і левел-дизайном.",
+      "es": "El desarrollo ha alcanzado el 35%. Todas las mecánicas principales están completas. Ha comenzado el trabajo en la creación de niveles y el diseño de niveles.",
+      "de": "Die Entwicklung hat 35 % erreicht. Alle Kernmechaniken sind fertig. Die Arbeit an der Level-Erstellung und dem Level-Design hat begonnen.",
+      "fr": "Le développement a atteint 35 %. Toutes les mécaniques principales sont terminées. Le travail sur la création de niveaux et le level design a commencé.",
+      "pt": "O desenvolvimento atingiu 35%. Todas as mecânicas principais estão concluídas. O trabalho na criação de níveis e level design começou.",
+      "zh": "开发进度已达到 35%。所有核心机制已完成。关卡创建和关卡设计工作已开始。"
+    }
   }
 ]
