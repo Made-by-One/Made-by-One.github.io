@@ -31,5 +31,42 @@
       "pt": "O desenvolvimento está em 15%. Mais detalhes em breve.",
       "zh": "开发进度 15%。更多细节即将公布。"
     }
+  },
+  {
+    "date": "2026-11-12",
+    "tag": {
+      "en": "Pre-release",
+      "ru": "Пре-релиз",
+      "uk": "Пре-реліз",
+      "es": "Pre-lanzamiento",
+      "de": "Pre-Release",
+      "fr": "Pré-version",
+      "pt": "Pré-lançamento",
+      "zh": "预发布"
+    },
+    "title": {
+      "en": "Devers-Workmods released",
+      "ru": "Вышел Devers-Workmods",
+      "uk": "Вийшов Devers-Workmods",
+      "es": "Devers-Workmods ya disponible",
+      "de": "Devers-Workmods ist da",
+      "fr": "Devers-Workmods est sorti",
+      "pt": "Devers-Workmods já está disponível",
+      "zh": "Devers-Workmods 已发布"
+    },
+    "text": {
+      "en": "The first public beta of the mod management tool is available. Desktop client, public registry and Unity SDK — all in one package.",
+      "ru": "Доступна первая публичная бета инструмента управления модами. Десктоп-клиент, публичный реестр и Unity SDK — всё в одном пакете.",
+      "uk": "Доступна перша публічна бета інструменту керування модами. Десктоп-клієнт, публічний реєстр і Unity SDK — все в одному пакеті.",
+      "es": "Disponible la primera beta pública de la herramienta de gestión de mods. Cliente de escritorio, registro público y Unity SDK — todo en un paquete.",
+      "de": "Die erste öffentliche Beta des Mod-Management-Tools ist verfügbar. Desktop-Client, öffentliches Register und Unity SDK — alles in einem Paket.",
+      "fr": "La première bêta publique de l'outil de gestion de mods est disponible. Client de bureau, registre public et Unity SDK — tout en un seul paquet.",
+      "pt": "Disponível a primeira beta pública da ferramenta de gestão de mods. Cliente de desktop, registro público e Unity SDK — tudo em um pacote.",
+      "zh": "模组管理工具的首个公开测试版已发布。桌面客户端、公共注册表和 Unity SDK —— 全部集成在一个包中。"
+    },
+    "products": [
+      "workmods"
+    ],
+    "link": "https://github.com/Made-by-One/Devers-Workmods/releases"
   }
 ]

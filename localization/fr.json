@@ -45,7 +45,7 @@
   "games.label.platform": "Plateforme",
   "games.status.released": "Sorti",
   "games.status.soon": "Bientôt disponible",
-  "news.release.tag": "Sortie",
+  "news.release.tag": "Pré-version",
   "news.release.title": "{product} {version} est sorti",
   "news.release.text": "La nouvelle version est téléchargeable sur la page des releases GitHub.",
   "news.release.more": "Page de la release",
