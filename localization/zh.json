@@ -56,5 +56,9 @@
   "projects.empty": "暂无项目",
   "game.back": "← 游戏",
   "game.art": "概念艺术",
-  "game.art.empty": "概念艺术即将推出"
+  "game.art.empty": "概念艺术即将推出",
+  "theme.aria": "主题",
+  "theme.system": "跟随系统",
+  "theme.dark": "深色",
+  "theme.light": "浅色"
 }

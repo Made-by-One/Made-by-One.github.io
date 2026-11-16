@@ -56,5 +56,9 @@
   "projects.empty": "Поки що проєктів немає",
   "game.back": "← Ігри",
   "game.art": "Концепт-арти",
-  "game.art.empty": "Концепт-арти скоро з'являться"
+  "game.art.empty": "Концепт-арти скоро з'являться",
+  "theme.aria": "Тема",
+  "theme.system": "Системна",
+  "theme.dark": "Темна",
+  "theme.light": "Світла"
 }

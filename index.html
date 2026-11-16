@@ -3,6 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  /* Тема применяется до отрисовки, чтобы не было вспышки */
+  (function () {
+    try {
+      var pref = localStorage.getItem("mbo_theme") || "system";
+      var light = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+      var resolved = (pref === "light" || pref === "dark") ? pref : (light ? "light" : "dark");
+      document.documentElement.dataset.theme = resolved;
+      document.documentElement.style.colorScheme = resolved;
+    } catch (e) {}
+  })();
+</script>
 <title>MADE BY ONE — STUDIO</title>
 <meta name="description" content="Made by One — a small studio building clean, focused developer tools. Devers-Workmods, Devers-Launcher, Devers-Packer.">
 <link rel="icon" type="image/x-icon" href="./data/website.ico">
@@ -42,6 +54,32 @@
 
     --measure: 1120px;
   }
+
+  /* Светлая тема: та же терминальная сетка, но на бумажном фоне */
+  :root[data-theme="light"] {
+    --bg:          #f8f6fa;
+    --panel:       #ffffff;
+    --panel-2:     #f2eef5;
+
+    --fg:          #141016;
+    --fg-dim:      #3a3340;
+    --muted:       #6b6372;
+    --muted-2:     #9a919f;
+
+    --line:        #e3ddea;
+    --line-soft:   #eee8f2;
+    --line-strong: #cfc5d8;
+
+    --accent:        #7c5ce0;
+    --accent-strong: #5b3fc4;
+    --accent-line:   #bcabf0;
+    --accent-bg:     rgba(124, 92, 224, .08);
+    --accent-bg-2:   rgba(124, 92, 224, .14);
+  }
+
+  :root[data-theme="light"] ::selection { background: var(--accent); color: #ffffff; }
+  :root[data-theme="light"] * { scrollbar-color: #cfc5d8 transparent; }
+  :root[data-theme="light"] ::-webkit-scrollbar-thumb { background: #cfc5d8; border-color: var(--bg); }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -145,7 +183,8 @@
     gap: var(--s2);
   }
 
-  .lang { position: relative; }
+  .lang, .theme { position: relative; }
+  .theme-label { font-size: 12px; }
 
   .lang-btn {
     display: inline-flex;
@@ -936,6 +975,7 @@
 
     .brand { font-size: 12px; }
     .brand-sub { display: none; }
+    .theme-label { display: none; }
 
     .nav {
       order: 3;
@@ -1012,6 +1052,15 @@
       </nav>
 
       <div class="header-tools">
+        <div class="theme">
+          <button class="lang-btn theme-btn" id="themeBtn" type="button" aria-label="Theme" aria-haspopup="true" aria-expanded="false">
+            <span class="lang-code" id="themeIcon" aria-hidden="true">◐</span>
+            <span class="theme-label" id="themeLabel">System</span>
+            <span class="lang-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="lang-menu" id="themeMenu" role="menu"></div>
+        </div>
+
         <div class="lang">
           <button class="lang-btn" id="langBtn" aria-label="Language" aria-haspopup="true" aria-expanded="false">
             <span class="lang-code" id="langFlag">EN</span>
@@ -1314,6 +1363,8 @@ function applyTranslations() {
   if (newsPage && !newsPage.classList.contains("hidden")) {
     renderNews();
   }
+  updateThemeButton();
+  renderThemeMenu();
 }
 
 function renderLangMenu() {
@@ -1351,10 +1402,106 @@ document.getElementById('langBtn').addEventListener('click', e => {
   menu.classList.toggle('open', open);
   document.getElementById('langBtn').setAttribute('aria-expanded', String(open));
 });
-document.addEventListener('click', closeLangMenu);
+document.addEventListener('click', () => { closeLangMenu(); closeThemeMenu(); });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeLangMenu();
+  if (e.key === 'Escape') { closeLangMenu(); closeThemeMenu(); }
 });
+
+/* ============ ТЕМА: системная / тёмная / светлая ============ */
+
+const THEME_KEY = "mbo_theme";
+const THEME_OPTIONS = [
+  ["system", "◐"],
+  ["dark", "●"],
+  ["light", "○"]
+];
+
+function getThemePref() {
+  const saved = localStorage.getItem(THEME_KEY);
+  return THEME_OPTIONS.some(([key]) => key === saved) ? saved : "system";
+}
+
+function systemTheme() {
+  return (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches)
+    ? "light"
+    : "dark";
+}
+
+/* Если переводов ещё нет — короткие английские подписи вместо ключей */
+function themeLabel(key) {
+  const value = t("theme." + key);
+  if (value !== "theme." + key) return value;
+  return { system: "System", dark: "Dark", light: "Light" }[key] || key;
+}
+
+function applyTheme(pref) {
+  const resolved = (pref === "light" || pref === "dark") ? pref : systemTheme();
+  document.documentElement.dataset.theme = resolved;
+  document.documentElement.style.colorScheme = resolved;
+  updateThemeButton();
+}
+
+function setTheme(pref) {
+  localStorage.setItem(THEME_KEY, pref);
+  applyTheme(pref);
+  renderThemeMenu();
+}
+
+function updateThemeButton() {
+  const pref = getThemePref();
+  const icon = document.getElementById("themeIcon");
+  const label = document.getElementById("themeLabel");
+  const btn = document.getElementById("themeBtn");
+  const option = THEME_OPTIONS.find(([key]) => key === pref) || THEME_OPTIONS[0];
+  if (icon) icon.textContent = option[1];
+  if (label) label.textContent = themeLabel(pref);
+  if (btn) btn.setAttribute("aria-label", t("theme.aria"));
+}
+
+function renderThemeMenu() {
+  const menu = document.getElementById("themeMenu");
+  if (!menu) return;
+  const pref = getThemePref();
+  menu.innerHTML = "";
+  THEME_OPTIONS.forEach(([key, icon]) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "lang-item" + (key === pref ? " active" : "");
+    btn.setAttribute("role", "menuitem");
+    btn.innerHTML = `<span class="flag">${icon}</span><span>${escapeHtml(themeLabel(key))}</span>`;
+    btn.onclick = () => { setTheme(key); closeThemeMenu(); };
+    menu.appendChild(btn);
+  });
+}
+
+function closeThemeMenu() {
+  const menu = document.getElementById("themeMenu");
+  const btn = document.getElementById("themeBtn");
+  if (menu) menu.classList.remove("open");
+  if (btn) btn.setAttribute("aria-expanded", "false");
+}
+
+const themeBtnEl = document.getElementById("themeBtn");
+if (themeBtnEl) {
+  themeBtnEl.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const menu = document.getElementById("themeMenu");
+    const open = !menu.classList.contains("open");
+    closeLangMenu();
+    menu.classList.toggle("open", open);
+    themeBtnEl.setAttribute("aria-expanded", String(open));
+  });
+}
+
+if (window.matchMedia) {
+  const schemeQuery = window.matchMedia("(prefers-color-scheme: light)");
+  const onSchemeChange = () => { if (getThemePref() === "system") applyTheme("system"); };
+  if (schemeQuery.addEventListener) schemeQuery.addEventListener("change", onSchemeChange);
+  else if (schemeQuery.addListener) schemeQuery.addListener(onSchemeChange);
+}
+
+applyTheme(getThemePref());
+renderThemeMenu();
 
 /* ============================================================
    MOTION — появление блоков при прокрутке (один раз, мягко)

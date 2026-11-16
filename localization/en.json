@@ -56,5 +56,9 @@
   "projects.empty": "No projects yet",
   "game.back": "← Games",
   "game.art": "Concept art",
-  "game.art.empty": "Concept art coming soon"
+  "game.art.empty": "Concept art coming soon",
+  "theme.aria": "Theme",
+  "theme.system": "System",
+  "theme.dark": "Dark",
+  "theme.light": "Light"
 }

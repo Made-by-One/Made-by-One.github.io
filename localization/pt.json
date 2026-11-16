@@ -56,5 +56,9 @@
   "projects.empty": "Ainda não há projetos",
   "game.back": "← Jogos",
   "game.art": "Arte conceitual",
-  "game.art.empty": "Arte conceitual em breve"
+  "game.art.empty": "Arte conceitual em breve",
+  "theme.aria": "Tema",
+  "theme.system": "Sistema",
+  "theme.dark": "Escuro",
+  "theme.light": "Claro"
 }

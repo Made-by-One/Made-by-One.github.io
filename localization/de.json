@@ -56,5 +56,9 @@
   "projects.empty": "Noch keine Projekte",
   "game.back": "← Spiele",
   "game.art": "Konzeptkunst",
-  "game.art.empty": "Konzeptkunst folgt bald"
+  "game.art.empty": "Konzeptkunst folgt bald",
+  "theme.aria": "Design",
+  "theme.system": "System",
+  "theme.dark": "Dunkel",
+  "theme.light": "Hell"
 }
