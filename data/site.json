@@ -422,7 +422,7 @@
         },
         "art": [
           {
-            "src": "./data/games/ReturnMe.png",
+            "src": "./data/games/concept-01-key-art.png",
             "caption": {
               "en": "Key art",
               "ru": "Ключевой арт",
@@ -432,6 +432,45 @@
               "fr": "Illustration principale",
               "pt": "Arte principal",
               "zh": "主视觉图"
+            }
+          },
+          {
+            "src": "./data/games/concept-02-castle.jpg",
+            "caption": {
+              "en": "Castle ruins",
+              "ru": "Руины замка",
+              "uk": "Руїни замку",
+              "es": "Ruinas del castillo",
+              "de": "Schlossruinen",
+              "fr": "Ruines du château",
+              "pt": "Ruínas do castelo",
+              "zh": "城堡废墟"
+            }
+          },
+          {
+            "src": "./data/games/concept-03-field.jpg",
+            "caption": {
+              "en": "Golden field",
+              "ru": "Золотое поле",
+              "uk": "Золоте поле",
+              "es": "Campo dorado",
+              "de": "Goldenes Feld",
+              "fr": "Champ doré",
+              "pt": "Campo dourado",
+              "zh": "金色田野"
+            }
+          },
+          {
+            "src": "./data/games/concept-04-emblem.jpg",
+            "caption": {
+              "en": "Emblem",
+              "ru": "Эмблема",
+              "uk": "Емблема",
+              "es": "Emblema",
+              "de": "Emblem",
+              "fr": "Emblème",
+              "pt": "Emblema",
+              "zh": "徽记"
             }
           }
         ]
