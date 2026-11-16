@@ -367,24 +367,24 @@
       "link": "https://madebyone.itch.io/",
       "details": {
         "tagline": {
-          "en": "A surreal road movie about climbing out of a mental pit.",
-          "ru": "Сюрреалистичное роуд-муви о выходе из ментальной ямы.",
-          "uk": "Сюрреалістичне роуд-муві про вихід із ментальної ями.",
-          "es": "Una road movie surrealista sobre salir de un pozo mental.",
-          "de": "Ein surrealer Roadmovie über den Ausstieg aus einer mentalen Grube.",
-          "fr": "Un road movie surréaliste sur la sortie d'un trou mental.",
-          "pt": "Um road movie surrealista sobre sair de um buraco mental.",
-          "zh": "一部关于走出心理低谷的超现实公路电影。"
+          "en": "A surreal journey through places of memory.",
+          "ru": "Сюрреалистичное путешествие по локациям памяти.",
+          "uk": "Сюрреалістична подорож локаціями пам'яті.",
+          "es": "Un viaje surrealista por lugares de la memoria.",
+          "de": "Eine surreale Reise durch Orte der Erinnerung.",
+          "fr": "Un voyage surréaliste à travers les lieux de la mémoire.",
+          "pt": "Uma viagem surrealista por lugares da memória.",
+          "zh": "一场穿越记忆之地的超现实旅程。"
         },
         "about": {
-          "en": "Return Me is a surreal road movie about climbing out of a mental pit. The journey is built around exploring a distorted world, meeting the people left by the roadside and slowly putting yourself back together. The game is in active development: every core mechanic is in place, and the team is now building levels and level design.",
-          "ru": "Return Me — сюрреалистичное роуд-муви о выходе из ментальной ямы. Путь строится вокруг исследования искажённого мира, встреч с людьми на обочине и попытки собрать себя заново. Игра в активной разработке: все основные механики готовы, сейчас идёт работа над уровнями и левел-дизайном.",
-          "uk": "Return Me — сюрреалістичне роуд-муві про вихід із ментальної ями. Подорож побудована навколо дослідження викривленого світу, зустрічей із людьми на узбіччі та спроби зібрати себе заново. Гра в активній розробці: усі основні механіки готові, зараз триває робота над рівнями та левел-дизайном.",
-          "es": "Return Me es una road movie surrealista sobre salir de un pozo mental. El viaje gira en torno a explorar un mundo distorsionado, encontrarse con quienes quedaron al borde del camino e intentar reconstruirse. El juego está en desarrollo activo: todas las mecánicas principales están listas y ahora el equipo trabaja en los niveles y el diseño de niveles.",
-          "de": "Return Me ist ein surrealer Roadmovie über den Ausstieg aus einer mentalen Grube. Die Reise dreht sich um das Erkunden einer verzerrten Welt, Begegnungen mit denen, die am Straßenrand zurückblieben, und den Versuch, sich neu zusammenzusetzen. Das Spiel befindet sich in aktiver Entwicklung: Alle Kernmechaniken stehen, jetzt arbeitet das Team an Levels und Level-Design.",
-          "fr": "Return Me est un road movie surréaliste sur la sortie d'un trou mental. Le voyage repose sur l'exploration d'un monde déformé, les rencontres avec ceux qui restent au bord de la route et la tentative de se reconstruire. Le jeu est en développement actif : toutes les mécaniques principales sont en place, l'équipe travaille désormais sur les niveaux et le level design.",
-          "pt": "Return Me é um road movie surrealista sobre sair de um buraco mental. A jornada gira em torno de explorar um mundo distorcido, encontrar quem ficou à beira da estrada e tentar se reconstruir. O jogo está em desenvolvimento ativo: todas as mecânicas principais estão prontas e a equipe agora trabalha nos níveis e no level design.",
-          "zh": "《Return Me》是一部关于走出心理低谷的超现实公路电影。旅程围绕探索扭曲的世界、与留在路边的人相遇，以及尝试重新拼凑自己展开。游戏正在积极开发中：所有核心机制均已完成，团队目前正在制作关卡和关卡设计。"
+          "en": "Return Me is a surreal journey through places of memory. You are the only one left in this world: there is no one else to meet, only the nameless protagonist and the spaces around them. Walking through these memory locations, the player can take in the liminal aesthetic and learn the story of the nameless main character.",
+          "ru": "Return Me — сюрреалистичное путешествие по локациям памяти. В этом мире вы остались одни: встретить здесь некого, есть только безымянный герой и пространства вокруг него. Гуляя по локациям памяти, игрок сможет насладиться лиминальной эстетикой и узнать историю безымянного главного героя.",
+          "uk": "Return Me — сюрреалістична подорож локаціями пам'яті. У цьому світі ви залишилися самі: зустріти тут нікого, є лише безіменний герой і простори навколо нього. Гуляючи локаціями пам'яті, гравець зможе насолодитися лімінальною естетикою та дізнатися історію безіменного головного героя.",
+          "es": "Return Me es un viaje surrealista por lugares de la memoria. Eres el único que queda en este mundo: no hay nadie más a quien encontrar, solo el protagonista sin nombre y los espacios que lo rodean. Recorriendo estas localizaciones de la memoria, el jugador puede disfrutar de la estética liminal y conocer la historia del protagonista sin nombre.",
+          "de": "Return Me ist eine surreale Reise durch Orte der Erinnerung. Du bist der Einzige, der in dieser Welt übrig ist: Es gibt niemanden sonst zu treffen, nur den namenlosen Protagonisten und die Räume um ihn herum. Beim Wandern durch diese Erinnerungsorte kann der Spieler die liminale Ästhetik genießen und die Geschichte des namenlosen Hauptcharakters erfahren.",
+          "fr": "Return Me est un voyage surréaliste à travers les lieux de la mémoire. Vous êtes le seul être restant dans ce monde : il n'y a personne d'autre à rencontrer, seulement le protagoniste sans nom et les espaces qui l'entourent. En parcourant ces lieux de mémoire, le joueur peut apprécier l'esthétique liminale et découvrir l'histoire du personnage principal sans nom.",
+          "pt": "Return Me é uma viagem surrealista por lugares da memória. Você é o único que restou neste mundo: não há mais ninguém para encontrar, apenas o protagonista sem nome e os espaços ao seu redor. Caminhando por esses lugares de memória, o jogador pode apreciar a estética liminal e conhecer a história do protagonista sem nome.",
+          "zh": "《Return Me》是一场穿越记忆之地的超现实旅程。你是这个世界中唯一剩下的人：这里没有其他人可以遇见，只有无名的主人公和他周围的空间。漫步于这些记忆之地，玩家可以欣赏阈限美学，并了解这位无名主角的故事。"
         },
         "art": [
           {
