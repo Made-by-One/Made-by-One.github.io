@@ -1593,7 +1593,6 @@ function openGame(id, event) {
   document.querySelectorAll(".nav-item").forEach(i => {
     i.classList.toggle("active", i.dataset.page === "games");
   });
-  replayMeters();
 }
 
 function renderCurrentGameDetail() {
@@ -1618,31 +1617,6 @@ function renderGameDetail(game) {
       `<span class="meta-item"><span class="meta-key">${escapeHtml(t(key))}</span>${escapeHtml(String(val))}</span>`
     )
     .join("");
-
-  let progress = "";
-  if (typeof game.progress === "number") {
-    const pct = Math.min(100, Math.max(0, game.progress));
-    progress = `
-      <div class="progress">
-        <div class="progress-head">
-          <span>${escapeHtml(t("games.progress"))}</span>
-          <span class="progress-pct">${pct}%</span>
-        </div>
-        <div class="meter" role="img" aria-label="${escapeHtml(t("games.progress"))}: ${pct}%">
-          <span class="meter-fill" style="--meter-pct:${pct}%"></span>
-        </div>
-      </div>`;
-  }
-
-  const highlights = pickLocalized(details.highlights) || [];
-  const highlightsHtml = Array.isArray(highlights) && highlights.length
-    ? `<section class="detail-section" data-reveal>
-         <h2 class="detail-section-title">${escapeHtml(t("game.highlights"))}</h2>
-         <ul class="feature-list">${highlights.map(text =>
-           `<li><span class="plus" aria-hidden="true">+</span><span>${escapeHtml(text)}</span></li>`
-         ).join("")}</ul>
-       </section>`
-    : "";
 
   const art = (details.art || []).filter(item => item && item.src);
   const artHtml = art.length
@@ -1669,10 +1643,7 @@ function renderGameDetail(game) {
         </header>
         <div class="game-meta">${meta}</div>
         <p class="card-desc">${escapeHtml(pickLocalized(details.about) || pickLocalized(game.desc) || "")}</p>
-        ${progress}
       </article>
-
-      ${highlightsHtml}
 
       <section class="detail-section" data-reveal>
         <h2 class="detail-section-title">${escapeHtml(t("game.art"))}</h2>

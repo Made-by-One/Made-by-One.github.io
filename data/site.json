@@ -386,40 +386,6 @@
           "pt": "Return Me é um road movie surrealista sobre sair de um buraco mental. A jornada gira em torno de explorar um mundo distorcido, encontrar quem ficou à beira da estrada e tentar se reconstruir. O jogo está em desenvolvimento ativo: todas as mecânicas principais estão prontas e a equipe agora trabalha nos níveis e no level design.",
           "zh": "《Return Me》是一部关于走出心理低谷的超现实公路电影。旅程围绕探索扭曲的世界、与留在路边的人相遇，以及尝试重新拼凑自己展开。游戏正在积极开发中：所有核心机制均已完成，团队目前正在制作关卡和关卡设计。"
         },
-        "highlights": {
-          "en": [
-            "All core mechanics are complete",
-            "Level creation and level design are in progress"
-          ],
-          "ru": [
-            "Все основные механики реализованы",
-            "Идёт работа над уровнями и левел-дизайном"
-          ],
-          "uk": [
-            "Усі основні механіки реалізовано",
-            "Триває робота над рівнями та левел-дизайном"
-          ],
-          "es": [
-            "Todas las mecánicas principales están completas",
-            "El trabajo en niveles y diseño de niveles está en marcha"
-          ],
-          "de": [
-            "Alle Kernmechaniken sind fertig",
-            "Arbeit an Levels und Level-Design läuft"
-          ],
-          "fr": [
-            "Toutes les mécaniques principales sont terminées",
-            "Le travail sur les niveaux et le level design est en cours"
-          ],
-          "pt": [
-            "Todas as mecânicas principais estão concluídas",
-            "O trabalho nos níveis e no level design está em andamento"
-          ],
-          "zh": [
-            "所有核心机制已完成",
-            "关卡制作和关卡设计正在进行"
-          ]
-        },
         "art": [
           {
             "src": "./data/games/concept-01-key-art.png",
