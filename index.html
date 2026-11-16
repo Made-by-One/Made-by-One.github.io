@@ -625,6 +625,66 @@
   }
   .progress-pct { color: var(--accent-strong); flex: 0 0 auto; }
 
+  /* ============================================================
+     GAME DETAIL — отдельная страница игры
+     ============================================================ */
+  .game-card.is-clickable { cursor: pointer; }
+  .game-card.is-clickable:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
+  .game-card .cover-img { transition: border-color .15s ease, opacity .15s ease; }
+  .game-card.is-clickable:hover .cover-img { border-color: var(--line-strong); opacity: .94; }
+  .game-card.is-clickable .card-title { transition: color .15s ease; }
+  .game-card.is-clickable:hover .card-title { color: var(--accent-strong); }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: var(--s3);
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    transition: color .15s ease;
+  }
+  .back-link:hover { color: var(--accent-strong); }
+
+  .detail-section-title {
+    margin-bottom: var(--s2);
+    padding-bottom: var(--s1);
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+
+  .art-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--s2);
+  }
+  .art-item {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    overflow: hidden;
+  }
+  .art-item img {
+    width: 100%;
+    max-height: 460px;
+    object-fit: contain;
+    background: var(--panel-2);
+  }
+  .art-item:first-child { grid-column: 1 / -1; }
+  .art-item:first-child img { max-height: 620px; }
+  .art-item figcaption {
+    padding: var(--s1) var(--s2);
+    border-top: 1px solid var(--line-soft);
+    color: var(--muted-2);
+    font-size: 11px;
+    letter-spacing: .08em;
+  }
+  .detail-empty { color: var(--muted-2); font-size: 13px; }
+
   /* Прогресс: плавное заполнение + переливающийся градиент */
   .meter {
     position: relative;
@@ -1042,6 +1102,11 @@
       </div>
     </section>
 
+    <!-- ================= GAME DETAIL ================= -->
+    <section class="page hidden" id="page-game-detail">
+      <div id="gameDetailRoot"></div>
+    </section>
+
     <footer class="site-footer">
       <span data-i18n="footer.copyright">© 2026 Made by One Studio</span>
       <div class="footer-links">
@@ -1182,6 +1247,7 @@ function applyTranslations() {
   });
   renderProducts();
   renderGames();
+  renderCurrentGameDetail();
   // Если вкладка новостей открыта — перерисовываем на текущем языке
   const newsPage = document.getElementById("page-news");
   if (newsPage && !newsPage.classList.contains("hidden")) {
@@ -1484,7 +1550,10 @@ function renderGames() {
       : "";
 
     return `
-      <article class="card game-card" data-reveal>
+      <article class="card game-card is-clickable" role="link" tabindex="0" aria-label="${escapeHtml(g.name)}"
+        onclick="openGame('${escapeHtml(g.id)}', event)"
+        onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openGame('${escapeHtml(g.id)}'); }"
+        data-reveal>
         <div class="game-cover">
           <span class="cover-fallback" aria-hidden="true">[ no cover ]</span>
           ${cover}
@@ -1507,6 +1576,111 @@ function renderGames() {
   }).join("");
 
   setupReveal(list);
+}
+
+/* ============ СТРАНИЦА ИГРЫ (подробности и концепт-арты) ============ */
+
+let CURRENT_GAME_ID = null;
+
+function openGame(id, event) {
+  if (event && event.target.closest("a, button")) return;
+  const game = ((SITE_CONFIG && SITE_CONFIG.games) || []).find(g => g.id === id);
+  if (!game) return;
+
+  CURRENT_GAME_ID = id;
+  renderGameDetail(game);
+  switchPage("game-detail", null);
+  document.querySelectorAll(".nav-item").forEach(i => {
+    i.classList.toggle("active", i.dataset.page === "games");
+  });
+  replayMeters();
+}
+
+function renderCurrentGameDetail() {
+  if (!CURRENT_GAME_ID) return;
+  const game = ((SITE_CONFIG && SITE_CONFIG.games) || []).find(g => g.id === CURRENT_GAME_ID);
+  if (game) renderGameDetail(game);
+}
+
+function renderGameDetail(game) {
+  const root = document.getElementById("gameDetailRoot");
+  if (!root || !game) return;
+
+  const details = game.details || {};
+
+  const meta = [
+    ["games.label.release", game.release],
+    ["games.label.genre", pickLocalized(game.genre)],
+    ["games.label.platform", pickLocalized(game.platform)]
+  ]
+    .filter(m => m[1])
+    .map(([key, val]) =>
+      `<span class="meta-item"><span class="meta-key">${escapeHtml(t(key))}</span>${escapeHtml(String(val))}</span>`
+    )
+    .join("");
+
+  let progress = "";
+  if (typeof game.progress === "number") {
+    const pct = Math.min(100, Math.max(0, game.progress));
+    progress = `
+      <div class="progress">
+        <div class="progress-head">
+          <span>${escapeHtml(t("games.progress"))}</span>
+          <span class="progress-pct">${pct}%</span>
+        </div>
+        <div class="meter" role="img" aria-label="${escapeHtml(t("games.progress"))}: ${pct}%">
+          <span class="meter-fill" style="--meter-pct:${pct}%"></span>
+        </div>
+      </div>`;
+  }
+
+  const highlights = pickLocalized(details.highlights) || [];
+  const highlightsHtml = Array.isArray(highlights) && highlights.length
+    ? `<section class="detail-section" data-reveal>
+         <h2 class="detail-section-title">${escapeHtml(t("game.highlights"))}</h2>
+         <ul class="feature-list">${highlights.map(text =>
+           `<li><span class="plus" aria-hidden="true">+</span><span>${escapeHtml(text)}</span></li>`
+         ).join("")}</ul>
+       </section>`
+    : "";
+
+  const art = (details.art || []).filter(item => item && item.src);
+  const artHtml = art.length
+    ? `<div class="art-grid">${art.map(item => `
+        <figure class="art-item">
+          <img src="${escapeHtml(item.src)}" alt="${escapeHtml(pickLocalized(item.caption) || game.name)}" loading="lazy">
+          <figcaption>${escapeHtml(pickLocalized(item.caption) || "")}</figcaption>
+        </figure>`).join("")}</div>`
+    : `<p class="detail-empty">${escapeHtml(t("game.art.empty"))}</p>`;
+
+  root.innerHTML = `
+    <div class="page-head" data-reveal>
+      <button class="back-link" type="button" onclick="switchPageByKey('games')">${escapeHtml(t("game.back"))}</button>
+      <div class="eyebrow"><span class="br">[</span> ~/games/${escapeHtml(game.id)} <span class="br">]</span></div>
+      <h1 class="page-title">${escapeHtml(game.name)}</h1>
+      <p class="page-sub">${escapeHtml(pickLocalized(details.tagline) || pickLocalized(game.desc) || "")}</p>
+    </div>
+
+    <div class="stack">
+      <article class="card" data-reveal>
+        <header class="card-head">
+          <span class="index">[ ${escapeHtml(t("games.status." + (game.status || "dev")))} ]</span>
+          <span class="card-meta">${escapeHtml(game.release || "")}</span>
+        </header>
+        <div class="game-meta">${meta}</div>
+        <p class="card-desc">${escapeHtml(pickLocalized(details.about) || pickLocalized(game.desc) || "")}</p>
+        ${progress}
+      </article>
+
+      ${highlightsHtml}
+
+      <section class="detail-section" data-reveal>
+        <h2 class="detail-section-title">${escapeHtml(t("game.art"))}</h2>
+        ${artHtml}
+      </section>
+    </div>`;
+
+  setupReveal(root);
 }
 
 /* ============ НОВОСТИ ============ */

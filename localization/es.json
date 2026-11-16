@@ -53,5 +53,9 @@
   "home.btn.projects": "Proyectos",
   "projects.title": "Proyectos",
   "projects.subtitle": "Herramientas para gamers y desarrolladores",
-  "projects.empty": "Aún no hay proyectos"
+  "projects.empty": "Aún no hay proyectos",
+  "game.back": "← Juegos",
+  "game.highlights": "Estado del desarrollo",
+  "game.art": "Arte conceptual",
+  "game.art.empty": "El arte conceptual llegará pronto"
 }

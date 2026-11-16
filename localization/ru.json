@@ -53,5 +53,9 @@
   "home.btn.projects": "Проекты",
   "projects.title": "Проекты",
   "projects.subtitle": "Инструменты для геймеров и разработчиков",
-  "projects.empty": "Пока нет проектов"
+  "projects.empty": "Пока нет проектов",
+  "game.back": "← Игры",
+  "game.highlights": "Статус разработки",
+  "game.art": "Концепт-арты",
+  "game.art.empty": "Концепт-арты скоро появятся"
 }
