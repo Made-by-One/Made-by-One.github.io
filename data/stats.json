@@ -1,0 +1,58 @@
+{
+  "generatedAt": "2026-11-19T08:21:30.854Z",
+  "range": {
+    "from": "2026-09-18",
+    "to": "2026-11-19"
+  },
+  "series": {
+    "commits": [
+      {
+        "date": "2026-09-01",
+        "value": 34
+      },
+      {
+        "date": "2026-10-01",
+        "value": 66
+      },
+      {
+        "date": "2026-11-01",
+        "value": 94
+      }
+    ],
+    "releases": [
+      {
+        "date": "2026-09-01",
+        "value": 1
+      },
+      {
+        "date": "2026-10-01",
+        "value": 1
+      },
+      {
+        "date": "2026-11-01",
+        "value": 2
+      }
+    ],
+    "game": [
+      {
+        "date": "2026-09-01",
+        "value": null
+      },
+      {
+        "date": "2026-10-01",
+        "value": 15
+      },
+      {
+        "date": "2026-11-01",
+        "value": 35
+      }
+    ]
+  },
+  "totals": {
+    "commits": 94,
+    "releases": 2,
+    "docs": 10,
+    "products": 3,
+    "gameProgress": 35
+  }
+}

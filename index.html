@@ -658,6 +658,244 @@
   }
 
   /* ============================================================
+     GROWTH CHART
+     ============================================================ */
+  .growth {
+    position: relative;
+    margin-top: var(--s3);
+    padding: clamp(22px, 3vw, 32px);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    background: var(--surface-sheen), var(--surface);
+    overflow: hidden;
+  }
+  .growth::before {
+    content: "";
+    position: absolute;
+    inset: -46% 30% auto auto;
+    width: 520px;
+    height: 320px;
+    pointer-events: none;
+    background: radial-gradient(closest-side, var(--accent-glow), transparent 72%);
+    filter: blur(14px);
+    opacity: .75;
+  }
+
+  .growth-head {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--s3);
+    flex-wrap: wrap;
+  }
+  .growth-head-copy { min-width: 0; }
+  .growth-title {
+    margin-top: 10px;
+    font-size: clamp(20px, 2.2vw, 26px);
+    font-weight: 600;
+    letter-spacing: -.03em;
+  }
+  .growth-sub {
+    margin-top: 6px;
+    max-width: 52ch;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .growth-total { text-align: right; }
+  .growth-total-value {
+    display: block;
+    font-size: clamp(30px, 3.6vw, 42px);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -.045em;
+    background: linear-gradient(180deg, var(--accent-2), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .growth-total-label {
+    display: block;
+    margin-top: 7px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+  }
+
+  .growth-tabs {
+    position: relative;
+    margin-top: var(--s4);
+    display: inline-flex;
+    gap: 4px;
+    padding: 3px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface-2);
+  }
+  .growth-tab {
+    padding: 7px 14px;
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+    transition: color .18s ease, background-color .18s ease;
+  }
+  .growth-tab:hover { color: var(--fg); }
+  .growth-tab.active {
+    color: var(--ink);
+    background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  }
+  :root[data-theme="light"] .growth-tab.active { color: #ffffff; }
+
+  .growth-chart {
+    position: relative;
+    margin-top: var(--s4);
+    min-height: 200px;
+  }
+  .growth-canvas { position: relative; }
+
+  .growth-svg {
+    display: block;
+    width: 100%;
+    height: clamp(170px, 23vw, 240px);
+    overflow: visible;
+  }
+  .growth-grid line {
+    stroke: var(--line-soft);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .growth-area {
+    fill: url(#growthFill);
+    opacity: 0;
+    transition: opacity .9s ease .2s;
+  }
+  .growth.is-drawn .growth-area { opacity: 1; }
+
+  .growth-line {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+    filter: drop-shadow(0 6px 14px var(--accent-glow));
+  }
+  .growth-dot { fill: var(--accent); }
+  .growth-dot-halo { fill: var(--accent-glow); }
+  .growth-marker {
+    stroke: var(--accent-line);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .growth-axis {
+    position: relative;
+    height: 16px;
+    margin-top: 6px;
+  }
+  .growth-axis span {
+    position: absolute;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+    white-space: nowrap;
+  }
+  .growth-axis span:first-child { transform: none; }
+  .growth-axis span:last-child { transform: translateX(-100%); }
+
+  .growth-tooltip {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    padding: 8px 11px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-sm);
+    background: var(--surface-3);
+    box-shadow: var(--shadow-pop);
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -118%);
+    transition: opacity .14s ease;
+    white-space: nowrap;
+  }
+  .growth-tooltip.show { opacity: 1; }
+  .growth-tooltip-date {
+    display: block;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+  }
+  .growth-tooltip-value {
+    display: block;
+    margin-top: 2px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--fg);
+  }
+  .growth-tooltip-value span {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: .06em;
+    color: var(--muted);
+  }
+
+  .growth-facts {
+    position: relative;
+    margin-top: var(--s5);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s2);
+    border-top: 1px solid var(--line-soft);
+    padding-top: var(--s3);
+  }
+  .growth-fact-value {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -.03em;
+  }
+  .growth-fact-label {
+    display: block;
+    margin-top: 3px;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+  }
+
+  .growth-note {
+    position: relative;
+    margin-top: var(--s3);
+    color: var(--muted-2);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .04em;
+  }
+
+  .growth-loading {
+    padding: var(--s5) 0;
+    color: var(--muted-2);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
      PAGE HEADING
      ============================================================ */
   .page-head {
@@ -1849,6 +2087,33 @@
           <div class="stat-label" data-i18n="games.label.platform">Platform</div>
         </div>
       </section>
+
+      <section class="growth" id="growthPanel" data-reveal aria-labelledby="growthTitle">
+        <div class="growth-head">
+          <div class="growth-head-copy">
+            <div class="eyebrow"><span class="br">[</span> ~/growth <span class="br">]</span></div>
+            <h2 class="growth-title" id="growthTitle" data-i18n="growth.title">Studio growth</h2>
+            <p class="growth-sub" data-i18n="growth.subtitle">Commits, releases and the game — month by month.</p>
+          </div>
+          <div class="growth-total">
+            <span class="growth-total-value" id="growthTotal">—</span>
+            <span class="growth-total-label" id="growthTotalLabel"></span>
+          </div>
+        </div>
+
+        <div class="growth-tabs" role="tablist" aria-label="Growth metric">
+          <button class="growth-tab active" type="button" role="tab" aria-selected="true" data-series="commits" onclick="setGrowthSeries('commits')" data-i18n="growth.site">Site</button>
+          <button class="growth-tab" type="button" role="tab" aria-selected="false" data-series="releases" onclick="setGrowthSeries('releases')" data-i18n="growth.tools">Tools</button>
+          <button class="growth-tab" type="button" role="tab" aria-selected="false" data-series="game" onclick="setGrowthSeries('game')" data-i18n="growth.game">Game</button>
+        </div>
+
+        <div class="growth-chart" id="growthChart">
+          <div class="growth-loading" data-i18n="growth.loading">Building chart…</div>
+        </div>
+
+        <div class="growth-facts" id="growthFacts"></div>
+        <p class="growth-note"><span id="growthRange"></span> · <span data-i18n="growth.source">Built from the public repository history.</span></p>
+      </section>
     </section>
 
     <!-- ================= PROJECTS ================= -->
@@ -1997,6 +2262,7 @@
 const SITE_URL     = "./data/site.json";
 const RELEASES_URL = "./data/releases.json";
 const NEWS_URL     = "./data/news/news.json";
+const STATS_URL    = "./data/stats.json";
 const GITHUB_API   = "https://api.github.com/repos/";
 
 let SITE_CONFIG = null;  // data/site.json — продукты и игры студии
@@ -2125,6 +2391,11 @@ function applyTranslations() {
   renderGames();
   renderCurrentGameDetail();
   refreshDocs();
+  if (STATS) {
+    renderGrowthFacts();
+    renderGrowthRange();
+    renderGrowth();
+  }
   // Если вкладка новостей открыта — перерисовываем на текущем языке
   const newsPage = document.getElementById("page-news");
   if (newsPage && !newsPage.classList.contains("hidden")) {
@@ -2881,6 +3152,276 @@ function renderNews() {
   setupReveal(container);
 }
 
+/* ============ ГРАФИК РОСТА (data/stats.json) ============ */
+
+let STATS = null;
+let growthSeries = "commits";
+
+async function loadStats() {
+  const panel = document.getElementById("growthPanel");
+  try {
+    STATS = await fetchJson(STATS_URL);
+  } catch (e) {
+    console.warn("stats.json недоступен, график скрыт:", e);
+    STATS = null;
+  }
+
+  if (!panel) return;
+  if (!STATS || !STATS.series) {
+    panel.hidden = true;
+    return;
+  }
+
+  renderGrowthFacts();
+  renderGrowthRange();
+  renderGrowth();
+}
+
+/* Даты берём как есть, без сдвига часового пояса */
+function growthDate(value) {
+  const parts = String(value).split("-").map(Number);
+  return new Date(parts[0], (parts[1] || 1) - 1, parts[2] || 1);
+}
+
+function formatGrowthDay(value) {
+  return growthDate(value).toLocaleDateString(currentLang, { day: "numeric", month: "short", year: "numeric" });
+}
+
+function formatGrowthMonth(value) {
+  return growthDate(value).toLocaleDateString(currentLang, { month: "short" });
+}
+
+function growthNumber(value) {
+  return Number(value).toLocaleString(currentLang);
+}
+
+/* У прогресса игры своя единица измерения — проценты */
+function growthUnitKey() {
+  return growthSeries === "game" ? "growth.unit.progress" : "growth.unit." + growthSeries;
+}
+
+function renderGrowthRange() {
+  const el = document.getElementById("growthRange");
+  if (!el || !STATS || !STATS.range) return;
+  el.textContent = `${formatGrowthDay(STATS.range.from)} — ${formatGrowthDay(STATS.range.to)}`;
+}
+
+function renderGrowthFacts() {
+  const host = document.getElementById("growthFacts");
+  if (!host || !STATS || !STATS.totals) return;
+
+  const totals = STATS.totals;
+  const items = [
+    ["growth.stat.commits", growthNumber(totals.commits)],
+    ["growth.stat.releases", growthNumber(totals.releases)],
+    ["growth.stat.docs", growthNumber(totals.docs)],
+    ["growth.stat.game", totals.gameProgress != null ? totals.gameProgress + "%" : "—"]
+  ];
+
+  host.innerHTML = items.map(([key, value]) => `
+          <div class="growth-fact">
+            <span class="growth-fact-value">${escapeHtml(String(value))}</span>
+            <span class="growth-fact-label">${escapeHtml(t(key))}</span>
+          </div>`).join("");
+}
+
+function setGrowthSeries(name) {
+  if (["commits", "releases", "game"].indexOf(name) === -1) return;
+  growthSeries = name;
+  document.querySelectorAll(".growth-tab").forEach(tab => {
+    const active = tab.dataset.series === name;
+    tab.classList.toggle("active", active);
+    tab.setAttribute("aria-selected", String(active));
+  });
+  renderGrowth();
+}
+
+/* Рисуем SVG вручную: сглаженная линия, заливка, сетка, ховер */
+function renderGrowth() {
+  const host = document.getElementById("growthChart");
+  const panel = document.getElementById("growthPanel");
+  if (!host || !STATS || !STATS.series) return;
+
+  const series = STATS.series[growthSeries];
+  const points = Array.isArray(series) ? series : ((series && Array.isArray(series.points)) ? series.points : []);
+  const known = points.map(p => p.value).filter(v => typeof v === "number");
+
+  if (!known.length) {
+    host.innerHTML = `<div class="empty">${escapeHtml(t("growth.empty"))}</div>`;
+    return;
+  }
+
+  const W = 760, H = 240;
+  const PAD = { l: 8, r: 8, t: 22, b: 22 };
+  const topValue = Math.max(...known);
+  const bottomValue = Math.min(0, ...known);
+  const span = (topValue - bottomValue) || 1;
+  const stepX = points.length > 1 ? (W - PAD.l - PAD.r) / (points.length - 1) : 0;
+
+  const px = i => PAD.l + stepX * i;
+  const py = v => PAD.t + (H - PAD.t - PAD.b) * (1 - (v - bottomValue) / span);
+  const baseY = (H - PAD.b).toFixed(1);
+
+  // Разрывы на пропущенных месяцах
+  const segments = [];
+  let run = [];
+  points.forEach((point, i) => {
+    if (typeof point.value !== "number") {
+      if (run.length) segments.push(run);
+      run = [];
+      return;
+    }
+    run.push({ x: px(i), y: py(point.value), i, value: point.value });
+  });
+  if (run.length) segments.push(run);
+
+  const curve = (pts) => {
+    if (pts.length === 1) return `M ${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
+    let d = `M ${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[i - 1] || pts[i];
+      const p1 = pts[i];
+      const p2 = pts[i + 1];
+      const p3 = pts[i + 2] || p2;
+      const c1x = p1.x + (p2.x - p0.x) / 6;
+      const c2x = p2.x - (p3.x - p1.x) / 6;
+      // Не даём кривой уходить ниже/выше соседних точек:
+      // накопительный рост не должен «проседать» между месяцами
+      const clampY = (v) => Math.min(Math.max(v, Math.min(p1.y, p2.y)), Math.max(p1.y, p2.y));
+      const c1y = clampY(p1.y + (p2.y - p0.y) / 6);
+      const c2y = clampY(p2.y - (p3.y - p1.y) / 6);
+      d += ` C ${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+    }
+    return d;
+  };
+
+  const linePath = segments.map(curve).join(" ");
+  const areaPath = segments.map(pts => {
+    if (pts.length < 2) return "";
+    return `${curve(pts)} L ${pts[pts.length - 1].x.toFixed(1)} ${baseY} L ${pts[0].x.toFixed(1)} ${baseY} Z`;
+  }).join(" ");
+
+  const lastSegment = segments[segments.length - 1];
+  const lastPoint = lastSegment[lastSegment.length - 1];
+
+  const grid = [0, 0.5, 1].map(ratio => {
+    const y = (PAD.t + (H - PAD.t - PAD.b) * ratio).toFixed(1);
+    return `<line x1="${PAD.l}" y1="${y}" x2="${W - PAD.r}" y2="${y}"/>`;
+  }).join("");
+
+  const axis = points.map((point, i) =>
+    `<span style="left:${((px(i) / W) * 100).toFixed(2)}%">${escapeHtml(formatGrowthMonth(point.date))}</span>`
+  ).join("");
+
+  host.innerHTML = `
+        <div class="growth-plot" id="growthPlot">
+          <div class="growth-canvas" id="growthCanvas">
+            <svg class="growth-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img"
+              aria-label="${escapeHtml(t("growth.title"))}">
+              <defs>
+                <linearGradient id="growthFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="var(--accent)" stop-opacity=".32"/>
+                  <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <g class="growth-grid">${grid}</g>
+              <path class="growth-area" d="${areaPath}"/>
+              <path class="growth-line" d="${linePath}"/>
+              <line class="growth-marker" id="growthMarker" x1="0" y1="${PAD.t}" x2="0" y2="${baseY}" style="opacity:0"/>
+              <circle class="growth-dot-halo" cx="${lastPoint.x.toFixed(1)}" cy="${lastPoint.y.toFixed(1)}" r="9"/>
+              <circle class="growth-dot" cx="${lastPoint.x.toFixed(1)}" cy="${lastPoint.y.toFixed(1)}" r="3.5"/>
+              <circle class="growth-dot" id="growthHoverDot" r="4" style="opacity:0"/>
+            </svg>
+            <div class="growth-tooltip" id="growthTooltip"></div>
+          </div>
+          <div class="growth-axis">${axis}</div>
+        </div>`;
+
+  const totalValue = document.getElementById("growthTotal");
+  const totalLabel = document.getElementById("growthTotalLabel");
+  if (totalValue && lastPoint) {
+    totalValue.textContent = growthSeries === "game"
+      ? lastPoint.value + "%"
+      : growthNumber(lastPoint.value);
+  }
+  if (totalLabel) totalLabel.textContent = t(growthUnitKey());
+
+  if (panel) panel.classList.add("is-drawn");
+
+  // Анимация линии; при reduced motion — сразу готовая
+  const line = host.querySelector(".growth-line");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (line && line.getTotalLength && !reduceMotion) {
+    const length = line.getTotalLength();
+    line.style.strokeDasharray = String(length);
+    line.style.strokeDashoffset = String(length);
+    requestAnimationFrame(() => {
+      line.style.transition = "stroke-dashoffset 1.35s cubic-bezier(.22, .61, .36, 1)";
+      line.style.strokeDashoffset = "0";
+    });
+  }
+
+  bindGrowthHover(points, px, py, W, H);
+}
+
+function bindGrowthHover(points, px, py, W, H) {
+  const canvas = document.getElementById("growthCanvas");
+  const marker = document.getElementById("growthMarker");
+  const hoverDot = document.getElementById("growthHoverDot");
+  const tooltip = document.getElementById("growthTooltip");
+  if (!canvas || !marker || !hoverDot || !tooltip) return;
+
+  const hide = () => {
+    marker.style.opacity = "0";
+    hoverDot.style.opacity = "0";
+    tooltip.classList.remove("show");
+  };
+
+  const move = (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (!rect.width) return;
+    const xInView = (event.clientX - rect.left) * (W / rect.width);
+
+    let best = -1;
+    let bestDistance = Infinity;
+    points.forEach((point, i) => {
+      if (typeof point.value !== "number") return;
+      const distance = Math.abs(px(i) - xInView);
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        best = i;
+      }
+    });
+    if (best === -1) return;
+
+    const point = points[best];
+    const x = px(best);
+    const y = py(point.value);
+
+    marker.setAttribute("x1", x.toFixed(1));
+    marker.setAttribute("x2", x.toFixed(1));
+    marker.style.opacity = "1";
+
+    hoverDot.setAttribute("cx", x.toFixed(1));
+    hoverDot.setAttribute("cy", y.toFixed(1));
+    hoverDot.style.opacity = "1";
+
+    tooltip.style.left = ((x / W) * 100).toFixed(2) + "%";
+    tooltip.style.top = ((y / H) * 100).toFixed(2) + "%";
+    // У краёв и у верхней точки подсказку сдвигаем внутрь, чтобы не обрезалась
+    const shiftX = (x / W) < 0.12 ? "-4px" : (x / W) > 0.88 ? "calc(-100% + 4px)" : "-50%";
+    const shiftY = (y / H) < 0.3 ? "14px" : "-118%";
+    tooltip.style.transform = `translate(${shiftX}, ${shiftY})`;
+    tooltip.innerHTML = `<span class="growth-tooltip-date">${escapeHtml(formatGrowthMonth(point.date))}</span>
+      <span class="growth-tooltip-value">${escapeHtml(growthSeries === "game" ? point.value + "%" : growthNumber(point.value))} <span>${escapeHtml(t(growthUnitKey()))}</span></span>`;
+    tooltip.classList.add("show");
+  };
+
+  canvas.addEventListener("pointermove", move);
+  canvas.addEventListener("pointerdown", move);
+  canvas.addEventListener("pointerleave", hide);
+}
+
 /* ============ ДОКУМЕНТАЦИЯ: АРХИВ ПРОГРАММ И РАЗДЕЛЫ ============ */
 
 const DOCS_DIR = "./data/docs/";
@@ -3114,7 +3655,8 @@ window.addEventListener("hashchange", () => { restoreDocRoute(); });
 async function init() {
   await Promise.all([
     loadAllTranslations(),
-    loadSiteConfig().then(loadReleases)
+    loadSiteConfig().then(loadReleases),
+    loadStats()
   ]);
 
   const saved = localStorage.getItem(STORAGE_KEY);

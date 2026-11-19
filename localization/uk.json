@@ -67,5 +67,20 @@
   "docs.loading": "Завантаження документації…",
   "docs.error": "Не вдалося завантажити документацію",
   "docs.all": "Усі документи",
-  "docs.sections": "Розділи"
+  "docs.sections": "Розділи",
+  "growth.title": "Ріст студії",
+  "growth.subtitle": "Коміти, релізи та гра — за місяцями.",
+  "growth.site": "Сайт",
+  "growth.tools": "Програми",
+  "growth.game": "Гра",
+  "growth.unit.commits": "комітів",
+  "growth.unit.releases": "релізів",
+  "growth.unit.progress": "прогрес",
+  "growth.source": "Зібрано з публічної історії репозиторію.",
+  "growth.loading": "Будуємо графік…",
+  "growth.empty": "Даних поки немає",
+  "growth.stat.commits": "Коміти",
+  "growth.stat.releases": "Релізи",
+  "growth.stat.docs": "Документація",
+  "growth.stat.game": "Гра"
 }

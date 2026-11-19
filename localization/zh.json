@@ -67,5 +67,20 @@
   "docs.loading": "正在加载文档…",
   "docs.error": "无法加载文档",
   "docs.all": "全部文档",
-  "docs.sections": "章节"
+  "docs.sections": "章节",
+  "growth.title": "工作室成长",
+  "growth.subtitle": "提交、发行与游戏进度，按月查看。",
+  "growth.site": "网站",
+  "growth.tools": "工具",
+  "growth.game": "游戏",
+  "growth.unit.commits": "次提交",
+  "growth.unit.releases": "个发行",
+  "growth.unit.progress": "进度",
+  "growth.source": "根据公开仓库历史生成。",
+  "growth.loading": "正在生成图表…",
+  "growth.empty": "暂无数据",
+  "growth.stat.commits": "提交",
+  "growth.stat.releases": "发行",
+  "growth.stat.docs": "文档",
+  "growth.stat.game": "游戏"
 }

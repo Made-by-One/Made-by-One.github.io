@@ -67,5 +67,20 @@
   "docs.loading": "Dokumentation wird geladen…",
   "docs.error": "Dokumentation konnte nicht geladen werden",
   "docs.all": "Alle Docs",
-  "docs.sections": "Abschnitte"
+  "docs.sections": "Abschnitte",
+  "growth.title": "Studio-Wachstum",
+  "growth.subtitle": "Commits, Releases und das Spiel — Monat für Monat.",
+  "growth.site": "Website",
+  "growth.tools": "Tools",
+  "growth.game": "Spiel",
+  "growth.unit.commits": "Commits",
+  "growth.unit.releases": "Releases",
+  "growth.unit.progress": "Fortschritt",
+  "growth.source": "Aus der öffentlichen Repository-Historie erzeugt.",
+  "growth.loading": "Diagramm wird gebaut…",
+  "growth.empty": "Noch keine Daten",
+  "growth.stat.commits": "Commits",
+  "growth.stat.releases": "Releases",
+  "growth.stat.docs": "Docs",
+  "growth.stat.game": "Spiel"
 }

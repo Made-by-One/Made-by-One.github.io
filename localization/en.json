@@ -67,5 +67,20 @@
   "docs.loading": "Loading documentation…",
   "docs.error": "Could not load the documentation",
   "docs.all": "All docs",
-  "docs.sections": "Sections"
+  "docs.sections": "Sections",
+  "growth.title": "Studio growth",
+  "growth.subtitle": "Commits, releases and the game — month by month.",
+  "growth.site": "Site",
+  "growth.tools": "Tools",
+  "growth.game": "Game",
+  "growth.unit.commits": "commits",
+  "growth.unit.releases": "releases",
+  "growth.unit.progress": "progress",
+  "growth.source": "Built from the public repository history.",
+  "growth.loading": "Building chart…",
+  "growth.empty": "No data yet",
+  "growth.stat.commits": "Commits",
+  "growth.stat.releases": "Releases",
+  "growth.stat.docs": "Docs",
+  "growth.stat.game": "Game"
 }

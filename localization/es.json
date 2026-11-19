@@ -67,5 +67,20 @@
   "docs.loading": "Cargando la documentación…",
   "docs.error": "No se pudo cargar la documentación",
   "docs.all": "Toda la documentación",
-  "docs.sections": "Secciones"
+  "docs.sections": "Secciones",
+  "growth.title": "Crecimiento del estudio",
+  "growth.subtitle": "Commits, versiones y el juego, mes a mes.",
+  "growth.site": "Sitio",
+  "growth.tools": "Herramientas",
+  "growth.game": "Juego",
+  "growth.unit.commits": "commits",
+  "growth.unit.releases": "versiones",
+  "growth.unit.progress": "progreso",
+  "growth.source": "Generado desde el historial público del repositorio.",
+  "growth.loading": "Creando el gráfico…",
+  "growth.empty": "Aún no hay datos",
+  "growth.stat.commits": "Commits",
+  "growth.stat.releases": "Versiones",
+  "growth.stat.docs": "Docs",
+  "growth.stat.game": "Juego"
 }

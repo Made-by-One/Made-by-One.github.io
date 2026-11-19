@@ -67,5 +67,20 @@
   "docs.loading": "Загрузка документации…",
   "docs.error": "Не удалось загрузить документацию",
   "docs.all": "Все документы",
-  "docs.sections": "Разделы"
+  "docs.sections": "Разделы",
+  "growth.title": "Рост студии",
+  "growth.subtitle": "Коммиты, релизы и игра — по месяцам.",
+  "growth.site": "Сайт",
+  "growth.tools": "Программы",
+  "growth.game": "Игра",
+  "growth.unit.commits": "коммитов",
+  "growth.unit.releases": "релизов",
+  "growth.unit.progress": "прогресс",
+  "growth.source": "Собрано из публичной истории репозитория.",
+  "growth.loading": "Строим график…",
+  "growth.empty": "Пока нет данных",
+  "growth.stat.commits": "Коммиты",
+  "growth.stat.releases": "Релизы",
+  "growth.stat.docs": "Документация",
+  "growth.stat.game": "Игра"
 }

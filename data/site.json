@@ -333,6 +333,10 @@
       "cover": "./data/games/ReturnMe.png",
       "status": "dev",
       "progress": 35,
+      "progressHistory": [
+        { "date": "2026-10-21", "progress": 15 },
+        { "date": "2026-11-13", "progress": 35 }
+      ],
       "release": "2027",
       "genre": {
         "en": "TBA",
