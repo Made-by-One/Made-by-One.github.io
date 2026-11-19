@@ -2396,6 +2396,11 @@ function applyTranslations() {
     renderGrowthRange();
     renderGrowth();
   }
+
+  const growthTabs = document.querySelector(".growth-tabs");
+  if (growthTabs) {
+    growthTabs.setAttribute("aria-label", t("growth.tablist"));
+  }
   // Если вкладка новостей открыта — перерисовываем на текущем языке
   const newsPage = document.getElementById("page-news");
   if (newsPage && !newsPage.classList.contains("hidden")) {
@@ -3195,9 +3200,26 @@ function growthNumber(value) {
   return Number(value).toLocaleString(currentLang);
 }
 
-/* У прогресса игры своя единица измерения — проценты */
-function growthUnitKey() {
-  return growthSeries === "game" ? "growth.unit.progress" : "growth.unit." + growthSeries;
+/* Единица измерения с правильным склонением: 1 коммит, 2 коммита, 94 коммита */
+function growthUnit(series, value) {
+  const base = "growth.unit." + (series === "game" ? "progress" : series);
+  if (series === "game") return t(base);
+
+  const count = Number(value);
+  const pick = (key) => {
+    const text = t(key);
+    return text === key ? t(base) : text;
+  };
+
+  if (currentLang === "ru" || currentLang === "uk") {
+    const mod10 = count % 10;
+    const mod100 = count % 100;
+    if (mod10 === 1 && mod100 !== 11) return pick(base + ".one");
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return pick(base + ".few");
+    return t(base);
+  }
+
+  return count === 1 ? pick(base + ".one") : t(base);
 }
 
 function renderGrowthRange() {
@@ -3344,7 +3366,7 @@ function renderGrowth() {
       ? lastPoint.value + "%"
       : growthNumber(lastPoint.value);
   }
-  if (totalLabel) totalLabel.textContent = t(growthUnitKey());
+  if (totalLabel) totalLabel.textContent = growthUnit(growthSeries, lastPoint.value);
 
   if (panel) panel.classList.add("is-drawn");
 
@@ -3413,7 +3435,7 @@ function bindGrowthHover(points, px, py, W, H) {
     const shiftY = (y / H) < 0.3 ? "14px" : "-118%";
     tooltip.style.transform = `translate(${shiftX}, ${shiftY})`;
     tooltip.innerHTML = `<span class="growth-tooltip-date">${escapeHtml(formatGrowthMonth(point.date))}</span>
-      <span class="growth-tooltip-value">${escapeHtml(growthSeries === "game" ? point.value + "%" : growthNumber(point.value))} <span>${escapeHtml(t(growthUnitKey()))}</span></span>`;
+      <span class="growth-tooltip-value">${escapeHtml(growthSeries === "game" ? point.value + "%" : growthNumber(point.value))} <span>${escapeHtml(growthUnit(growthSeries, point.value))}</span></span>`;
     tooltip.classList.add("show");
   };
 

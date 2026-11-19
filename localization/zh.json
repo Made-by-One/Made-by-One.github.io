@@ -82,5 +82,10 @@
   "growth.stat.commits": "提交",
   "growth.stat.releases": "发行",
   "growth.stat.docs": "文档",
-  "growth.stat.game": "游戏"
+  "growth.stat.game": "游戏",
+  "growth.unit.commits.one": "次提交",
+  "growth.unit.commits.few": "次提交",
+  "growth.unit.releases.one": "个发行",
+  "growth.unit.releases.few": "个发行",
+  "growth.tablist": "成长指标"
 }

@@ -82,5 +82,10 @@
   "growth.stat.commits": "Коммиты",
   "growth.stat.releases": "Релизы",
   "growth.stat.docs": "Документация",
-  "growth.stat.game": "Игра"
+  "growth.stat.game": "Игра",
+  "growth.unit.commits.one": "коммит",
+  "growth.unit.commits.few": "коммита",
+  "growth.unit.releases.one": "релиз",
+  "growth.unit.releases.few": "релиза",
+  "growth.tablist": "Метрики роста"
 }

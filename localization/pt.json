@@ -82,5 +82,10 @@
   "growth.stat.commits": "Commits",
   "growth.stat.releases": "Releases",
   "growth.stat.docs": "Docs",
-  "growth.stat.game": "Jogo"
+  "growth.stat.game": "Jogo",
+  "growth.unit.commits.one": "commit",
+  "growth.unit.commits.few": "commits",
+  "growth.unit.releases.one": "versão",
+  "growth.unit.releases.few": "versões",
+  "growth.tablist": "Métricas de crescimento"
 }
