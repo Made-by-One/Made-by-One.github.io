@@ -769,19 +769,34 @@
     border-radius: 999px;
     background: var(--surface-2);
   }
+  .growth-pill {
+    position: absolute;
+    left: 0;
+    top: 3px;
+    width: 0;
+    height: 0;
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--accent-2), var(--accent));
+    box-shadow: 0 8px 20px -10px var(--accent-glow);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .34s cubic-bezier(.22, .61, .36, 1),
+                width .34s cubic-bezier(.22, .61, .36, 1),
+                opacity .3s ease;
+  }
+  .growth-pill.is-ready { opacity: 1; }
   .growth-tab {
+    position: relative;
+    z-index: 1;
     padding: 7px 14px;
     border-radius: 999px;
     color: var(--muted);
     font-size: 13px;
     font-weight: 500;
-    transition: color .18s ease, background-color .18s ease;
+    transition: color .22s ease;
   }
   .growth-tab:hover { color: var(--fg); }
-  .growth-tab.active {
-    color: var(--ink);
-    background: linear-gradient(180deg, var(--accent-2), var(--accent));
-  }
+  .growth-tab.active { color: var(--ink); }
   :root[data-theme="light"] .growth-tab.active { color: #ffffff; }
 
   .growth-chart {
@@ -803,29 +818,89 @@
     vector-effect: non-scaling-stroke;
   }
 
-  .growth-area {
-    fill: url(#growthFill);
-    opacity: 0;
-    transition: opacity .9s ease .2s;
+  .growth-area { fill: url(#growthFill); }
+  .growth-reveal-rect {
+    transform: scaleX(0);
+    transform-box: fill-box;
+    transform-origin: 0 50%;
+    transition: transform 1.3s cubic-bezier(.33, .7, .2, 1);
   }
-  .growth.is-drawn .growth-area { opacity: 1; }
+  .growth-grid { opacity: 0; transition: opacity .9s ease .05s; }
+  .growth-svg.is-drawn .growth-grid { opacity: 1; }
 
   .growth-line {
     fill: none;
     stroke: var(--accent);
+    stroke: url(#growthStroke);
     stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
     vector-effect: non-scaling-stroke;
     filter: drop-shadow(0 6px 14px var(--accent-glow));
   }
-  .growth-dot { fill: var(--accent); }
-  .growth-dot-halo { fill: var(--accent-glow); }
+  .growth-pen {
+    fill: var(--accent-2);
+    opacity: 0;
+    filter: drop-shadow(0 0 7px var(--accent));
+  }
   .growth-marker {
     stroke: var(--accent-line);
     stroke-width: 1;
     vector-effect: non-scaling-stroke;
+    opacity: 0;
+    transition: opacity .16s ease;
   }
+  .growth-marker.show { opacity: 1; }
+
+  /* Точки — HTML-элементы: в SVG с preserveAspectRatio="none" они бы сплющивались */
+  .growth-end-dot {
+    position: absolute;
+    z-index: 1;
+    width: 8px;
+    height: 8px;
+    margin: -4px 0 0 -4px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 14px 2px var(--accent-glow);
+    opacity: 0;
+    transform: scale(.3);
+    transition: opacity .35s ease 1.22s, transform .55s cubic-bezier(.34, 1.56, .64, 1) 1.22s;
+    pointer-events: none;
+  }
+  .growth-canvas.is-drawn .growth-end-dot { opacity: 1; transform: scale(1); }
+
+  .growth-end-halo {
+    position: absolute;
+    inset: -7px;
+    border-radius: 50%;
+    border: 1px solid var(--accent);
+    opacity: 0;
+  }
+  .growth-canvas.is-drawn .growth-end-halo {
+    animation: growthPulse 2.9s cubic-bezier(.22, .61, .36, 1) 1.75s infinite;
+  }
+  @keyframes growthPulse {
+    0%   { opacity: .5; transform: scale(.45); }
+    70%  { opacity: 0;  transform: scale(2.1); }
+    100% { opacity: 0;  transform: scale(2.1); }
+  }
+
+  .growth-hover-dot {
+    position: absolute;
+    z-index: 2;
+    width: 9px;
+    height: 9px;
+    margin: -4.5px 0 0 -4.5px;
+    border: 2px solid var(--accent-2);
+    border-radius: 50%;
+    background: var(--surface);
+    box-shadow: 0 0 0 4px var(--accent-glow);
+    opacity: 0;
+    transform: scale(.5);
+    transition: opacity .16s ease, transform .16s ease;
+    pointer-events: none;
+  }
+  .growth-hover-dot.show { opacity: 1; transform: scale(1); }
 
   .growth-axis {
     position: relative;
@@ -858,7 +933,7 @@
     pointer-events: none;
     opacity: 0;
     transform: translate(-50%, -118%);
-    transition: opacity .14s ease;
+    transition: opacity .14s ease, left .12s ease-out, top .12s ease-out;
     white-space: nowrap;
   }
   .growth-tooltip.show { opacity: 1; }
@@ -883,6 +958,15 @@
     font-weight: 400;
     letter-spacing: .06em;
     color: var(--muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .growth-reveal-rect { transform: none; transition: none; }
+    .growth-grid { opacity: 1; transition: none; }
+    .growth-line { transition: none !important; }
+    .growth-end-dot { opacity: 1; transform: none; transition: none; }
+    .growth-end-halo, .growth-pen { display: none; }
+    .growth-hover-dot, .growth-marker, .growth-tooltip, .growth-pill { transition: none; }
   }
 
   .growth-facts {
@@ -2135,6 +2219,7 @@
         </div>
 
         <div class="growth-tabs" role="tablist" aria-label="Growth metric">
+          <span class="growth-pill" aria-hidden="true"></span>
           <button class="growth-tab active" type="button" role="tab" aria-selected="true" data-series="commits" onclick="setGrowthSeries('commits')" data-i18n="growth.site">Site</button>
           <button class="growth-tab" type="button" role="tab" aria-selected="false" data-series="releases" onclick="setGrowthSeries('releases')" data-i18n="growth.tools">Tools</button>
           <button class="growth-tab" type="button" role="tab" aria-selected="false" data-series="game" onclick="setGrowthSeries('game')" data-i18n="growth.game">Game</button>
@@ -3200,6 +3285,9 @@ function renderNews() {
 
 let STATS = null;
 let growthSeries = "commits";
+let growthTotalShown = 0;
+let growthTotalSeries = null;
+let growthTotalFrame = 0;
 
 async function loadStats() {
   const panel = document.getElementById("growthPanel");
@@ -3374,6 +3462,9 @@ function renderGrowth() {
     `<span style="left:${((px(i) / W) * 100).toFixed(2)}%">${escapeHtml(formatGrowthMonth(point.date))}</span>`
   ).join("");
 
+  const endLeft = (lastPoint.x / W * 100).toFixed(2);
+  const endTop = (lastPoint.y / H * 100).toFixed(2);
+
   host.innerHTML = `
         <div class="growth-plot" id="growthPlot">
           <div class="growth-canvas" id="growthCanvas">
@@ -3381,48 +3472,155 @@ function renderGrowth() {
               aria-label="${escapeHtml(t("growth.title"))}">
               <defs>
                 <linearGradient id="growthFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="var(--accent)" stop-opacity=".32"/>
+                  <stop offset="0%" stop-color="var(--accent)" stop-opacity=".34"/>
+                  <stop offset="55%" stop-color="var(--accent)" stop-opacity=".12"/>
                   <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
                 </linearGradient>
+                <linearGradient id="growthStroke" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="var(--accent)"/>
+                  <stop offset="100%" stop-color="var(--accent-2)"/>
+                </linearGradient>
+                <clipPath id="growthReveal">
+                  <rect class="growth-reveal-rect" x="0" y="0" width="${W}" height="${H}"/>
+                </clipPath>
               </defs>
               <g class="growth-grid">${grid}</g>
-              <path class="growth-area" d="${areaPath}"/>
-              <path class="growth-line" d="${linePath}"/>
-              <line class="growth-marker" id="growthMarker" x1="0" y1="${PAD.t}" x2="0" y2="${baseY}" style="opacity:0"/>
-              <circle class="growth-dot-halo" cx="${lastPoint.x.toFixed(1)}" cy="${lastPoint.y.toFixed(1)}" r="9"/>
-              <circle class="growth-dot" cx="${lastPoint.x.toFixed(1)}" cy="${lastPoint.y.toFixed(1)}" r="3.5"/>
-              <circle class="growth-dot" id="growthHoverDot" r="4" style="opacity:0"/>
+              <g clip-path="url(#growthReveal)">
+                <path class="growth-area" d="${areaPath}"/>
+                <path class="growth-line" id="growthLinePath" d="${linePath}"/>
+              </g>
+              <line class="growth-marker" id="growthMarker" x1="0" y1="${PAD.t}" x2="0" y2="${baseY}"/>
+              <circle class="growth-pen" r="3.2">
+                <animateMotion id="growthPenMotion" dur="1.3s" begin="indefinite" fill="freeze"
+                  calcMode="spline" keyTimes="0;1" keySplines=".33 .7 .2 1">
+                  <mpath href="#growthLinePath"/>
+                </animateMotion>
+                <animate id="growthPenFade" attributeName="opacity" values="0;1;1;0"
+                  keyTimes="0;.05;.87;1" dur="1.3s" begin="indefinite" fill="freeze"/>
+              </circle>
             </svg>
+            <span class="growth-end-dot" style="left:${endLeft}%;top:${endTop}%"><i class="growth-end-halo"></i></span>
+            <span class="growth-hover-dot" id="growthHoverDot"></span>
             <div class="growth-tooltip" id="growthTooltip"></div>
           </div>
           <div class="growth-axis">${axis}</div>
         </div>`;
 
-  const totalValue = document.getElementById("growthTotal");
   const totalLabel = document.getElementById("growthTotalLabel");
-  if (totalValue && lastPoint) {
-    totalValue.textContent = growthSeries === "game"
-      ? lastPoint.value + "%"
-      : growthNumber(lastPoint.value);
-  }
+  if (lastPoint) animateGrowthTotal(lastPoint.value);
   if (totalLabel) totalLabel.textContent = growthUnit(growthSeries, lastPoint.value);
 
-  if (panel) panel.classList.add("is-drawn");
+  playGrowthAnimation();
+  bindGrowthHover(points, px, py, W, H);
+  syncGrowthPill();
+}
 
-  // Анимация линии; при reduced motion — сразу готовая
-  const line = host.querySelector(".growth-line");
+/* Итоговая цифра набегает, а не появляется рывком */
+function formatGrowthTotal(value) {
+  return growthSeries === "game" ? Math.round(value) + "%" : growthNumber(Math.round(value));
+}
+
+function animateGrowthTotal(target) {
+  const el = document.getElementById("growthTotal");
+  if (!el) return;
+
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (line && line.getTotalLength && !reduceMotion) {
-    const length = line.getTotalLength();
-    line.style.strokeDasharray = String(length);
-    line.style.strokeDashoffset = String(length);
-    requestAnimationFrame(() => {
-      line.style.transition = "stroke-dashoffset 1.35s cubic-bezier(.22, .61, .36, 1)";
-      line.style.strokeDashoffset = "0";
-    });
+  const sameSeries = growthTotalSeries === growthSeries;
+  const from = (reduceMotion || !sameSeries) ? 0 : growthTotalShown;
+  growthTotalSeries = growthSeries;
+  cancelAnimationFrame(growthTotalFrame);
+
+  if (reduceMotion) {
+    growthTotalShown = target;
+    el.textContent = formatGrowthTotal(target);
+    return;
   }
 
-  bindGrowthHover(points, px, py, W, H);
+  const duration = 950;
+  const started = performance.now();
+  const tick = (now) => {
+    const progress = Math.min(1, (now - started) / duration);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    growthTotalShown = from + (target - from) * eased;
+    el.textContent = formatGrowthTotal(progress < 1 ? growthTotalShown : target);
+    if (progress < 1) {
+      growthTotalFrame = requestAnimationFrame(tick);
+    } else {
+      growthTotalShown = target;
+    }
+  };
+  growthTotalFrame = requestAnimationFrame(tick);
+}
+
+/* Рисуем только когда график попал в кадр: анимация не тратится впустую */
+function playGrowthAnimation() {
+  const panel = document.getElementById("growthPanel");
+  const canvas = document.getElementById("growthCanvas");
+  if (!panel || !canvas) return;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduceMotion) {
+    canvas.classList.add("is-drawn");
+    const svg = canvas.querySelector(".growth-svg");
+    if (svg) svg.classList.add("is-drawn");
+    return;
+  }
+
+  const start = () => {
+    canvas.classList.add("is-drawn");
+    const svg = canvas.querySelector(".growth-svg");
+    if (svg) svg.classList.add("is-drawn");
+
+    const rect = canvas.querySelector(".growth-reveal-rect");
+
+    requestAnimationFrame(() => {
+      if (rect) rect.style.transform = "scaleX(1)";
+      const motion = document.getElementById("growthPenMotion");
+      const fade = document.getElementById("growthPenFade");
+      if (motion && motion.beginElement) {
+        motion.beginElement();
+        if (fade) fade.beginElement();
+      }
+    });
+  };
+
+  if (!("IntersectionObserver" in window)) {
+    start();
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    if (entries.some(entry => entry.isIntersecting)) {
+      observer.disconnect();
+      start();
+    }
+  }, { threshold: 0.2 });
+  observer.observe(panel);
+}
+
+/* Плашка активной вкладки переезжает к выбранной метрике */
+function syncGrowthPill() {
+  const tabs = document.querySelector(".growth-tabs");
+  if (!tabs) return;
+  const pill = tabs.querySelector(".growth-pill");
+  const active = tabs.querySelector(".growth-tab.active");
+  if (!pill || !active) return;
+
+  const box = tabs.getBoundingClientRect();
+  const tab = active.getBoundingClientRect();
+  if (!tab.width) return;
+
+  pill.style.width = tab.width.toFixed(1) + "px";
+  pill.style.height = tab.height.toFixed(1) + "px";
+  pill.style.top = (tab.top - box.top - tabs.clientTop).toFixed(1) + "px";
+  pill.style.transform = `translateX(${(tab.left - box.left - tabs.clientLeft).toFixed(1)}px)`;
+  pill.classList.add("is-ready");
+
+  if (!syncGrowthPill.bound) {
+    syncGrowthPill.bound = true;
+    window.addEventListener("resize", syncGrowthPill);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncGrowthPill);
+  }
 }
 
 function bindGrowthHover(points, px, py, W, H) {
@@ -3433,8 +3631,8 @@ function bindGrowthHover(points, px, py, W, H) {
   if (!canvas || !marker || !hoverDot || !tooltip) return;
 
   const hide = () => {
-    marker.style.opacity = "0";
-    hoverDot.style.opacity = "0";
+    marker.classList.remove("show");
+    hoverDot.classList.remove("show");
     tooltip.classList.remove("show");
   };
 
@@ -3461,11 +3659,11 @@ function bindGrowthHover(points, px, py, W, H) {
 
     marker.setAttribute("x1", x.toFixed(1));
     marker.setAttribute("x2", x.toFixed(1));
-    marker.style.opacity = "1";
+    marker.classList.add("show");
 
-    hoverDot.setAttribute("cx", x.toFixed(1));
-    hoverDot.setAttribute("cy", y.toFixed(1));
-    hoverDot.style.opacity = "1";
+    hoverDot.style.left = ((x / W) * 100).toFixed(2) + "%";
+    hoverDot.style.top = ((y / H) * 100).toFixed(2) + "%";
+    hoverDot.classList.add("show");
 
     tooltip.style.left = ((x / W) * 100).toFixed(2) + "%";
     tooltip.style.top = ((y / H) * 100).toFixed(2) + "%";
