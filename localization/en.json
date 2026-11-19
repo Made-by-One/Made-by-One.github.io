@@ -4,6 +4,7 @@
   "nav.home": "Home",
   "nav.games": "Games",
   "nav.news": "News",
+  "nav.docs": "Docs",
   "nav.about": "About",
   "home.title": "Made by One",
   "home.sub": "Small studio making clean, focused tools for gamers and developers.",
@@ -60,5 +61,8 @@
   "theme.aria": "Theme",
   "theme.system": "System",
   "theme.dark": "Dark",
-  "theme.light": "Light"
+  "theme.light": "Light",
+  "docs.title": "Documentation",
+  "docs.subtitle": "Manuals for the tools we build.",
+  "docs.lang": "Technical documentation is kept in English."
 }

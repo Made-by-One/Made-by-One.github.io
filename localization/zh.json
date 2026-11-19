@@ -4,6 +4,7 @@
   "nav.home": "主页",
   "nav.games": "游戏",
   "nav.news": "新闻",
+  "nav.docs": "文档",
   "nav.about": "关于",
   "home.title": "Made by One",
   "home.sub": "为玩家和开发者打造简洁、专注工具的小型工作室。",
@@ -60,5 +61,8 @@
   "theme.aria": "主题",
   "theme.system": "跟随系统",
   "theme.dark": "深色",
-  "theme.light": "浅色"
+  "theme.light": "浅色",
+  "docs.title": "文档",
+  "docs.subtitle": "工作室工具的使用手册。",
+  "docs.lang": "技术文档以英文提供。"
 }

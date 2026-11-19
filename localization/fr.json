@@ -4,6 +4,7 @@
   "nav.home": "Accueil",
   "nav.games": "Jeux",
   "nav.news": "Actualités",
+  "nav.docs": "Docs",
   "nav.about": "À propos",
   "home.title": "Made by One",
   "home.sub": "Petit studio créant des outils propres et ciblés pour les joueurs et les développeurs.",
@@ -60,5 +61,8 @@
   "theme.aria": "Thème",
   "theme.system": "Système",
   "theme.dark": "Sombre",
-  "theme.light": "Clair"
+  "theme.light": "Clair",
+  "docs.title": "Documentation",
+  "docs.subtitle": "Manuels des outils du studio.",
+  "docs.lang": "La documentation technique est en anglais."
 }
