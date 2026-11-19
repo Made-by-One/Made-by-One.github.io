@@ -1,0 +1,124 @@
+{
+  "programs": [
+    {
+      "id": "workmods",
+      "name": "Devers Workmods",
+      "status": "beta",
+      "version": "1.2b",
+      "license": "MIT",
+      "platform": "Windows · Linux · macOS",
+      "repo": "https://github.com/Made-by-One/Devers-Workmods",
+      "releases": "https://github.com/Made-by-One/Devers-Workmods/releases",
+      "sections": [
+        "overview",
+        "requirements",
+        "install",
+        "client",
+        "profiles",
+        "mods",
+        "build",
+        "publish",
+        "unity",
+        "troubleshooting"
+      ],
+      "titles": {
+        "en": [
+          "Overview",
+          "Requirements &amp; dependencies",
+          "Install &amp; first launch",
+          "The client",
+          "Game profiles",
+          "Installing &amp; managing mods",
+          "Building a mod",
+          "Publishing",
+          "Unity SDK",
+          "Troubleshooting"
+        ],
+        "ru": [
+          "Обзор",
+          "Требования и зависимости",
+          "Установка и первый запуск",
+          "Клиент",
+          "Профили игр",
+          "Установка и управление модами",
+          "Создание мода",
+          "Публикация",
+          "Unity SDK",
+          "Решение проблем"
+        ],
+        "uk": [
+          "Огляд",
+          "Вимоги та залежності",
+          "Встановлення та перший запуск",
+          "Клієнт",
+          "Профілі ігор",
+          "Встановлення та керування модами",
+          "Створення мода",
+          "Публікація",
+          "Unity SDK",
+          "Вирішення проблем"
+        ],
+        "es": [
+          "Descripción general",
+          "Requisitos y dependencias",
+          "Instalación y primer inicio",
+          "El cliente",
+          "Perfiles de juego",
+          "Instalar y gestionar mods",
+          "Crear un mod",
+          "Publicación",
+          "Unity SDK",
+          "Solución de problemas"
+        ],
+        "de": [
+          "Überblick",
+          "Anforderungen &amp; Abhängigkeiten",
+          "Installation &amp; erster Start",
+          "Der Client",
+          "Spielprofile",
+          "Mods installieren &amp; verwalten",
+          "Einen Mod bauen",
+          "Veröffentlichen",
+          "Unity SDK",
+          "Fehlerbehebung"
+        ],
+        "fr": [
+          "Vue d'ensemble",
+          "Prérequis et dépendances",
+          "Installation et premier lancement",
+          "Le client",
+          "Profils de jeu",
+          "Installer et gérer les mods",
+          "Créer un mod",
+          "Publication",
+          "Unity SDK",
+          "Dépannage"
+        ],
+        "pt": [
+          "Visão geral",
+          "Requisitos e dependências",
+          "Instalação e primeira execução",
+          "O cliente",
+          "Perfis de jogo",
+          "Instalar e gerenciar mods",
+          "Criar um mod",
+          "Publicação",
+          "Unity SDK",
+          "Solução de problemas"
+        ],
+        "zh": [
+          "概述",
+          "要求与依赖",
+          "安装与首次启动",
+          "客户端",
+          "游戏配置",
+          "安装与管理模组",
+          "制作模组",
+          "发布",
+          "Unity SDK",
+          "故障排查"
+        ]
+      }
+    }
+  ]
+}

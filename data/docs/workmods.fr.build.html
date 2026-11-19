@@ -1,0 +1,114 @@
+<section class="doc-section" id="doc-build">
+    <div class="doc-eyebrow">Création</div>
+    <h2 class="doc-h2">Créer un mod</h2>
+    <p class="doc-p">Un mod est un dossier. Son contenu est exactement ce que verra le SDK du jeu, plus un manifeste optionnel <code>workmod.json</code>.</p>
+
+    <pre class="doc-code"><code>neon-ui/
+├── workmod.json
+├── neon-ui.bundle
+└── bundles/
+    └── shared.bundle</code></pre>
+
+    <h3 class="doc-h3">Le manifeste</h3>
+    <p class="doc-p">À la publication, le client n'exige que <code>name</code> et <code>version</code>, mais <code>id</code>, <code>game_id</code> et les champs de compatibilité permettent au validateur de rejeter un paquet qui ne pourra pas tourner sur la cible.</p>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Champ</th><th>Signification</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>id</code></td><td>Identifiant stable du mod. Généré une fois, jamais modifié entre versions.</td></tr>
+          <tr><td><code>game_id</code></td><td>Jeu cible. Par défaut, le profil <code>default</code>.</td></tr>
+          <tr><td><code>name</code>, <code>version</code></td><td>Nom et version. Le tag de release devient <code>v&lt;version&gt;</code>.</td></tr>
+          <tr><td><code>author</code>, <code>description</code></td><td>Texte libre affiché dans le catalogue.</td></tr>
+          <tr><td><code>entry_asset</code></td><td>Nom d'asset par défaut facultatif que le jeu peut charger.</td></tr>
+          <tr><td><code>bundles</code></td><td>Chemins explicites des bundles, relatifs à la racine du mod. Recommandé quand les noms sont ambigus.</td></tr>
+          <tr><td><code>engine</code>, <code>sdk</code></td><td><code>unity</code> pour le SDK actuel.</td></tr>
+          <tr><td><code>unity_version</code></td><td>Version minimale d'Unity pour laquelle le mod a été compilé.</td></tr>
+          <tr><td><code>platforms</code></td><td><code>windows</code>, <code>linux</code>, <code>macos</code>, <code>android</code>, <code>ios</code>.</td></tr>
+          <tr><td><code>min_client_version</code>, <code>min_sdk_version</code></td><td>Client et SDK les plus anciens capables d'installer ou de charger le mod.</td></tr>
+          <tr><td><code>tags</code></td><td>Chaînes pour la recherche.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre class="doc-code"><code>{
+  "id": "a1b2c3d4",
+  "game_id": "space-rangers",
+  "name": "Neon UI",
+  "version": "1.2.0",
+  "author": "your-handle",
+  "description": "Neon HUD replacement for the tactical screen.",
+  "entry_asset": "NeonHud",
+  "bundles": ["neon-ui.bundle", "bundles/shared.bundle"],
+  "engine": "unity",
+  "unity_version": "2021.3",
+  "platforms": ["windows", "linux", "macos"],
+  "tags": ["ui", "hud"]
+}</code></pre>
+
+    <h3 class="doc-h3">Format du contenu</h3>
+    <ul class="doc-list">
+      <li>Les <strong>AssetBundles</strong> sont le format recommandé : ils fonctionnent avec Mono et IL2CPP sur toutes les plateformes. Compile un bundle par plateforme — il n'est pas portable entre elles.</li>
+      <li>Utilise <strong>ChunkBasedCompression</strong> (LZ4). Les bundles LZMA doivent être décompressés en entier et causent souvent des échecs sur Android.</li>
+      <li>Place les dépendances (bundles partagés, textures, shaders) <strong>dans le mod</strong>. Le SDK charge tous les bundles d'un mod avant de résoudre les assets.</li>
+      <li>Les <strong>Addressables</strong> fonctionnent car ils produisent des AssetBundles ; inclus les fichiers de bundle compilés du dossier de la plateforme.</li>
+      <li>Les <strong>DLL</strong> ne se chargent qu'avec le backend de script Mono. Considère-les comme du code totalement fiable.</li>
+    </ul>
+
+    <pre class="doc-code"><code>using UnityEditor;
+using UnityEngine;
+
+public static class WorkmodsBundleBuilder
+{
+    [MenuItem("Workmods/Build Mod Bundle")]
+    public static void Build()
+    {
+        var builds = new[]
+        {
+            new AssetBundleBuild
+            {
+                assetBundleName = "neon-ui.bundle",
+                assetNames = new[] { "Assets/ModContent/NeonHud.prefab" }
+            }
+        };
+
+        BuildPipeline.BuildAssetBundles(
+            "Build/Mod", builds,
+            BuildAssetBundleOptions.ChunkBasedCompression,
+            BuildTarget.StandaloneWindows64);
+    }
+}</code></pre>
+
+    <h3 class="doc-h3">CLI d'auteur</h3>
+    <p class="doc-p">L'éditeur de bureau suffit, mais les mêmes outils existent en terminal et en CI. Chaque commande sort avec un code non nul en cas d'erreur et accepte <code>--json</code> pour une sortie lisible par machine.</p>
+
+    <pre class="doc-code"><code><span class="c"># créer un dossier avec un workmod.json prérempli</span>
+python -m workmods init neon-ui --name "Neon UI" --game space-rangers --author your-handle
+
+<span class="c"># vérifier les champs requis, les bundles et le contenu manquant</span>
+python -m workmods validate neon-ui
+
+<span class="c"># construire le ZIP de release et afficher son SHA-256</span>
+python -m workmods pack neon-ui --out dist/neon-ui.zip
+
+<span class="c"># rouvrir le ZIP et vérifier contenu et empreinte</span>
+python -m workmods validate-package dist/neon-ui.zip --sha256 &lt;digest&gt;
+
+<span class="c"># vérifier la compatibilité avec une cible précise</span>
+python -m workmods validate-package dist/neon-ui.zip \
+  --engine unity --unity-version 2022.3 --platform windows --platform linux</code></pre>
+
+    <h3 class="doc-h3">Dans l'éditeur</h3>
+    <ol class="doc-steps">
+      <li><strong>Author Studio → Connexion via GitHub</strong>, puis <strong>Nouveau dépôt</strong> pour créer un dépôt public avec un commit initial (ou en choisir un existant).</li>
+      <li><strong>Créer</strong> la fiche du mod : l'identifiant est généré, renseigne le jeu cible, le nom, la version, l'auteur, la description, l'icône et la bannière, les tags et le dossier des fichiers. Un <code>workmod.json</code> dans ce dossier préremplit les champs vides.</li>
+      <li><strong>Enregistrer le mod</strong> écrit un brouillon local dans le dossier d'installation du jeu, pour l'installer et le tester en jeu avant publication.</li>
+    </ol>
+
+    <div class="doc-note">
+      <b>Propreté</b>
+      <span>L'empaquetage ignore <code>.devers_meta.json</code>, <code>.git</code>, <code>__pycache__</code>, <code>.DS_Store</code>, <code>Thumbs.db</code> et <code>.workmods-disabled</code>, mais mieux vaut garder le dossier propre.</span>
+    </div>
+  </section>

@@ -1,0 +1,42 @@
+<section class="doc-section" id="doc-publish">
+    <div class="doc-eyebrow">发行</div>
+    <h2 class="doc-h2">发布</h2>
+    <p class="doc-p">发布就是一次 pull request。你只需要 GitHub 账号；不需要懂 git、不需要注册表写权限，也不需要服务器。</p>
+
+    <ol class="doc-steps">
+      <li>客户端把模组文件夹打包为 ZIP（根目录就是该文件夹，没有外层目录）并计算 SHA-256。</li>
+      <li>所有文件以及 <code>icon.png</code> / <code>banner.png</code> 都会提交到你的模组仓库。</li>
+      <li>创建发行版 <code>v&lt;version&gt;</code>，并附加 <code>&lt;modId&gt;.zip</code>。</li>
+      <li>pull request 会添加 <code>submissions/&lt;game_id&gt;/&lt;mod_id&gt;.json</code>，包含元数据、下载地址、摘要与你的登录名。</li>
+      <li><strong>Validate Submission</strong> 检查路径、id、版本、哈希与发行地址。维护者审核后合并。</li>
+      <li><strong>Rebuild Mod Registry</strong> 根据所有提交文件重建 <code>registry.json</code>。玩家在下次刷新目录后看到该模组。</li>
+    </ol>
+
+    <h3 class="doc-h3">版本与更新</h3>
+    <ul class="doc-list">
+      <li>版本号可自由书写，但不能含空格和斜杠：<code>1.0.0</code>、<code>1.2.0</code>、<code>2.0.0-beta.1</code>。标签始终为 <code>v&lt;version&gt;</code>。</li>
+      <li>用同一版本再次发布会复用该发行版并替换其资源。</li>
+      <li>更新时修改模组、提升版本并发布——pull request 会更新同一个提交文件，玩家只保留一条记录。请先关闭该模组之前仍打开的 pull request。</li>
+      <li><strong>Unpublish</strong> 会发起删除提交文件的 pull request。你的仓库、文件和发行版仍然在线，已安装的玩家保留本地副本。</li>
+    </ul>
+
+    <h3 class="doc-h3">限制</h3>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>限制</th><th>数值</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>通过 GitHub Contents API 上传的单个文件</td><td>应明显低于 100 MB——该 API 不是 CDN</td></tr>
+          <tr><td>发行 ZIP</td><td>最大 2 GB</td></tr>
+          <tr><td>模组 id</td><td><code>[a-z0-9][a-z0-9._-]{1,63}</code></td></tr>
+          <tr><td>标签</td><td>最多 20 个短字符串</td></tr>
+          <tr><td>校验和</td><td>64 个小写十六进制字符，客户端下载后校验</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="doc-p"><strong>发布前请确认：</strong><code>game_id</code> 与游戏完全一致，bundle 针对正确平台构建，版本已提升且模组 id 未变，模组已在本地测试，文件夹中不含密钥或未授权的素材。</p>
+
+    <p class="doc-p">更多：<a href="https://github.com/Made-by-One/Devers-Workmods/blob/main/docs/PUBLISHING.md" target="_blank" rel="noopener">发布指南 ↗</a> · <a href="https://github.com/Made-by-One/Devers-Workmods/blob/main/docs/REGISTRY_SCHEMA.md" target="_blank" rel="noopener">注册表结构 ↗</a></p>
+  </section>

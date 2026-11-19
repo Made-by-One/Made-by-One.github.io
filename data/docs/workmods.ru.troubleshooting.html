@@ -1,0 +1,32 @@
+<section class="doc-section" id="doc-troubleshooting">
+    <div class="doc-eyebrow">Справочник</div>
+    <h2 class="doc-h2">Решение проблем</h2>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Симптом</th><th>Причина и решение</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Каталог пуст</td><td>Запрос реестра не прошёл или фильтр стоит на игре без модов. Обновите каталог и переключитесь на <strong>Все игры</strong>.</td></tr>
+          <tr><td><code>No mods folder at …</code></td><td>Моды ещё не установлены или игра сканирует другую папку, чем профиль. Задайте папку в профиле или передайте <code>modsRoot</code>.</td></tr>
+          <tr><td>Мод найден, но пропущен</td><td><code>game_id</code> не совпадает с <code>Initialize(gameId: …)</code>.</td></tr>
+          <tr><td><code>no AssetBundle found</code></td><td>В папке нет <code>.bundle</code>, <code>.unity3d</code> или <code>.bytes</code>, и в манифесте не указаны <code>bundles</code>.</td></tr>
+          <tr><td>Ассет грузится, но префаб розовый</td><td>Шейдеры или текстуры лежат в другом бандле. Кладите зависимости в мод и загружайте все бандлы.</td></tr>
+          <tr><td>Android: <code>The archive is corrupted</code></td><td>Пересоберите бандл со сжатием LZ4.</td></tr>
+          <tr><td><code>GitHub API 401</code></td><td>Токен отсутствует или истёк — выйдите и войдите снова.</td></tr>
+          <tr><td><code>GitHub API 403</code> / <code>404</code></td><td>У токена нет доступа к нужному репозиторию или сработал лимит. Войдите заново или выберите другой репозиторий.</td></tr>
+          <tr><td><code>GitHub API 422</code></td><td>Релизный тег отклонён или файл слишком большой. Поднимите версию и держите файлы заметно меньше 100 МБ.</td></tr>
+          <tr><td>Конфликт pull request</td><td>Другой открытый pull request меняет тот же файл мода. Закройте старый и опубликуйте снова.</td></tr>
+          <tr><td>Мод не появился после merge</td><td>Не прошла пересборка. Откройте Actions → <strong>Rebuild Mod Registry</strong> в репозитории и прочитайте лог.</td></tr>
+          <tr><td>У игроков <code>Checksum mismatch</code></td><td>Asset релиза изменился после публикации. Опубликуйте снова, чтобы SHA-256 совпал.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="doc-foot">
+      <a class="btn" href="https://github.com/Made-by-One/Devers-Workmods" target="_blank" rel="noopener">Репозиторий ↗</a>
+      <a class="btn" href="https://github.com/Made-by-One/Devers-Workmods/releases" target="_blank" rel="noopener">Загрузки ↗</a>
+      <a class="btn btn-quiet" href="https://github.com/Made-by-One/Devers-Workmods/issues" target="_blank" rel="noopener">Сообщить о проблеме ↗</a>
+    </div>
+  </section>

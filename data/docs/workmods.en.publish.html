@@ -1,0 +1,42 @@
+<section class="doc-section" id="doc-publish">
+    <div class="doc-eyebrow">Release</div>
+    <h2 class="doc-h2">Publishing</h2>
+    <p class="doc-p">Publishing is a pull request. You need a GitHub account; you do not need git knowledge, write access to the registry or a server.</p>
+
+    <ol class="doc-steps">
+      <li>The client zips the mod folder (root = the folder itself, no wrapper directory) and computes its SHA-256.</li>
+      <li>Every file, plus <code>icon.png</code> / <code>banner.png</code>, is committed to your mod repository.</li>
+      <li>A release <code>v&lt;version&gt;</code> is created and <code>&lt;modId&gt;.zip</code> is attached to it.</li>
+      <li>A pull request adds <code>submissions/&lt;game_id&gt;/&lt;mod_id&gt;.json</code> with the metadata, download URL, digest and your login.</li>
+      <li><strong>Validate Submission</strong> checks the path, id, version, hash and release URL. A maintainer reviews and merges.</li>
+      <li><strong>Rebuild Mod Registry</strong> regenerates <code>registry.json</code> from every submission file. Players see the mod after the next refresh.</li>
+    </ol>
+
+    <h3 class="doc-h3">Versions and updates</h3>
+    <ul class="doc-list">
+      <li>Versions are free-form without spaces or slashes: <code>1.0.0</code>, <code>1.2.0</code>, <code>2.0.0-beta.1</code>. The tag is always <code>v&lt;version&gt;</code>.</li>
+      <li>Publishing the same version again reuses the release and replaces its asset.</li>
+      <li>To update, edit the mod, bump the version and publish — the pull request updates the same submission file, so players keep one entry. Close an older open pull request for that mod first.</li>
+      <li><strong>Unpublish</strong> opens a pull request that deletes the submission file. Your repository, files and releases stay online and existing players keep their copy.</li>
+    </ul>
+
+    <h3 class="doc-h3">Limits</h3>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Limit</th><th>Value</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Single file uploaded through the GitHub Contents API</td><td>Must stay well below 100 MB — the API is not a CDN</td></tr>
+          <tr><td>Release ZIP</td><td>Up to 2 GB</td></tr>
+          <tr><td>Mod id</td><td><code>[a-z0-9][a-z0-9._-]{1,63}</code></td></tr>
+          <tr><td>Tags</td><td>List of at most 20 short strings</td></tr>
+          <tr><td>Checksum</td><td>64 lower-case hex characters, verified by the client after download</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="doc-p"><strong>Before publishing:</strong> <code>game_id</code> matches the game exactly, bundles are built for the right platform, the version is bumped while the mod id stays the same, the mod was tested locally, and nothing secret or unlicensed is inside the folder.</p>
+
+    <p class="doc-p">Full details: <a href="https://github.com/Made-by-One/Devers-Workmods/blob/main/docs/PUBLISHING.md" target="_blank" rel="noopener">Publishing guide ↗</a> · <a href="https://github.com/Made-by-One/Devers-Workmods/blob/main/docs/REGISTRY_SCHEMA.md" target="_blank" rel="noopener">Registry schema ↗</a></p>
+  </section>

@@ -1,0 +1,59 @@
+<section class="doc-section" id="doc-unity">
+    <div class="doc-eyebrow">Розробникам ігор</div>
+    <h2 class="doc-h2">Unity SDK</h2>
+    <p class="doc-p"><code>unity-sdk/WorkmodsSDK.cs</code> — один C#-файл без залежностей: сканує теку модів, віддає встановлені та завантажує їхні асети.</p>
+
+    <ol class="doc-steps">
+      <li>Скопіюйте <code>WorkmodsSDK.cs</code> у проєкт, наприклад у <code>Assets/Workmods/</code>.</li>
+      <li>Вирішіть, де лежать моди. Клієнт за замовчуванням ставить їх у <code>~/DeversMods/&lt;game_id&gt;</code>, а SDK за замовчуванням дивиться в <code>Application.persistentDataPath/Workmods</code>. Спрямуйте профіль гри на теку, яку сканує гра, або передайте <code>modsRoot</code> під час ініціалізації.</li>
+      <li>Ініціалізуйте один раз, потім завантажуйте за id мода та іменем асета.</li>
+    </ol>
+
+    <pre class="doc-code"><code>using Workmods;
+using UnityEngine;
+
+public class Mods : MonoBehaviour
+{
+    private void Awake()
+    {
+        WorkmodsSDK.Initialize(
+            modsRoot: null,            <span class="c">// null → persistentDataPath/Workmods</span>
+            gameId: "space-rangers",   <span class="c">// відхилити моди для інших ігор</span>
+            verboseLogging: true,
+            writeLogToFile: true);     <span class="c">// &lt;modsRoot&gt;/workmods.log</span>
+    }
+}
+
+<span class="c">// завантажити префаб із встановленого мода</span>
+var prefab = WorkmodsSDK.LoadAsset&lt;GameObject&gt;("a1b2c3d4", "NeonHud");
+if (prefab != null) Instantiate(prefab);</code></pre>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Член</th><th>Опис</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Initialize(...)</code></td><td>Сканує теку. Можна викликати повторно.</td></tr>
+          <tr><td><code>Rescan()</code></td><td>Перечитати теку після встановлення з гри.</td></tr>
+          <tr><td><code>GetInstalledMods()</code></td><td>Встановлені моди з фільтром за <code>gameId</code>.</td></tr>
+          <tr><td><code>GetInstalledMod(id)</code>, <code>IsInstalled(id)</code></td><td>Пошук без урахування регістру.</td></tr>
+          <tr><td><code>LoadAssetBundle(id, name)</code></td><td><code>UnityEngine.Object</code> або <code>null</code>; причина помилки пишеться в лог.</td></tr>
+          <tr><td><code>LoadAsset&lt;T&gt;(id, name)</code></td><td>Типізований варіант, наприклад <code>&lt;GameObject&gt;</code>.</td></tr>
+          <tr><td><code>LoadBundles(mod)</code></td><td>Завантажити й закешувати всі бандли мода з урахуванням залежностей.</td></tr>
+          <tr><td><code>TryLoadAssembly(id, out asm)</code></td><td>Лише Mono; на IL2CPP повертає <code>false</code>.</td></tr>
+          <tr><td><code>UnloadAssetBundle(id)</code>, <code>UnloadAll()</code></td><td>Вивантажити бандли — спершу знищте екземпляри.</td></tr>
+          <tr><td><code>WorkmodsLog.OnLog</code></td><td>Спрямувати повідомлення SDK у власний логер.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ul class="doc-list">
+      <li>Усе виконується в головному потоці; не завантажуйте бандли з робочих потоків.</li>
+      <li>Вимкнені моди лежать у <code>.workmods-disabled/</code> і пропускаються під час наступного сканування.</li>
+      <li>Windows, macOS і Linux standalone підтримуються повністю; на Android потрібні LZ4-бандли; на iOS працюють AssetBundle, встановлені через ваш інтерфейс; консолі потребують платформного пакування.</li>
+      <li>WebGL не підтримується: там немає синхронного доступу до файлів і потрібен асинхронний завантажувач.</li>
+    </ul>
+
+    <p class="doc-p">Докладніше: <a href="https://github.com/Made-by-One/Devers-Workmods/blob/main/docs/UNITY_INTEGRATION.md" target="_blank" rel="noopener">посібник з інтеграції з Unity ↗</a> · <a href="https://github.com/Made-by-One/Devers-Workmods/tree/main/unity-sdk/examples" target="_blank" rel="noopener">приклад завантажувача й мода ↗</a></p>
+  </section>

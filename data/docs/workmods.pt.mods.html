@@ -1,0 +1,14 @@
+<section class="doc-section" id="doc-mods">
+    <div class="doc-eyebrow">Jogar</div>
+    <h2 class="doc-h2">Instalar e gerenciar mods</h2>
+    <p class="doc-p">A instalação baixa o asset de release indicado no registro, verifica o SHA-256 quando existe, extrai com segurança e só então substitui a pasta. Um download interrompido nunca deixa um mod pela metade onde o jogo possa vê-lo.</p>
+
+    <ol class="doc-steps">
+      <li><strong>Instalar</strong> extrai em <code>&lt;install_dir&gt;/&lt;modId&gt;</code> e grava <code>.devers_meta.json</code> com os metadados do registro.</li>
+      <li><strong>Reinstalar / Atualizar</strong> substitui a pasta existente pela versão do catálogo.</li>
+      <li><strong>Desativar</strong> move a pasta para <code>.workmods-disabled/</code>; <strong>Ativar</strong> devolve. Nenhum manifesto é alterado e o SDK ignora pastas ocultas.</li>
+      <li><strong>Excluir</strong> apaga a pasta do mod. O cliente recusa caminhos fora da pasta de instalação do perfil.</li>
+    </ol>
+
+    <p class="doc-p">Os perfis de mods dispensam a montagem manual: <strong>Instalados → Perfil de mods</strong> salva o conjunto atual de ativos e desativados junto com um objeto de configuração sob um nome, aplica depois movendo pastas no disco e exporta ou importa como JSON portátil. É assim que se mantém, por exemplo, um conjunto “vanilla plus” e outro bem modificado para o mesmo jogo.</p>
+  </section>

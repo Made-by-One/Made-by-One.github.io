@@ -1,0 +1,59 @@
+<section class="doc-section" id="doc-unity">
+    <div class="doc-eyebrow">Para desenvolvedores de jogos</div>
+    <h2 class="doc-h2">Unity SDK</h2>
+    <p class="doc-p"><code>unity-sdk/WorkmodsSDK.cs</code> é um único arquivo C# sem dependências que varre uma pasta de mods, expõe os instalados e carrega seus assets.</p>
+
+    <ol class="doc-steps">
+      <li>Copie <code>WorkmodsSDK.cs</code> para o projeto, por exemplo em <code>Assets/Workmods/</code>.</li>
+      <li>Decida onde ficam os mods. O cliente usa <code>~/DeversMods/&lt;game_id&gt;</code> por padrão; o SDK usa <code>Application.persistentDataPath/Workmods</code>. Aponte o perfil do jogo para a pasta que seu jogo varre ou passe <code>modsRoot</code> na inicialização.</li>
+      <li>Inicialize uma vez e carregue por id do mod e nome do asset.</li>
+    </ol>
+
+    <pre class="doc-code"><code>using Workmods;
+using UnityEngine;
+
+public class Mods : MonoBehaviour
+{
+    private void Awake()
+    {
+        WorkmodsSDK.Initialize(
+            modsRoot: null,            <span class="c">// null → persistentDataPath/Workmods</span>
+            gameId: "space-rangers",   <span class="c">// recusar mods de outros jogos</span>
+            verboseLogging: true,
+            writeLogToFile: true);     <span class="c">// &lt;modsRoot&gt;/workmods.log</span>
+    }
+}
+
+<span class="c">// carregar um prefab de um mod instalado</span>
+var prefab = WorkmodsSDK.LoadAsset&lt;GameObject&gt;("a1b2c3d4", "NeonHud");
+if (prefab != null) Instantiate(prefab);</code></pre>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Membro</th><th>Descrição</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Initialize(...)</code></td><td>Varre a pasta. Pode ser chamado repetidamente.</td></tr>
+          <tr><td><code>Rescan()</code></td><td>Relê a pasta após uma instalação no jogo.</td></tr>
+          <tr><td><code>GetInstalledMods()</code></td><td>Mods instalados, filtrados por <code>gameId</code>.</td></tr>
+          <tr><td><code>GetInstalledMod(id)</code>, <code>IsInstalled(id)</code></td><td>Buscas auxiliares, sem diferenciar maiúsculas.</td></tr>
+          <tr><td><code>LoadAssetBundle(id, name)</code></td><td><code>UnityEngine.Object</code> ou <code>null</code>; registra o motivo da falha.</td></tr>
+          <tr><td><code>LoadAsset&lt;T&gt;(id, name)</code></td><td>Variante tipada, por exemplo <code>&lt;GameObject&gt;</code>.</td></tr>
+          <tr><td><code>LoadBundles(mod)</code></td><td>Carrega e cacheia todos os bundles de um mod, com dependências.</td></tr>
+          <tr><td><code>TryLoadAssembly(id, out asm)</code></td><td>Só Mono; retorna <code>false</code> no IL2CPP.</td></tr>
+          <tr><td><code>UnloadAssetBundle(id)</code>, <code>UnloadAll()</code></td><td>Descarrega bundles; destrua as instâncias antes.</td></tr>
+          <tr><td><code>WorkmodsLog.OnLog</code></td><td>Envia as mensagens do SDK para o seu próprio logger.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ul class="doc-list">
+      <li>Tudo roda na thread principal; não carregue bundles de threads de trabalho.</li>
+      <li>Mods desativados ficam em <code>.workmods-disabled/</code> e são ignorados na próxima varredura.</li>
+      <li>Windows, macOS e Linux standalone têm suporte completo; Android exige bundles LZ4; iOS funciona com AssetBundles instalados pela sua interface; consoles exigem empacotamento específico.</li>
+      <li>WebGL não é suportado: não há acesso síncrono a arquivos e seria necessário um carregador assíncrono.</li>
+    </ul>
+
+    <p class="doc-p">Mais: <a href="https://github.com/Made-by-One/Devers-Workmods/blob/main/docs/UNITY_INTEGRATION.md" target="_blank" rel="noopener">guia de integração com Unity ↗</a> · <a href="https://github.com/Made-by-One/Devers-Workmods/tree/main/unity-sdk/examples" target="_blank" rel="noopener">carregador de exemplo e mod de exemplo ↗</a></p>
+  </section>

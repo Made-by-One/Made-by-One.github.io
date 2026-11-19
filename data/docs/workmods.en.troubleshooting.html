@@ -1,0 +1,32 @@
+<section class="doc-section" id="doc-troubleshooting">
+    <div class="doc-eyebrow">Reference</div>
+    <h2 class="doc-h2">Troubleshooting</h2>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Symptom</th><th>Cause and fix</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Catalog is empty</td><td>Registry request failed or the filter is set to a game without mods. Refresh, then switch to <strong>All games</strong>.</td></tr>
+          <tr><td><code>No mods folder at …</code></td><td>Nothing installed yet, or the game scans a different folder than the profile. Set the profile directory or pass <code>modsRoot</code>.</td></tr>
+          <tr><td>Mod discovered but skipped</td><td><code>game_id</code> mismatch with <code>Initialize(gameId: …)</code>.</td></tr>
+          <tr><td><code>no AssetBundle found</code></td><td>The folder has no <code>.bundle</code>, <code>.unity3d</code> or <code>.bytes</code> file and the manifest does not list <code>bundles</code>.</td></tr>
+          <tr><td>Asset loads but prefab is pink</td><td>Shaders or textures sit in another bundle. Ship dependencies inside the mod and load all bundles.</td></tr>
+          <tr><td>Android <code>The archive is corrupted</code></td><td>Rebuild the bundle with LZ4 compression.</td></tr>
+          <tr><td><code>GitHub API 401</code></td><td>Token missing or expired — log out and log in again.</td></tr>
+          <tr><td><code>GitHub API 403</code> / <code>404</code></td><td>Token lacks access to the target repository, or a rate limit. Re-login or pick another repository.</td></tr>
+          <tr><td><code>GitHub API 422</code></td><td>Release tag rejected or a file too large. Bump the version and keep files well below 100 MB.</td></tr>
+          <tr><td>Pull request conflicts</td><td>Another open pull request changes the same mod file. Close the older one and publish again.</td></tr>
+          <tr><td>Mod never appears after merge</td><td>The rebuild action failed. Open the repository's Actions → <strong>Rebuild Mod Registry</strong> and read the log.</td></tr>
+          <tr><td><code>Checksum mismatch</code> for players</td><td>The release asset changed after publishing. Publish again so the SHA-256 matches.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="doc-foot">
+      <a class="btn" href="https://github.com/Made-by-One/Devers-Workmods" target="_blank" rel="noopener">Repository ↗</a>
+      <a class="btn" href="https://github.com/Made-by-One/Devers-Workmods/releases" target="_blank" rel="noopener">Downloads ↗</a>
+      <a class="btn btn-quiet" href="https://github.com/Made-by-One/Devers-Workmods/issues" target="_blank" rel="noopener">Report an issue ↗</a>
+    </div>
+  </section>

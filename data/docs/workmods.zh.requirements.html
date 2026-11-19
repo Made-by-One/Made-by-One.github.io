@@ -1,0 +1,68 @@
+<section class="doc-section" id="doc-requirements">
+    <div class="doc-eyebrow">要求</div>
+    <h2 class="doc-h2">要求与依赖</h2>
+    <p class="doc-p">官方构建是自包含的：Python 与 PyQt6 已打包在内，玩家无需另外安装。只有开发时才需要从源码运行。</p>
+
+    <h3 class="doc-h3">现成客户端</h3>
+    <ul class="doc-list">
+      <li>Windows 10/11 x64、Linux x86_64（在 Ubuntu 22.04 上构建，可在更新的 glibc 上运行）或 macOS。</li>
+      <li>不需要 Python、Qt 或管理员权限。Linux 上执行一次 <code>chmod +x</code>。</li>
+      <li>需要联网读取目录。只有创建和发布模组才需要 GitHub 账号。</li>
+    </ul>
+
+    <h3 class="doc-h3">从源码运行</h3>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>依赖</th><th>版本</th><th>用途</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Python</code></td><td>3.12</td><td>客户端与 CLI 运行环境</td></tr>
+          <tr><td><code>PyQt6</code></td><td>&gt;= 6.6.0</td><td>桌面界面</td></tr>
+          <tr><td><code>requests</code></td><td>&gt;= 2.31.0</td><td>GitHub API 与下载</td></tr>
+          <tr><td><code>cryptography</code></td><td>&gt;= 42.0</td><td>校验签名分发文件</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre class="doc-code"><code>git clone https://github.com/Made-by-One/Devers-Workmods.git
+cd Devers-Workmods
+python -m venv .venv
+source .venv/bin/activate        <span class="c"># Windows: .venv\Scripts\activate</span>
+pip install -r requirements.txt
+python main.py</code></pre>
+
+    <p class="doc-p">Linux 上还需要 Qt 运行时库：</p>
+    <pre class="doc-code"><code>sudo apt-get install -y libxkbcommon0 libxkbcommon-x11-0 libfontconfig1 \
+  libfreetype6 libxcb-cursor0 libxcb-icccm4 libxcb-keysyms1 \
+  libxcb-shape0 libxcb-xinerama0 libgl1 libegl1</code></pre>
+
+    <div class="doc-note">
+      <b>无界面</b>
+      <span>作者 CLI（<code>python -m workmods</code>）不导入 Qt，因此可在没有显示器的构建机或 CI 中运行。</span>
+    </div>
+
+    <h3 class="doc-h3">Unity SDK</h3>
+    <ul class="doc-list">
+      <li>C# 7.3 与 Unity 2019.4 或更高版本；支持 Mono 与 IL2CPP，但运行时加载 DLL 只能在 Mono 下使用。</li>
+      <li>不需要包管理器或 assembly definition——把一个文件放进 <code>Assets/</code> 即可。</li>
+      <li>AssetBundle 在所有 Unity 平台可用；SDK 不支持 WebGL。</li>
+    </ul>
+
+    <h3 class="doc-h3">文件位置</h3>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>路径</th><th>内容</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>~/.devers_workmods/config.json</code></td><td>注册表地址、语言、GitHub 令牌、游戏配置</td></tr>
+          <tr><td><code>~/.devers_workmods/profiles.json</code></td><td>模组配置：启用集合与设置预设</td></tr>
+          <tr><td><code>~/DeversMods/&lt;game_id&gt;/</code></td><td>游戏配置的默认安装目录</td></tr>
+          <tr><td><code>&lt;mods&gt;/.workmods-disabled/</code></td><td>已停用的模组，SDK 会跳过</td></tr>
+          <tr><td><code>&lt;mods&gt;/workmods.log</code></td><td>SDK 日志，开启文件记录时生成</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="doc-p">可用 <code>WORKMODS_CONFIG_DIR</code> 移动配置目录，用 <code>WORKMODS_REGISTRY_REPO</code> 与 <code>WORKMODS_REGISTRY_BRANCH</code> 更换注册表来源。</p>
+  </section>

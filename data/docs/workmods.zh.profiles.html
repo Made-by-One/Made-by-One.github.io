@@ -1,0 +1,17 @@
+<section class="doc-section" id="doc-profiles">
+    <div class="doc-eyebrow">配置</div>
+    <h2 class="doc-h2">游戏配置</h2>
+    <p class="doc-p">一个 Workmods 客户端可管理任意数量 Unity 游戏的模组。配置是一条记录 <code>{ id, name, install_dir, sdk }</code>；注册表只保存 <code>game_id</code>，因此不与某台机器绑定。</p>
+
+    <ol class="doc-steps">
+      <li>打开<strong>设置 → 游戏配置</strong>，选择<strong>添加游戏</strong>。</li>
+      <li>填写小写的 <strong>Game ID</strong>（<code>a-z</code>、<code>0-9</code>、<code>.</code>、<code>_</code>、<code>-</code>）——必须与游戏传给 <code>WorkmodsSDK.Initialize</code> 的值完全一致。</li>
+      <li>设置显示名称和游戏所扫描的安装目录。留空表示 <code>~/DeversMods/&lt;game_id&gt;</code>。</li>
+      <li>把该配置选为<strong>当前游戏</strong>。目录与已安装都会按它筛选；<strong>所有游戏</strong>显示全部内容。</li>
+    </ol>
+
+    <div class="doc-note">
+      <b>文件夹</b>
+      <span>默认配置名为“Unassigned”，不可删除，并保留没有 <code>game_id</code> 的模组。Unity SDK 默认读取 <code>Application.persistentDataPath/Workmods</code>，因此要么把配置指向该文件夹，要么在 <code>Initialize</code> 中传入配置目录。</span>
+    </div>
+  </section>

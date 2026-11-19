@@ -1,0 +1,68 @@
+<section class="doc-section" id="doc-requirements">
+    <div class="doc-eyebrow">Anforderungen</div>
+    <h2 class="doc-h2">Anforderungen &amp; Abhängigkeiten</h2>
+    <p class="doc-p">Die Release-Builds sind eigenständig: Python und PyQt6 sind enthalten, Spieler installieren nichts weiter. Aus dem Quellcode starten ist nur für die Entwicklung nötig.</p>
+
+    <h3 class="doc-h3">Fertiger Client</h3>
+    <ul class="doc-list">
+      <li>Windows 10/11 x64, Linux x86_64 (auf Ubuntu 22.04 gebaut, läuft mit neuerem glibc) oder macOS.</li>
+      <li>Kein Python, kein Qt, keine Admin-Rechte. Unter Linux einmal <code>chmod +x</code>.</li>
+      <li>Netzwerk für den Katalog. Ein GitHub-Konto braucht nur, wer Mods erstellt oder veröffentlicht.</li>
+    </ul>
+
+    <h3 class="doc-h3">Aus dem Quellcode</h3>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Abhängigkeit</th><th>Version</th><th>Wofür</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Python</code></td><td>3.12</td><td>Laufzeit für Client und CLI</td></tr>
+          <tr><td><code>PyQt6</code></td><td>&gt;= 6.6.0</td><td>Desktop-Oberfläche</td></tr>
+          <tr><td><code>requests</code></td><td>&gt;= 2.31.0</td><td>GitHub-API und Downloads</td></tr>
+          <tr><td><code>cryptography</code></td><td>&gt;= 42.0</td><td>Prüfung signierter Prüfsummen</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre class="doc-code"><code>git clone https://github.com/Made-by-One/Devers-Workmods.git
+cd Devers-Workmods
+python -m venv .venv
+source .venv/bin/activate        <span class="c"># Windows: .venv\Scripts\activate</span>
+pip install -r requirements.txt
+python main.py</code></pre>
+
+    <p class="doc-p">Unter Linux werden die Qt-Laufzeitbibliotheken benötigt:</p>
+    <pre class="doc-code"><code>sudo apt-get install -y libxkbcommon0 libxkbcommon-x11-0 libfontconfig1 \
+  libfreetype6 libxcb-cursor0 libxcb-icccm4 libxcb-keysyms1 \
+  libxcb-shape0 libxcb-xinerama0 libgl1 libegl1</code></pre>
+
+    <div class="doc-note">
+      <b>Ohne Oberfläche</b>
+      <span>Die Autoren-CLI (<code>python -m workmods</code>) importiert kein Qt und läuft daher ohne Display auf einem Build-Rechner oder in CI.</span>
+    </div>
+
+    <h3 class="doc-h3">Unity SDK</h3>
+    <ul class="doc-list">
+      <li>C# 7.3 und Unity 2019.4 oder neuer; läuft mit Mono und IL2CPP, das Nachladen von DLLs geht aber nur mit Mono.</li>
+      <li>Weder Paketmanager noch Assembly Definition nötig — eine Datei in <code>Assets/</code> genügt.</li>
+      <li>AssetBundles funktionieren auf allen Unity-Plattformen; WebGL unterstützt das SDK nicht.</li>
+    </ul>
+
+    <h3 class="doc-h3">Wo alles liegt</h3>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Pfad</th><th>Inhalt</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>~/.devers_workmods/config.json</code></td><td>Registry-URL, Sprache, GitHub-Token, Spielprofile</td></tr>
+          <tr><td><code>~/.devers_workmods/profiles.json</code></td><td>Mod-Profile: Aktivierungssets und Einstellungs-Presets</td></tr>
+          <tr><td><code>~/DeversMods/&lt;game_id&gt;/</code></td><td>Standard-Installationsordner eines Spielprofils</td></tr>
+          <tr><td><code>&lt;mods&gt;/.workmods-disabled/</code></td><td>Deaktivierte Mods, das SDK überspringt sie</td></tr>
+          <tr><td><code>&lt;mods&gt;/workmods.log</code></td><td>SDK-Log, wenn Dateilogging aktiv ist</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="doc-p">Das Konfigurationsverzeichnis lässt sich über <code>WORKMODS_CONFIG_DIR</code> verschieben, die Registry-Quelle über <code>WORKMODS_REGISTRY_REPO</code> und <code>WORKMODS_REGISTRY_BRANCH</code>.</p>
+  </section>

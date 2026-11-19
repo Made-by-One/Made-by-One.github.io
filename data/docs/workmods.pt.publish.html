@@ -1,0 +1,42 @@
+<section class="doc-section" id="doc-publish">
+    <div class="doc-eyebrow">Publicação</div>
+    <h2 class="doc-h2">Publicação</h2>
+    <p class="doc-p">Publicar é um pull request. Você precisa de uma conta GitHub; não precisa de git, de permissão de escrita no registro nem de servidor.</p>
+
+    <ol class="doc-steps">
+      <li>O cliente compacta a pasta do mod em ZIP (raiz = a própria pasta, sem pasta externa) e calcula o SHA-256.</li>
+      <li>Todos os arquivos, mais <code>icon.png</code> / <code>banner.png</code>, são enviados ao seu repositório do mod.</li>
+      <li>Um release <code>v&lt;version&gt;</code> é criado e <code>&lt;modId&gt;.zip</code> é anexado a ele.</li>
+      <li>Um pull request adiciona <code>submissions/&lt;game_id&gt;/&lt;mod_id&gt;.json</code> com metadados, URL de download, digest e seu login.</li>
+      <li><strong>Validate Submission</strong> confere caminho, id, versão, hash e URL do release. Um mantenedor revisa e faz o merge.</li>
+      <li><strong>Rebuild Mod Registry</strong> regenera o <code>registry.json</code> a partir de todos os arquivos de envio. Os jogadores veem o mod após a próxima atualização do catálogo.</li>
+    </ol>
+
+    <h3 class="doc-h3">Versões e atualizações</h3>
+    <ul class="doc-list">
+      <li>A versão é texto livre, sem espaços nem barras: <code>1.0.0</code>, <code>1.2.0</code>, <code>2.0.0-beta.1</code>. A tag é sempre <code>v&lt;version&gt;</code>.</li>
+      <li>Publicar a mesma versão de novo reutiliza o release e substitui seu asset.</li>
+      <li>Para atualizar, edite o mod, suba a versão e publique: o pull request atualiza o mesmo arquivo de envio, então os jogadores mantêm uma única entrada. Feche antes um pull request ainda aberto desse mod.</li>
+      <li><strong>Unpublish</strong> abre um pull request que apaga o arquivo de envio. Seu repositório, arquivos e releases continuam online, e quem já instalou mantém a cópia local.</li>
+    </ul>
+
+    <h3 class="doc-h3">Limites</h3>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Limite</th><th>Valor</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Arquivo individual via GitHub Contents API</td><td>Bem abaixo de 100 MB — a API não é uma CDN</td></tr>
+          <tr><td>ZIP do release</td><td>Até 2 GB</td></tr>
+          <tr><td>Id do mod</td><td><code>[a-z0-9][a-z0-9._-]{1,63}</code></td></tr>
+          <tr><td>Tags</td><td>Lista de no máximo 20 strings curtas</td></tr>
+          <tr><td>Checksum</td><td>64 caracteres hex minúsculos, verificados pelo cliente após o download</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="doc-p"><strong>Antes de publicar:</strong> o <code>game_id</code> corresponde exatamente ao jogo, os bundles foram compilados para a plataforma certa, a versão foi elevada e o id do mod não mudou, o mod foi testado localmente e não há segredos nem material sem licença na pasta.</p>
+
+    <p class="doc-p">Detalhes: <a href="https://github.com/Made-by-One/Devers-Workmods/blob/main/docs/PUBLISHING.md" target="_blank" rel="noopener">guia de publicação ↗</a> · <a href="https://github.com/Made-by-One/Devers-Workmods/blob/main/docs/REGISTRY_SCHEMA.md" target="_blank" rel="noopener">esquema do registro ↗</a></p>
+  </section>

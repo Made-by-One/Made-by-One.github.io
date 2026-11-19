@@ -1,0 +1,68 @@
+<section class="doc-section" id="doc-requirements">
+    <div class="doc-eyebrow">Requisitos</div>
+    <h2 class="doc-h2">Requisitos y dependencias</h2>
+    <p class="doc-p">Las compilaciones publicadas son autocontenidas: Python y PyQt6 van incluidos, así que el jugador no instala nada más. Ejecutar desde el código solo es necesario para desarrollar.</p>
+
+    <h3 class="doc-h3">Cliente ya compilado</h3>
+    <ul class="doc-list">
+      <li>Windows 10/11 x64, Linux x86_64 (compilado en Ubuntu 22.04, funciona con glibc más reciente) o macOS.</li>
+      <li>No requiere Python, ni Qt, ni permisos de administrador. En Linux, un <code>chmod +x</code> una vez.</li>
+      <li>Conexión de red para el catálogo. La cuenta de GitHub solo hace falta para crear y publicar mods.</li>
+    </ul>
+
+    <h3 class="doc-h3">Desde el código</h3>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Dependencia</th><th>Versión</th><th>Para qué</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Python</code></td><td>3.12</td><td>Entorno del cliente y de la CLI</td></tr>
+          <tr><td><code>PyQt6</code></td><td>&gt;= 6.6.0</td><td>Interfaz de escritorio</td></tr>
+          <tr><td><code>requests</code></td><td>&gt;= 2.31.0</td><td>API de GitHub y descargas</td></tr>
+          <tr><td><code>cryptography</code></td><td>&gt;= 42.0</td><td>Verificar las sumas de comprobación firmadas</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre class="doc-code"><code>git clone https://github.com/Made-by-One/Devers-Workmods.git
+cd Devers-Workmods
+python -m venv .venv
+source .venv/bin/activate        <span class="c"># Windows: .venv\Scripts\activate</span>
+pip install -r requirements.txt
+python main.py</code></pre>
+
+    <p class="doc-p">En Linux hacen falta las bibliotecas de entorno de Qt:</p>
+    <pre class="doc-code"><code>sudo apt-get install -y libxkbcommon0 libxkbcommon-x11-0 libfontconfig1 \
+  libfreetype6 libxcb-cursor0 libxcb-icccm4 libxcb-keysyms1 \
+  libxcb-shape0 libxcb-xinerama0 libgl1 libegl1</code></pre>
+
+    <div class="doc-note">
+      <b>Sin interfaz</b>
+      <span>La CLI para autores (<code>python -m workmods</code>) no importa Qt, así que funciona en una máquina de compilación o en CI sin pantalla.</span>
+    </div>
+
+    <h3 class="doc-h3">Unity SDK</h3>
+    <ul class="doc-list">
+      <li>C# 7.3 y Unity 2019.4 o superior; funciona con Mono e IL2CPP, pero cargar DLL en tiempo de ejecución requiere Mono.</li>
+      <li>No necesita gestor de paquetes ni assembly definition: basta con un archivo en <code>Assets/</code>.</li>
+      <li>Los AssetBundles funcionan en todas las plataformas de Unity; el SDK no admite WebGL.</li>
+    </ul>
+
+    <h3 class="doc-h3">Dónde se guarda todo</h3>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Ruta</th><th>Contenido</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>~/.devers_workmods/config.json</code></td><td>URL del registro, idioma, token de GitHub, perfiles de juego</td></tr>
+          <tr><td><code>~/.devers_workmods/profiles.json</code></td><td>Perfiles de mods: conjuntos activos y presets de ajustes</td></tr>
+          <tr><td><code>~/DeversMods/&lt;game_id&gt;/</code></td><td>Carpeta de instalación por defecto de un perfil de juego</td></tr>
+          <tr><td><code>&lt;mods&gt;/.workmods-disabled/</code></td><td>Mods desactivados, el SDK los ignora</td></tr>
+          <tr><td><code>&lt;mods&gt;/workmods.log</code></td><td>Log del SDK, si se activa el registro en archivo</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="doc-p">La carpeta de configuración se puede mover con <code>WORKMODS_CONFIG_DIR</code>; el origen del registro, con <code>WORKMODS_REGISTRY_REPO</code> y <code>WORKMODS_REGISTRY_BRANCH</code>.</p>
+  </section>

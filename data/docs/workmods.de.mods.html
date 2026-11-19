@@ -1,0 +1,14 @@
+<section class="doc-section" id="doc-mods">
+    <div class="doc-eyebrow">Spielen</div>
+    <h2 class="doc-h2">Mods installieren &amp; verwalten</h2>
+    <p class="doc-p">Eine Installation lädt das in der Registry genannte Release-Asset, prüft dessen SHA-256, wenn vorhanden, entpackt sicher und ersetzt erst dann den Ordner. Ein abgebrochener Download hinterlässt nie einen halb geschriebenen Mod dort, wo das Spiel ihn sieht.</p>
+
+    <ol class="doc-steps">
+      <li><strong>Installieren</strong> entpackt nach <code>&lt;install_dir&gt;/&lt;modId&gt;</code> und schreibt <code>.devers_meta.json</code> mit den Registry-Metadaten.</li>
+      <li><strong>Neu installieren / Aktualisieren</strong> ersetzt den vorhandenen Ordner durch die Version aus dem Katalog.</li>
+      <li><strong>Deaktivieren</strong> verschiebt den Ordner nach <code>.workmods-disabled/</code>, <strong>Aktivieren</strong> holt ihn zurück. Kein Manifest wird geändert, und das SDK ignoriert versteckte Ordner.</li>
+      <li><strong>Löschen</strong> entfernt den Mod-Ordner. Pfade außerhalb des Profil-Installationsordners lehnt der Client ab.</li>
+    </ol>
+
+    <p class="doc-p">Mod-Profile ersparen das manuelle Zusammensetzen: <strong>Installiert → Mod-Profil</strong> speichert das aktuelle Aktivierungsset samt Einstellungsobjekt unter einem Namen, wendet es später durch Verschieben der Ordner an und exportiert oder importiert es als portables JSON. So lassen sich etwa ein „Vanilla plus“- und ein stark gemoddetes Set für dasselbe Spiel halten.</p>
+  </section>

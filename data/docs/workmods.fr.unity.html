@@ -1,0 +1,59 @@
+<section class="doc-section" id="doc-unity">
+    <div class="doc-eyebrow">Pour les développeurs de jeux</div>
+    <h2 class="doc-h2">Unity SDK</h2>
+    <p class="doc-p"><code>unity-sdk/WorkmodsSDK.cs</code> est un unique fichier C# sans dépendances qui analyse un dossier de mods, expose les mods installés et charge leurs assets.</p>
+
+    <ol class="doc-steps">
+      <li>Copie <code>WorkmodsSDK.cs</code> dans ton projet, par exemple <code>Assets/Workmods/</code>.</li>
+      <li>Décide où vivent les mods. Le client utilise <code>~/DeversMods/&lt;game_id&gt;</code> par défaut ; le SDK utilise <code>Application.persistentDataPath/Workmods</code>. Pointe le profil du jeu vers le dossier que ton jeu analyse, ou passe <code>modsRoot</code> à l'initialisation.</li>
+      <li>Initialise une fois, puis charge par id de mod et nom d'asset.</li>
+    </ol>
+
+    <pre class="doc-code"><code>using Workmods;
+using UnityEngine;
+
+public class Mods : MonoBehaviour
+{
+    private void Awake()
+    {
+        WorkmodsSDK.Initialize(
+            modsRoot: null,            <span class="c">// null → persistentDataPath/Workmods</span>
+            gameId: "space-rangers",   <span class="c">// refuser les mods des autres jeux</span>
+            verboseLogging: true,
+            writeLogToFile: true);     <span class="c">// &lt;modsRoot&gt;/workmods.log</span>
+    }
+}
+
+<span class="c">// charger un prefab d'un mod installé</span>
+var prefab = WorkmodsSDK.LoadAsset&lt;GameObject&gt;("a1b2c3d4", "NeonHud");
+if (prefab != null) Instantiate(prefab);</code></pre>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Membre</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Initialize(...)</code></td><td>Analyse le dossier. Appel répétable.</td></tr>
+          <tr><td><code>Rescan()</code></td><td>Relit le dossier après une installation en jeu.</td></tr>
+          <tr><td><code>GetInstalledMods()</code></td><td>Mods installés, filtrés par <code>gameId</code>.</td></tr>
+          <tr><td><code>GetInstalledMod(id)</code>, <code>IsInstalled(id)</code></td><td>Aides de recherche, insensibles à la casse.</td></tr>
+          <tr><td><code>LoadAssetBundle(id, name)</code></td><td><code>UnityEngine.Object</code> ou <code>null</code> ; la raison est journalisée.</td></tr>
+          <tr><td><code>LoadAsset&lt;T&gt;(id, name)</code></td><td>Variante typée, par exemple <code>&lt;GameObject&gt;</code>.</td></tr>
+          <tr><td><code>LoadBundles(mod)</code></td><td>Charge et met en cache tous les bundles d'un mod, dépendances comprises.</td></tr>
+          <tr><td><code>TryLoadAssembly(id, out asm)</code></td><td>Mono uniquement ; renvoie <code>false</code> sous IL2CPP.</td></tr>
+          <tr><td><code>UnloadAssetBundle(id)</code>, <code>UnloadAll()</code></td><td>Décharge les bundles ; détruis d'abord les instances.</td></tr>
+          <tr><td><code>WorkmodsLog.OnLog</code></td><td>Redirige les messages du SDK vers ton propre logger.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ul class="doc-list">
+      <li>Tout s'exécute sur le thread principal ; ne charge pas de bundles depuis des threads de travail.</li>
+      <li>Les mods désactivés sont dans <code>.workmods-disabled/</code> et sont ignorés automatiquement à l'analyse suivante.</li>
+      <li>Windows, macOS et Linux standalone sont pleinement pris en charge ; Android exige des bundles LZ4 ; iOS fonctionne avec des AssetBundles installés par ton interface ; les consoles demandent un packaging spécifique.</li>
+      <li>WebGL n'est pas pris en charge : pas d'accès fichier synchrone, il faudrait un chargeur asynchrone.</li>
+    </ul>
+
+    <p class="doc-p">Pour aller plus loin : <a href="https://github.com/Made-by-One/Devers-Workmods/blob/main/docs/UNITY_INTEGRATION.md" target="_blank" rel="noopener">guide d'intégration Unity ↗</a> · <a href="https://github.com/Made-by-One/Devers-Workmods/tree/main/unity-sdk/examples" target="_blank" rel="noopener">chargeur d'exemple et mod d'exemple ↗</a></p>
+  </section>

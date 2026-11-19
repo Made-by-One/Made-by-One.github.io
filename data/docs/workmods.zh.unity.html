@@ -1,0 +1,59 @@
+<section class="doc-section" id="doc-unity">
+    <div class="doc-eyebrow">面向游戏开发者</div>
+    <h2 class="doc-h2">Unity SDK</h2>
+    <p class="doc-p"><code>unity-sdk/WorkmodsSDK.cs</code> 是一个无依赖的 C# 文件：扫描模组文件夹、列出已安装模组并加载其资源。</p>
+
+    <ol class="doc-steps">
+      <li>把 <code>WorkmodsSDK.cs</code> 复制到项目中，例如 <code>Assets/Workmods/</code>。</li>
+      <li>决定模组存放位置。客户端默认使用 <code>~/DeversMods/&lt;game_id&gt;</code>，而 SDK 默认使用 <code>Application.persistentDataPath/Workmods</code>。把游戏配置指向游戏扫描的目录，或在初始化时传入 <code>modsRoot</code>。</li>
+      <li>初始化一次，然后按模组 id 与资源名加载。</li>
+    </ol>
+
+    <pre class="doc-code"><code>using Workmods;
+using UnityEngine;
+
+public class Mods : MonoBehaviour
+{
+    private void Awake()
+    {
+        WorkmodsSDK.Initialize(
+            modsRoot: null,            <span class="c">// null → persistentDataPath/Workmods</span>
+            gameId: "space-rangers",   <span class="c">// 拒绝为其他游戏发布的模组</span>
+            verboseLogging: true,
+            writeLogToFile: true);     <span class="c">// &lt;modsRoot&gt;/workmods.log</span>
+    }
+}
+
+<span class="c">// 从已安装模组加载预制体</span>
+var prefab = WorkmodsSDK.LoadAsset&lt;GameObject&gt;("a1b2c3d4", "NeonHud");
+if (prefab != null) Instantiate(prefab);</code></pre>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>成员</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Initialize(...)</code></td><td>扫描目录，可重复调用。</td></tr>
+          <tr><td><code>Rescan()</code></td><td>在游戏内安装后重新读取目录。</td></tr>
+          <tr><td><code>GetInstalledMods()</code></td><td>已安装模组，按 <code>gameId</code> 过滤。</td></tr>
+          <tr><td><code>GetInstalledMod(id)</code>、<code>IsInstalled(id)</code></td><td>查找辅助方法，不区分大小写。</td></tr>
+          <tr><td><code>LoadAssetBundle(id, name)</code></td><td>返回 <code>UnityEngine.Object</code> 或 <code>null</code>，失败原因写入日志。</td></tr>
+          <tr><td><code>LoadAsset&lt;T&gt;(id, name)</code></td><td>带类型版本，例如 <code>&lt;GameObject&gt;</code>。</td></tr>
+          <tr><td><code>LoadBundles(mod)</code></td><td>加载并缓存模组的所有 bundle，处理依赖关系。</td></tr>
+          <tr><td><code>TryLoadAssembly(id, out asm)</code></td><td>仅 Mono；IL2CPP 下返回 <code>false</code>。</td></tr>
+          <tr><td><code>UnloadAssetBundle(id)</code>、<code>UnloadAll()</code></td><td>卸载 bundle，请先销毁实例。</td></tr>
+          <tr><td><code>WorkmodsLog.OnLog</code></td><td>把 SDK 消息接入自己的日志系统。</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ul class="doc-list">
+      <li>全部在主线程执行；不要在工作线程中加载 bundle。</li>
+      <li>已停用的模组位于 <code>.workmods-disabled/</code>，下次扫描会自动跳过。</li>
+      <li>Windows、macOS 与 Linux 独立版完整支持；Android 需要 LZ4 bundle；iOS 可通过自己的界面安装 AssetBundle；主机平台需要相应打包流程。</li>
+      <li>不支持 WebGL：它没有同步文件访问，需要异步加载器。</li>
+    </ul>
+
+    <p class="doc-p">延伸阅读：<a href="https://github.com/Made-by-One/Devers-Workmods/blob/main/docs/UNITY_INTEGRATION.md" target="_blank" rel="noopener">Unity 集成指南 ↗</a> · <a href="https://github.com/Made-by-One/Devers-Workmods/tree/main/unity-sdk/examples" target="_blank" rel="noopener">示例加载器与示例模组 ↗</a></p>
+  </section>

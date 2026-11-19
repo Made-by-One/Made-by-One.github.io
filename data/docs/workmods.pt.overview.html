@@ -1,0 +1,38 @@
+<section class="doc-section" id="doc-overview">
+    <div class="doc-eyebrow">Doc 01 · Visão geral</div>
+    <h2 class="doc-h2">Devers Workmods</h2>
+    <p class="doc-p">
+      Workmods é um gerenciador universal de mods para jogos Unity. Ele tem três partes
+      que compartilham um contrato — a entrada no registro: um mod publicado uma vez
+      aparece no catálogo de cada jogador, instala-se na pasta certa e carrega pelo SDK
+      do jogo sem trabalho extra por jogo.
+    </p>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Parte</th><th>O que faz</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Cliente desktop</strong></td>
+            <td>Aplicativo em Python + PyQt6 para jogadores e autores: navegar no catálogo, instalar, atualizar, ativar ou desativar mods e publicar no próprio repositório GitHub.</td>
+          </tr>
+          <tr>
+            <td><strong>Registro</strong></td>
+            <td><code>registry.json</code> no repositório do Workmods, reconstruído pelo GitHub Actions a partir de um arquivo de envio por mod. Os clientes o leem de <code>raw.githubusercontent.com</code>.</td>
+          </tr>
+          <tr>
+            <td><strong>Unity SDK</strong></td>
+            <td>Um único arquivo C# sem dependências que varre a pasta de mods, lista os instalados e carrega seus AssetBundles.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ul class="doc-list">
+      <li>Versão atual: <strong>1.2b</strong>, beta pública com builds para Windows x64, Linux x86_64 e macOS.</li>
+      <li>Licença MIT, sem telemetria e sem serviços em segundo plano.</li>
+      <li>Os mods ficam no <strong>repositório GitHub do próprio modder</strong> e são distribuídos via GitHub Releases. O cliente nunca escreve no registro compartilhado: ele abre um pull request.</li>
+    </ul>
+  </section>

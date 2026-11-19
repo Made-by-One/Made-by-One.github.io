@@ -64,5 +64,8 @@
   "theme.light": "Claro",
   "docs.title": "Documentación",
   "docs.subtitle": "Manuales de las herramientas del estudio.",
-  "docs.lang": "La documentación técnica está en inglés."
+  "docs.loading": "Cargando la documentación…",
+  "docs.error": "No se pudo cargar la documentación",
+  "docs.all": "Toda la documentación",
+  "docs.sections": "Secciones"
 }

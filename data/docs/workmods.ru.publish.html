@@ -1,0 +1,42 @@
+<section class="doc-section" id="doc-publish">
+    <div class="doc-eyebrow">Релиз</div>
+    <h2 class="doc-h2">Публикация</h2>
+    <p class="doc-p">Публикация — это pull request. Нужен аккаунт GitHub; знания git, прав записи в реестр или своего сервера не требуется.</p>
+
+    <ol class="doc-steps">
+      <li>Клиент упаковывает папку мода в ZIP (корень — сама папка, без обёртки) и считает SHA-256.</li>
+      <li>Все файлы, а также <code>icon.png</code> / <code>banner.png</code>, коммитятся в ваш репозиторий мода.</li>
+      <li>Создаётся релиз <code>v&lt;version&gt;</code>, к нему прикрепляется <code>&lt;modId&gt;.zip</code>.</li>
+      <li>Pull request добавляет <code>submissions/&lt;game_id&gt;/&lt;mod_id&gt;.json</code> с метаданными, ссылкой на скачивание, дайджестом и вашим логином.</li>
+      <li><strong>Validate Submission</strong> проверяет путь, id, версию, хеш и ссылку на релиз. Мейнтейнер смотрит и вливает.</li>
+      <li><strong>Rebuild Mod Registry</strong> пересобирает <code>registry.json</code> из всех файлов заявок. Игроки видят мод после следующего обновления каталога.</li>
+    </ol>
+
+    <h3 class="doc-h3">Версии и обновления</h3>
+    <ul class="doc-list">
+      <li>Версия — свободная строка без пробелов и слэшей: <code>1.0.0</code>, <code>1.2.0</code>, <code>2.0.0-beta.1</code>. Тег всегда <code>v&lt;version&gt;</code>.</li>
+      <li>Повторная публикация той же версии переиспользует релиз и заменяет его asset.</li>
+      <li>Чтобы обновить мод, отредактируйте его, поднимите версию и опубликуйте — pull request обновит тот же файл заявки, поэтому у игроков останется одна запись. Сначала закройте более старый открытый pull request по этому моду.</li>
+      <li><strong>Unpublish</strong> открывает pull request с удалением файла заявки. Репозиторий, файлы и релизы остаются онлайн, а у существующих игроков остаётся локальная копия.</li>
+    </ul>
+
+    <h3 class="doc-h3">Ограничения</h3>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Ограничение</th><th>Значение</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Отдельный файл через GitHub Contents API</td><td>Заметно меньше 100 МБ — API не заменяет CDN</td></tr>
+          <tr><td>Релизный ZIP</td><td>До 2 ГБ</td></tr>
+          <tr><td>Id мода</td><td><code>[a-z0-9][a-z0-9._-]{1,63}</code></td></tr>
+          <tr><td>Теги</td><td>Список не длиннее 20 коротких строк</td></tr>
+          <tr><td>Контрольная сумма</td><td>64 hex-символа в нижнем регистре, клиент сверяет после загрузки</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="doc-p"><strong>Перед публикацией:</strong> <code>game_id</code> точно совпадает с игрой, бандлы собраны под нужную платформу, версия поднята, а id мода не изменился, мод проверен локально, а внутри нет секретов и нелицензированных материалов.</p>
+
+    <p class="doc-p">Подробности: <a href="https://github.com/Made-by-One/Devers-Workmods/blob/main/docs/PUBLISHING.md" target="_blank" rel="noopener">руководство по публикации ↗</a> · <a href="https://github.com/Made-by-One/Devers-Workmods/blob/main/docs/REGISTRY_SCHEMA.md" target="_blank" rel="noopener">схема реестра ↗</a></p>
+  </section>

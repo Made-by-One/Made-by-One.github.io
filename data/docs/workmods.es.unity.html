@@ -1,0 +1,59 @@
+<section class="doc-section" id="doc-unity">
+    <div class="doc-eyebrow">Para desarrolladores de juegos</div>
+    <h2 class="doc-h2">Unity SDK</h2>
+    <p class="doc-p"><code>unity-sdk/WorkmodsSDK.cs</code> es un único archivo C# sin dependencias que escanea una carpeta de mods, expone los instalados y carga sus assets.</p>
+
+    <ol class="doc-steps">
+      <li>Copia <code>WorkmodsSDK.cs</code> en tu proyecto, por ejemplo en <code>Assets/Workmods/</code>.</li>
+      <li>Decide dónde viven los mods. El cliente usa por defecto <code>~/DeversMods/&lt;game_id&gt;</code>; el SDK usa <code>Application.persistentDataPath/Workmods</code>. Apunta el perfil del juego a la carpeta que escanea tu juego o pasa <code>modsRoot</code> al inicializar.</li>
+      <li>Inicializa una vez y luego carga por id de mod y nombre de asset.</li>
+    </ol>
+
+    <pre class="doc-code"><code>using Workmods;
+using UnityEngine;
+
+public class Mods : MonoBehaviour
+{
+    private void Awake()
+    {
+        WorkmodsSDK.Initialize(
+            modsRoot: null,            <span class="c">// null → persistentDataPath/Workmods</span>
+            gameId: "space-rangers",   <span class="c">// rechazar mods de otros juegos</span>
+            verboseLogging: true,
+            writeLogToFile: true);     <span class="c">// &lt;modsRoot&gt;/workmods.log</span>
+    }
+}
+
+<span class="c">// cargar un prefab de un mod instalado</span>
+var prefab = WorkmodsSDK.LoadAsset&lt;GameObject&gt;("a1b2c3d4", "NeonHud");
+if (prefab != null) Instantiate(prefab);</code></pre>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Miembro</th><th>Descripción</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Initialize(...)</code></td><td>Escanea la carpeta. Se puede llamar varias veces.</td></tr>
+          <tr><td><code>Rescan()</code></td><td>Vuelve a leer la carpeta tras una instalación en el juego.</td></tr>
+          <tr><td><code>GetInstalledMods()</code></td><td>Mods instalados, filtrados por <code>gameId</code>.</td></tr>
+          <tr><td><code>GetInstalledMod(id)</code>, <code>IsInstalled(id)</code></td><td>Búsqueda auxiliar, sin distinguir mayúsculas.</td></tr>
+          <tr><td><code>LoadAssetBundle(id, name)</code></td><td><code>UnityEngine.Object</code> o <code>null</code>; registra el motivo del fallo.</td></tr>
+          <tr><td><code>LoadAsset&lt;T&gt;(id, name)</code></td><td>Variante tipada, por ejemplo <code>&lt;GameObject&gt;</code>.</td></tr>
+          <tr><td><code>LoadBundles(mod)</code></td><td>Carga y cachea todos los bundles de un mod, resolviendo dependencias.</td></tr>
+          <tr><td><code>TryLoadAssembly(id, out asm)</code></td><td>Solo Mono; devuelve <code>false</code> en IL2CPP.</td></tr>
+          <tr><td><code>UnloadAssetBundle(id)</code>, <code>UnloadAll()</code></td><td>Descarga bundles; destruye antes las instancias.</td></tr>
+          <tr><td><code>WorkmodsLog.OnLog</code></td><td>Envía los mensajes del SDK a tu propio logger.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ul class="doc-list">
+      <li>Todo se ejecuta en el hilo principal; no cargues bundles desde hilos de trabajo.</li>
+      <li>Los mods desactivados están en <code>.workmods-disabled/</code> y se omiten automáticamente en el siguiente escaneo.</li>
+      <li>Windows, macOS y Linux standalone están totalmente soportados; Android necesita bundles LZ4; iOS funciona con AssetBundles instalados desde tu propia interfaz; las consolas requieren empaquetado específico.</li>
+      <li>WebGL no está soportado: no tiene acceso sincrónico a archivos y necesita un cargador asíncrono.</li>
+    </ul>
+
+    <p class="doc-p">Más: <a href="https://github.com/Made-by-One/Devers-Workmods/blob/main/docs/UNITY_INTEGRATION.md" target="_blank" rel="noopener">guía de integración con Unity ↗</a> · <a href="https://github.com/Made-by-One/Devers-Workmods/tree/main/unity-sdk/examples" target="_blank" rel="noopener">cargador de ejemplo y mod de muestra ↗</a></p>
+  </section>

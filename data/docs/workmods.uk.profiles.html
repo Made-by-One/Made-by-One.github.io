@@ -1,0 +1,17 @@
+<section class="doc-section" id="doc-profiles">
+    <div class="doc-eyebrow">Налаштування</div>
+    <h2 class="doc-h2">Профілі ігор</h2>
+    <p class="doc-p">Одне встановлення Workmods обслуговує будь-яку кількість ігор на Unity. Профіль — це запис <code>{ id, name, install_dir, sdk }</code>; реєстр зберігає лише <code>game_id</code>, тому нічого не прив'язано до однієї машини.</p>
+
+    <ol class="doc-steps">
+      <li>Відкрийте <strong>Налаштування → Профілі ігор</strong> і натисніть <strong>Додати гру</strong>.</li>
+      <li>Вкажіть <strong>Game ID</strong> у нижньому регістрі (<code>a-z</code>, <code>0-9</code>, <code>.</code>, <code>_</code>, <code>-</code>) — саме те значення, яке гра передає в <code>WorkmodsSDK.Initialize</code>.</li>
+      <li>Задайте відображуване ім'я та теку встановлення, яку сканує гра. Порожнє поле означає <code>~/DeversMods/&lt;game_id&gt;</code>.</li>
+      <li>Виберіть профіль як <strong>активну гру</strong>. Каталог і «Встановлені» фільтруються за ним; <strong>Усі ігри</strong> показує все.</li>
+    </ol>
+
+    <div class="doc-note">
+      <b>Тека</b>
+      <span>Профіль за замовчуванням називається «Unassigned», його не можна видалити, і в ньому залишаються моди без <code>game_id</code>. Unity SDK за замовчуванням дивиться в <code>Application.persistentDataPath/Workmods</code>, тому або спрямуйте профіль на цю теку, або передайте теку профілю в <code>Initialize</code>.</span>
+    </div>
+  </section>

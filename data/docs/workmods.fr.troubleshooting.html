@@ -1,0 +1,32 @@
+<section class="doc-section" id="doc-troubleshooting">
+    <div class="doc-eyebrow">Référence</div>
+    <h2 class="doc-h2">Dépannage</h2>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Symptôme</th><th>Cause et solution</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Le catalogue est vide</td><td>La requête du registre a échoué ou le filtre porte sur un jeu sans mods. Actualise et passe à <strong>Tous les jeux</strong>.</td></tr>
+          <tr><td><code>No mods folder at …</code></td><td>Rien n'est installé ou le jeu analyse un autre dossier que le profil. Règle le dossier du profil ou passe <code>modsRoot</code>.</td></tr>
+          <tr><td>Mod détecté mais ignoré</td><td><code>game_id</code> ne correspond pas à <code>Initialize(gameId: …)</code>.</td></tr>
+          <tr><td><code>no AssetBundle found</code></td><td>Le dossier n'a ni <code>.bundle</code>, ni <code>.unity3d</code>, ni <code>.bytes</code>, et le manifeste ne liste pas de <code>bundles</code>.</td></tr>
+          <tr><td>L'asset se charge mais le prefab est rose</td><td>Shaders ou textures sont dans un autre bundle. Inclus les dépendances dans le mod et charge tous les bundles.</td></tr>
+          <tr><td>Android : <code>The archive is corrupted</code></td><td>Recompile le bundle avec la compression LZ4.</td></tr>
+          <tr><td><code>GitHub API 401</code></td><td>Jeton absent ou expiré — déconnecte-toi et reconnecte-toi.</td></tr>
+          <tr><td><code>GitHub API 403</code> / <code>404</code></td><td>Le jeton n'a pas accès au dépôt, ou une limite est atteinte. Reconnecte-toi ou choisis un autre dépôt.</td></tr>
+          <tr><td><code>GitHub API 422</code></td><td>Tag de release refusé ou fichier trop volumineux. Incrémente la version et garde des fichiers bien sous 100 Mo.</td></tr>
+          <tr><td>Conflit de pull request</td><td>Une autre pull request ouverte modifie le même fichier de mod. Ferme l'ancienne et republie.</td></tr>
+          <tr><td>Le mod n'apparaît pas après le merge</td><td>La reconstruction a échoué. Ouvre Actions → <strong>Rebuild Mod Registry</strong> dans le dépôt et lis le journal.</td></tr>
+          <tr><td><code>Checksum mismatch</code> chez les joueurs</td><td>L'asset de release a changé après publication. Republie pour que le SHA-256 corresponde.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="doc-foot">
+      <a class="btn" href="https://github.com/Made-by-One/Devers-Workmods" target="_blank" rel="noopener">Dépôt ↗</a>
+      <a class="btn" href="https://github.com/Made-by-One/Devers-Workmods/releases" target="_blank" rel="noopener">Téléchargements ↗</a>
+      <a class="btn btn-quiet" href="https://github.com/Made-by-One/Devers-Workmods/issues" target="_blank" rel="noopener">Signaler un problème ↗</a>
+    </div>
+  </section>

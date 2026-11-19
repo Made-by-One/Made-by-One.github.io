@@ -1,0 +1,17 @@
+<section class="doc-section" id="doc-profiles">
+    <div class="doc-eyebrow">Configuration</div>
+    <h2 class="doc-h2">Game profiles</h2>
+    <p class="doc-p">One installation of Workmods manages mods for any number of Unity games. A profile is a record of <code>{ id, name, install_dir, sdk }</code>; the registry only stores the <code>game_id</code>, so nothing is tied to one machine.</p>
+
+    <ol class="doc-steps">
+      <li>Open <strong>Settings → Game Profiles</strong> and choose <strong>Add Game</strong>.</li>
+      <li>Enter a <strong>Game ID</strong> in lower case (<code>a-z</code>, <code>0-9</code>, <code>.</code>, <code>_</code>, <code>-</code>) — the exact value the game passes to <code>WorkmodsSDK.Initialize</code>.</li>
+      <li>Set a display name and the install directory the game scans. Empty means <code>~/DeversMods/&lt;game_id&gt;</code>.</li>
+      <li>Pick the profile as the <strong>active game</strong>. Catalog and Installed both filter to it; <strong>All games</strong> shows everything.</li>
+    </ol>
+
+    <div class="doc-note">
+      <b>Folder</b>
+      <span>The default profile is called “Unassigned”, cannot be removed and keeps mods that do not declare a <code>game_id</code>. The Unity SDK defaults to <code>Application.persistentDataPath/Workmods</code>, so either point the profile at that folder or pass the profile's directory to <code>Initialize</code>.</span>
+    </div>
+  </section>

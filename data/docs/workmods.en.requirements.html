@@ -1,0 +1,68 @@
+<section class="doc-section" id="doc-requirements">
+    <div class="doc-eyebrow">Requirements</div>
+    <h2 class="doc-h2">Requirements &amp; dependencies</h2>
+    <p class="doc-p">Release builds are self-contained: Python and PyQt6 are bundled, so players install nothing else. Running from source is only needed for development.</p>
+
+    <h3 class="doc-h3">Prebuilt client</h3>
+    <ul class="doc-list">
+      <li>Windows 10/11 x64, Linux x86_64 (built on Ubuntu 22.04, runs on newer glibc) or macOS.</li>
+      <li>No Python, no Qt and no admin rights. On Linux, <code>chmod +x</code> once.</li>
+      <li>A network connection for the catalog. A GitHub account is required only for authoring and publishing.</li>
+    </ul>
+
+    <h3 class="doc-h3">From source</h3>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Dependency</th><th>Version</th><th>Used for</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Python</code></td><td>3.12</td><td>Runtime for the client and the CLI</td></tr>
+          <tr><td><code>PyQt6</code></td><td>&gt;= 6.6.0</td><td>Desktop interface</td></tr>
+          <tr><td><code>requests</code></td><td>&gt;= 2.31.0</td><td>GitHub API and downloads</td></tr>
+          <tr><td><code>cryptography</code></td><td>&gt;= 42.0</td><td>Verifying signed release checksums</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre class="doc-code"><code>git clone https://github.com/Made-by-One/Devers-Workmods.git
+cd Devers-Workmods
+python -m venv .venv
+source .venv/bin/activate        <span class="c"># Windows: .venv\Scripts\activate</span>
+pip install -r requirements.txt
+python main.py</code></pre>
+
+    <p class="doc-p">On Linux the bundled Qt needs these runtime libraries:</p>
+    <pre class="doc-code"><code>sudo apt-get install -y libxkbcommon0 libxkbcommon-x11-0 libfontconfig1 \
+  libfreetype6 libxcb-cursor0 libxcb-icccm4 libxcb-keysyms1 \
+  libxcb-shape0 libxcb-xinerama0 libgl1 libegl1</code></pre>
+
+    <div class="doc-note">
+      <b>Headless</b>
+      <span>The author CLI (<code>python -m workmods</code>) imports no Qt, so it runs on a build machine or in CI without a display.</span>
+    </div>
+
+    <h3 class="doc-h3">Unity SDK</h3>
+    <ul class="doc-list">
+      <li>C# 7.3 and Unity 2019.4 or newer; works with Mono and IL2CPP, but runtime DLL loading needs Mono.</li>
+      <li>No package manager and no assembly definition required — one file copied into <code>Assets/</code>.</li>
+      <li>AssetBundles work on every Unity platform; WebGL is not supported by the SDK.</li>
+    </ul>
+
+    <h3 class="doc-h3">Where things are stored</h3>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Path</th><th>Contents</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>~/.devers_workmods/config.json</code></td><td>Registry URL, language, GitHub token, game profiles</td></tr>
+          <tr><td><code>~/.devers_workmods/profiles.json</code></td><td>Mod profiles: enabled sets and settings presets</td></tr>
+          <tr><td><code>~/DeversMods/&lt;game_id&gt;/</code></td><td>Default install directory of a game profile</td></tr>
+          <tr><td><code>&lt;mods&gt;/.workmods-disabled/</code></td><td>Disabled mods, skipped by the SDK</td></tr>
+          <tr><td><code>&lt;mods&gt;/workmods.log</code></td><td>SDK log, when file logging is on</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="doc-p">The config directory can be moved with <code>WORKMODS_CONFIG_DIR</code>; the registry source with <code>WORKMODS_REGISTRY_REPO</code> and <code>WORKMODS_REGISTRY_BRANCH</code>.</p>
+  </section>

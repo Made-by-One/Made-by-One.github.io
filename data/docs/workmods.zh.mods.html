@@ -1,0 +1,14 @@
+<section class="doc-section" id="doc-mods">
+    <div class="doc-eyebrow">游玩</div>
+    <h2 class="doc-h2">安装与管理模组</h2>
+    <p class="doc-p">安装时会下载注册表中指定的发行版资源，若存在 SHA-256 则进行校验，安全解压后才替换文件夹。中断的下载不会把写了一半的模组留在游戏能看到的位置。</p>
+
+    <ol class="doc-steps">
+      <li><strong>安装</strong>会解压到 <code>&lt;install_dir&gt;/&lt;modId&gt;</code>，并写入带注册表元数据的 <code>.devers_meta.json</code>。</li>
+      <li><strong>重新安装 / 更新</strong>用目录中的版本替换现有文件夹。</li>
+      <li><strong>停用</strong>把文件夹移到 <code>.workmods-disabled/</code>，<strong>启用</strong>则移回。不会修改任何清单，SDK 会忽略隐藏文件夹。</li>
+      <li><strong>删除</strong>会移除模组文件夹。客户端拒绝处理配置安装目录之外的路径。</li>
+    </ol>
+
+    <p class="doc-p">模组配置省去手动拼装：<strong>已安装 → 模组配置</strong>会把当前的启用/停用集合与一个设置对象以名称保存，之后通过移动磁盘上的文件夹来应用，并以可移植 JSON 导出或导入。这样可以为一个游戏同时保留“原版加强”和“重度模组”两套方案。</p>
+  </section>

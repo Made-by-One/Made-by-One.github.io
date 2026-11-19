@@ -1,0 +1,114 @@
+<section class="doc-section" id="doc-build">
+    <div class="doc-eyebrow">Авторство</div>
+    <h2 class="doc-h2">Создание мода</h2>
+    <p class="doc-p">Мод — это папка. Её содержимое — ровно то, что увидит SDK игры, плюс необязательный манифест <code>workmod.json</code>.</p>
+
+    <pre class="doc-code"><code>neon-ui/
+├── workmod.json
+├── neon-ui.bundle
+└── bundles/
+    └── shared.bundle</code></pre>
+
+    <h3 class="doc-h3">Манифест</h3>
+    <p class="doc-p">При публикации клиент требует только <code>name</code> и <code>version</code>, но <code>id</code>, <code>game_id</code> и поля совместимости позволяют валидатору отклонить пакет, который не запустится на целевой машине.</p>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Поле</th><th>Значение</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>id</code></td><td>Постоянный id мода. Генерируется один раз и не меняется между версиями.</td></tr>
+          <tr><td><code>game_id</code></td><td>Целевая игра. По умолчанию — профиль <code>default</code>.</td></tr>
+          <tr><td><code>name</code>, <code>version</code></td><td>Название и версия. Тег релиза становится <code>v&lt;version&gt;</code>.</td></tr>
+          <tr><td><code>author</code>, <code>description</code></td><td>Свободный текст для каталога.</td></tr>
+          <tr><td><code>entry_asset</code></td><td>Необязательное имя ассета по умолчанию, которое может загрузить игра.</td></tr>
+          <tr><td><code>bundles</code></td><td>Явные пути бандлов относительно корня мода. Рекомендуется, когда имена неоднозначны.</td></tr>
+          <tr><td><code>engine</code>, <code>sdk</code></td><td><code>unity</code> для текущего SDK.</td></tr>
+          <tr><td><code>unity_version</code></td><td>Минимальная версия Unity, под которую собран мод.</td></tr>
+          <tr><td><code>platforms</code></td><td><code>windows</code>, <code>linux</code>, <code>macos</code>, <code>android</code>, <code>ios</code>.</td></tr>
+          <tr><td><code>min_client_version</code>, <code>min_sdk_version</code></td><td>Самые старые клиент и SDK, которые могут установить или загрузить мод.</td></tr>
+          <tr><td><code>tags</code></td><td>Строки для поиска.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre class="doc-code"><code>{
+  "id": "a1b2c3d4",
+  "game_id": "space-rangers",
+  "name": "Neon UI",
+  "version": "1.2.0",
+  "author": "your-handle",
+  "description": "Neon HUD replacement for the tactical screen.",
+  "entry_asset": "NeonHud",
+  "bundles": ["neon-ui.bundle", "bundles/shared.bundle"],
+  "engine": "unity",
+  "unity_version": "2021.3",
+  "platforms": ["windows", "linux", "macos"],
+  "tags": ["ui", "hud"]
+}</code></pre>
+
+    <h3 class="doc-h3">Формат контента</h3>
+    <ul class="doc-list">
+      <li><strong>AssetBundle</strong> — рекомендуемый формат: работает с Mono и IL2CPP на всех платформах. Собирайте отдельный бандл под каждую платформу — между ними он не переносится.</li>
+      <li>Используйте <strong>ChunkBasedCompression</strong> (LZ4). Бандлы LZMA приходится распаковывать целиком, и это частая причина сбоев на Android.</li>
+      <li>Зависимости (общие бандлы, текстуры, шейдеры) кладите <strong>внутрь мода</strong>. SDK загружает все бандлы мода перед разрешением ассетов.</li>
+      <li><strong>Addressables</strong> работают, потому что собирают те же AssetBundle; положите готовые файлы бандлов из папки платформы.</li>
+      <li><strong>DLL-сборки</strong> загружаются только на скриптовом бэкенде Mono. Считайте их полностью доверенным кодом.</li>
+    </ul>
+
+    <pre class="doc-code"><code>using UnityEditor;
+using UnityEngine;
+
+public static class WorkmodsBundleBuilder
+{
+    [MenuItem("Workmods/Build Mod Bundle")]
+    public static void Build()
+    {
+        var builds = new[]
+        {
+            new AssetBundleBuild
+            {
+                assetBundleName = "neon-ui.bundle",
+                assetNames = new[] { "Assets/ModContent/NeonHud.prefab" }
+            }
+        };
+
+        BuildPipeline.BuildAssetBundles(
+            "Build/Mod", builds,
+            BuildAssetBundleOptions.ChunkBasedCompression,
+            BuildTarget.StandaloneWindows64);
+    }
+}</code></pre>
+
+    <h3 class="doc-h3">CLI для авторов</h3>
+    <p class="doc-p">Десктопного редактора достаточно, но те же помощники доступны из терминала и CI. Каждая команда завершается с ненулевым кодом при ошибке и принимает <code>--json</code> для машинного вывода.</p>
+
+    <pre class="doc-code"><code><span class="c"># создать папку с заполненным workmod.json</span>
+python -m workmods init neon-ui --name "Neon UI" --game space-rangers --author your-handle
+
+<span class="c"># проверить обязательные поля, бандлы и отсутствующий контент</span>
+python -m workmods validate neon-ui
+
+<span class="c"># собрать релизный ZIP и напечатать его SHA-256</span>
+python -m workmods pack neon-ui --out dist/neon-ui.zip
+
+<span class="c"># заново открыть ZIP и сверить содержимое и дайджест</span>
+python -m workmods validate-package dist/neon-ui.zip --sha256 &lt;digest&gt;
+
+<span class="c"># проверить совместимость с конкретной целью</span>
+python -m workmods validate-package dist/neon-ui.zip \
+  --engine unity --unity-version 2022.3 --platform windows --platform linux</code></pre>
+
+    <h3 class="doc-h3">В редакторе</h3>
+    <ol class="doc-steps">
+      <li><strong>Author Studio → Вход через GitHub</strong>, затем <strong>Новый репозиторий</strong>, чтобы создать публичный репозиторий с начальным коммитом (или выберите существующий).</li>
+      <li><strong>Создать</strong> карточку мода: id генерируется, заполните целевую игру, название, версию, автора, описание, иконку и баннер, теги и папку файлов. Лежащий там <code>workmod.json</code> заполнит пустые поля.</li>
+      <li><strong>Сохранить мод</strong> пишет локальный черновик в папку установки игры, чтобы мод можно было поставить и проверить в игре до публикации.</li>
+    </ol>
+
+    <div class="doc-note">
+      <b>Чистота</b>
+      <span>Упаковка пропускает <code>.devers_meta.json</code>, <code>.git</code>, <code>__pycache__</code>, <code>.DS_Store</code>, <code>Thumbs.db</code> и <code>.workmods-disabled</code>, но папку всё равно стоит держать в порядке.</span>
+    </div>
+  </section>

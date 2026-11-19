@@ -1,0 +1,114 @@
+<section class="doc-section" id="doc-build">
+    <div class="doc-eyebrow">创作</div>
+    <h2 class="doc-h2">制作模组</h2>
+    <p class="doc-p">模组就是一个文件夹。其内容正是游戏 SDK 将看到的东西，外加可选的 <code>workmod.json</code> 清单。</p>
+
+    <pre class="doc-code"><code>neon-ui/
+├── workmod.json
+├── neon-ui.bundle
+└── bundles/
+    └── shared.bundle</code></pre>
+
+    <h3 class="doc-h3">清单</h3>
+    <p class="doc-p">发布时客户端只要求 <code>name</code> 与 <code>version</code>，但 <code>id</code>、<code>game_id</code> 与兼容性字段能让校验器拒绝无法在目标环境运行的包。</p>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>字段</th><th>含义</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>id</code></td><td>稳定的模组 id。只生成一次，版本之间不变。</td></tr>
+          <tr><td><code>game_id</code></td><td>目标游戏。默认使用 <code>default</code> 配置。</td></tr>
+          <tr><td><code>name</code>、<code>version</code></td><td>名称与版本。发行标签为 <code>v&lt;version&gt;</code>。</td></tr>
+          <tr><td><code>author</code>、<code>description</code></td><td>目录中显示的文本。</td></tr>
+          <tr><td><code>entry_asset</code></td><td>可选，游戏可加载的默认资源名。</td></tr>
+          <tr><td><code>bundles</code></td><td>相对于模组根目录的显式 bundle 路径。名称有歧义时建议填写。</td></tr>
+          <tr><td><code>engine</code>、<code>sdk</code></td><td>当前 SDK 为 <code>unity</code>。</td></tr>
+          <tr><td><code>unity_version</code></td><td>构建模组所用的最低 Unity 版本。</td></tr>
+          <tr><td><code>platforms</code></td><td><code>windows</code>、<code>linux</code>、<code>macos</code>、<code>android</code>、<code>ios</code>。</td></tr>
+          <tr><td><code>min_client_version</code>、<code>min_sdk_version</code></td><td>可安装或加载该模组的最旧客户端与 SDK。</td></tr>
+          <tr><td><code>tags</code></td><td>用于搜索的字符串。</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre class="doc-code"><code>{
+  "id": "a1b2c3d4",
+  "game_id": "space-rangers",
+  "name": "Neon UI",
+  "version": "1.2.0",
+  "author": "your-handle",
+  "description": "Neon HUD replacement for the tactical screen.",
+  "entry_asset": "NeonHud",
+  "bundles": ["neon-ui.bundle", "bundles/shared.bundle"],
+  "engine": "unity",
+  "unity_version": "2021.3",
+  "platforms": ["windows", "linux", "macos"],
+  "tags": ["ui", "hud"]
+}</code></pre>
+
+    <h3 class="doc-h3">内容格式</h3>
+    <ul class="doc-list">
+      <li><strong>AssetBundle</strong> 是推荐格式：在 Mono 与 IL2CPP 下均可用，覆盖所有平台。每个平台需单独构建，bundle 不能跨平台通用。</li>
+      <li>请使用 <strong>ChunkBasedCompression</strong>（LZ4）。LZMA bundle 必须整体解压，是 Android 上常见的失败原因。</li>
+      <li>把依赖（共享 bundle、贴图、着色器）<strong>放进模组内部</strong>。SDK 会先加载模组的所有 bundle，再解析资源。</li>
+      <li><strong>Addressables</strong> 同样可用，因为它们生成的就是 AssetBundle；把平台目录中构建好的 bundle 文件一并放入。</li>
+      <li><strong>DLL</strong> 只能在 Mono 脚本后端加载。请把它们视为完全可信的代码。</li>
+    </ul>
+
+    <pre class="doc-code"><code>using UnityEditor;
+using UnityEngine;
+
+public static class WorkmodsBundleBuilder
+{
+    [MenuItem("Workmods/Build Mod Bundle")]
+    public static void Build()
+    {
+        var builds = new[]
+        {
+            new AssetBundleBuild
+            {
+                assetBundleName = "neon-ui.bundle",
+                assetNames = new[] { "Assets/ModContent/NeonHud.prefab" }
+            }
+        };
+
+        BuildPipeline.BuildAssetBundles(
+            "Build/Mod", builds,
+            BuildAssetBundleOptions.ChunkBasedCompression,
+            BuildTarget.StandaloneWindows64);
+    }
+}</code></pre>
+
+    <h3 class="doc-h3">作者 CLI</h3>
+    <p class="doc-p">桌面编辑器已经够用，同样的工具也能在终端和 CI 中使用。出错时每条命令都返回非零退出码，并支持 <code>--json</code> 输出机器可读结果。</p>
+
+    <pre class="doc-code"><code><span class="c"># 创建文件夹并生成已填写的 workmod.json</span>
+python -m workmods init neon-ui --name "Neon UI" --game space-rangers --author your-handle
+
+<span class="c"># 检查必填字段、bundle 与缺失内容</span>
+python -m workmods validate neon-ui
+
+<span class="c"># 构建发行 ZIP 并输出其 SHA-256</span>
+python -m workmods pack neon-ui --out dist/neon-ui.zip
+
+<span class="c"># 重新打开 ZIP，核对内容与摘要</span>
+python -m workmods validate-package dist/neon-ui.zip --sha256 &lt;digest&gt;
+
+<span class="c"># 针对具体目标检查兼容性</span>
+python -m workmods validate-package dist/neon-ui.zip \
+  --engine unity --unity-version 2022.3 --platform windows --platform linux</code></pre>
+
+    <h3 class="doc-h3">在编辑器中</h3>
+    <ol class="doc-steps">
+      <li><strong>Author Studio → 通过 GitHub 登录</strong>，然后<strong>新建仓库</strong>创建带初始提交的公开仓库（或选择已有仓库）。</li>
+      <li><strong>创建</strong>模组条目：id 会自动生成，填写目标游戏、名称、版本、作者、描述、图标与横幅、标签和文件文件夹。该文件夹中的 <code>workmod.json</code> 会补全空白字段。</li>
+      <li><strong>保存模组</strong>会把本地草稿写入游戏的安装目录，便于在发布前安装并在游戏中测试。</li>
+    </ol>
+
+    <div class="doc-note">
+      <b>保持整洁</b>
+      <span>打包会跳过 <code>.devers_meta.json</code>、<code>.git</code>、<code>__pycache__</code>、<code>.DS_Store</code>、<code>Thumbs.db</code> 与 <code>.workmods-disabled</code>，但仍建议保持文件夹干净。</span>
+    </div>
+  </section>

@@ -1,0 +1,114 @@
+<section class="doc-section" id="doc-build">
+    <div class="doc-eyebrow">Autoria</div>
+    <h2 class="doc-h2">Criar um mod</h2>
+    <p class="doc-p">Um mod é uma pasta. Seu conteúdo é exatamente o que o SDK do jogo verá, mais um manifesto opcional <code>workmod.json</code>.</p>
+
+    <pre class="doc-code"><code>neon-ui/
+├── workmod.json
+├── neon-ui.bundle
+└── bundles/
+    └── shared.bundle</code></pre>
+
+    <h3 class="doc-h3">O manifesto</h3>
+    <p class="doc-p">Ao publicar, o cliente exige apenas <code>name</code> e <code>version</code>, mas <code>id</code>, <code>game_id</code> e os campos de compatibilidade permitem que o validador rejeite um pacote que não roda no alvo.</p>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Campo</th><th>Significado</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>id</code></td><td>Id estável do mod. Gerado uma vez, nunca alterado entre versões.</td></tr>
+          <tr><td><code>game_id</code></td><td>Jogo alvo. Por padrão, o perfil <code>default</code>.</td></tr>
+          <tr><td><code>name</code>, <code>version</code></td><td>Nome e versão. A tag do release vira <code>v&lt;version&gt;</code>.</td></tr>
+          <tr><td><code>author</code>, <code>description</code></td><td>Texto livre exibido no catálogo.</td></tr>
+          <tr><td><code>entry_asset</code></td><td>Nome de asset padrão opcional que o jogo pode carregar.</td></tr>
+          <tr><td><code>bundles</code></td><td>Caminhos explícitos de bundles relativos à raiz do mod. Recomendado quando os nomes são ambíguos.</td></tr>
+          <tr><td><code>engine</code>, <code>sdk</code></td><td><code>unity</code> para o SDK atual.</td></tr>
+          <tr><td><code>unity_version</code></td><td>Versão mínima do Unity para a qual o mod foi compilado.</td></tr>
+          <tr><td><code>platforms</code></td><td><code>windows</code>, <code>linux</code>, <code>macos</code>, <code>android</code>, <code>ios</code>.</td></tr>
+          <tr><td><code>min_client_version</code>, <code>min_sdk_version</code></td><td>Cliente e SDK mais antigos capazes de instalar ou carregar o mod.</td></tr>
+          <tr><td><code>tags</code></td><td>Strings para busca.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre class="doc-code"><code>{
+  "id": "a1b2c3d4",
+  "game_id": "space-rangers",
+  "name": "Neon UI",
+  "version": "1.2.0",
+  "author": "your-handle",
+  "description": "Neon HUD replacement for the tactical screen.",
+  "entry_asset": "NeonHud",
+  "bundles": ["neon-ui.bundle", "bundles/shared.bundle"],
+  "engine": "unity",
+  "unity_version": "2021.3",
+  "platforms": ["windows", "linux", "macos"],
+  "tags": ["ui", "hud"]
+}</code></pre>
+
+    <h3 class="doc-h3">Formato do conteúdo</h3>
+    <ul class="doc-list">
+      <li><strong>AssetBundles</strong> são o formato recomendado: funcionam com Mono e IL2CPP em todas as plataformas. Compile um bundle por plataforma — ele não é portátil entre elas.</li>
+      <li>Use <strong>ChunkBasedCompression</strong> (LZ4). Bundles LZMA precisam ser descompactados por inteiro e são uma causa comum de falhas no Android.</li>
+      <li>Inclua as dependências (bundles compartilhados, texturas, shaders) <strong>dentro do mod</strong>. O SDK carrega todos os bundles do mod antes de resolver os assets.</li>
+      <li><strong>Addressables</strong> funcionam porque geram AssetBundles; inclua os arquivos de bundle compilados da pasta da plataforma.</li>
+      <li><strong>DLLs</strong> só carregam no backend de scripts Mono. Trate-as como código totalmente confiável.</li>
+    </ul>
+
+    <pre class="doc-code"><code>using UnityEditor;
+using UnityEngine;
+
+public static class WorkmodsBundleBuilder
+{
+    [MenuItem("Workmods/Build Mod Bundle")]
+    public static void Build()
+    {
+        var builds = new[]
+        {
+            new AssetBundleBuild
+            {
+                assetBundleName = "neon-ui.bundle",
+                assetNames = new[] { "Assets/ModContent/NeonHud.prefab" }
+            }
+        };
+
+        BuildPipeline.BuildAssetBundles(
+            "Build/Mod", builds,
+            BuildAssetBundleOptions.ChunkBasedCompression,
+            BuildTarget.StandaloneWindows64);
+    }
+}</code></pre>
+
+    <h3 class="doc-h3">CLI de autor</h3>
+    <p class="doc-p">O editor desktop basta, mas os mesmos utilitários existem no terminal e em CI. Cada comando sai com código diferente de zero em caso de erro e aceita <code>--json</code> para saída legível por máquina.</p>
+
+    <pre class="doc-code"><code><span class="c"># criar uma pasta com workmod.json preenchido</span>
+python -m workmods init neon-ui --name "Neon UI" --game space-rangers --author your-handle
+
+<span class="c"># verificar campos obrigatórios, bundles e conteúdo ausente</span>
+python -m workmods validate neon-ui
+
+<span class="c"># montar o ZIP de release e imprimir seu SHA-256</span>
+python -m workmods pack neon-ui --out dist/neon-ui.zip
+
+<span class="c"># reabrir o ZIP e conferir conteúdo e digest</span>
+python -m workmods validate-package dist/neon-ui.zip --sha256 &lt;digest&gt;
+
+<span class="c"># verificar compatibilidade com um alvo concreto</span>
+python -m workmods validate-package dist/neon-ui.zip \
+  --engine unity --unity-version 2022.3 --platform windows --platform linux</code></pre>
+
+    <h3 class="doc-h3">No editor</h3>
+    <ol class="doc-steps">
+      <li><strong>Author Studio → Login via GitHub</strong> e depois <strong>Novo repositório</strong> para criar um repositório público com commit inicial (ou escolha um existente).</li>
+      <li><strong>Criar</strong> a ficha do mod: o id é gerado; preencha jogo alvo, nome, versão, autor, descrição, ícone e banner, tags e a pasta de arquivos. Um <code>workmod.json</code> nessa pasta preenche os campos vazios.</li>
+      <li><strong>Salvar mod</strong> grava um rascunho local na pasta de instalação do jogo, para instalar e testar em jogo antes de publicar.</li>
+    </ol>
+
+    <div class="doc-note">
+      <b>Limpeza</b>
+      <span>O empacotamento ignora <code>.devers_meta.json</code>, <code>.git</code>, <code>__pycache__</code>, <code>.DS_Store</code>, <code>Thumbs.db</code> e <code>.workmods-disabled</code>, mas vale manter a pasta organizada.</span>
+    </div>
+  </section>

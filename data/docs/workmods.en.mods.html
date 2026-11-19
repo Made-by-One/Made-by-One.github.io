@@ -1,0 +1,14 @@
+<section class="doc-section" id="doc-mods">
+    <div class="doc-eyebrow">Playing</div>
+    <h2 class="doc-h2">Installing &amp; managing mods</h2>
+    <p class="doc-p">An install downloads the release asset named in the registry, verifies its SHA-256 when the registry has one, extracts it safely and only then swaps the folder. An interrupted download never leaves a half-written mod where the game can see it.</p>
+
+    <ol class="doc-steps">
+      <li><strong>Install</strong> extracts into <code>&lt;install_dir&gt;/&lt;modId&gt;</code> and writes <code>.devers_meta.json</code> with the registry metadata.</li>
+      <li><strong>Reinstall / Update</strong> replaces the existing folder with the version from the catalog.</li>
+      <li><strong>Disable</strong> moves the folder to <code>.workmods-disabled/</code>; <strong>Enable</strong> moves it back. No manifest is edited and the SDK ignores hidden folders.</li>
+      <li><strong>Delete</strong> removes the mod folder. The client refuses paths outside the profile's install directory.</li>
+    </ol>
+
+    <p class="doc-p">Profiles make switching painless: <strong>Installed → Mod Profile</strong> saves the current enabled/disabled set plus a settings object under a name, applies it later by moving folders on disk, and exports or imports it as portable JSON. That is how you keep, for example, a vanilla-plus set and a heavily modded set for the same game.</p>
+  </section>

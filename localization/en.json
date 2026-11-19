@@ -64,5 +64,8 @@
   "theme.light": "Light",
   "docs.title": "Documentation",
   "docs.subtitle": "Manuals for the tools we build.",
-  "docs.lang": "Technical documentation is kept in English."
+  "docs.loading": "Loading documentation…",
+  "docs.error": "Could not load the documentation",
+  "docs.all": "All docs",
+  "docs.sections": "Sections"
 }

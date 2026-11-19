@@ -1,0 +1,59 @@
+<section class="doc-section" id="doc-unity">
+    <div class="doc-eyebrow">For game developers</div>
+    <h2 class="doc-h2">Unity SDK</h2>
+    <p class="doc-p"><code>unity-sdk/WorkmodsSDK.cs</code> is a single, dependency-free C# file that scans a mods folder, exposes installed mods and loads their assets.</p>
+
+    <ol class="doc-steps">
+      <li>Copy <code>WorkmodsSDK.cs</code> into your project, for example <code>Assets/Workmods/</code>.</li>
+      <li>Decide where mods live. The client defaults to <code>~/DeversMods/&lt;game_id&gt;</code>; the SDK defaults to <code>Application.persistentDataPath/Workmods</code>. Point the game profile at the folder your game scans, or pass <code>modsRoot</code> when you initialize.</li>
+      <li>Initialize once, then load by mod id and asset name.</li>
+    </ol>
+
+    <pre class="doc-code"><code>using Workmods;
+using UnityEngine;
+
+public class Mods : MonoBehaviour
+{
+    private void Awake()
+    {
+WorkmodsSDK.Initialize(
+    modsRoot: null,            <span class="c">// null → persistentDataPath/Workmods</span>
+    gameId: "space-rangers",   <span class="c">// reject mods for other games</span>
+    verboseLogging: true,
+    writeLogToFile: true);     <span class="c">// &lt;modsRoot&gt;/workmods.log</span>
+    }
+}
+
+<span class="c">// load a prefab from an installed mod</span>
+var prefab = WorkmodsSDK.LoadAsset&lt;GameObject&gt;("a1b2c3d4", "NeonHud");
+if (prefab != null) Instantiate(prefab);</code></pre>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Member</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Initialize(...)</code></td><td>Scan the folder. Safe to call repeatedly.</td></tr>
+          <tr><td><code>Rescan()</code></td><td>Re-read the folder after an in-game install.</td></tr>
+          <tr><td><code>GetInstalledMods()</code></td><td>Installed mods, filtered by <code>gameId</code>.</td></tr>
+          <tr><td><code>GetInstalledMod(id)</code>, <code>IsInstalled(id)</code></td><td>Lookup helpers, case-insensitive.</td></tr>
+          <tr><td><code>LoadAssetBundle(id, name)</code></td><td><code>UnityEngine.Object</code> or <code>null</code>; logs the reason on failure.</td></tr>
+          <tr><td><code>LoadAsset&lt;T&gt;(id, name)</code></td><td>Typed variant, for example <code>&lt;GameObject&gt;</code>.</td></tr>
+          <tr><td><code>LoadBundles(mod)</code></td><td>Load and cache every bundle of a mod, handling dependencies.</td></tr>
+          <tr><td><code>TryLoadAssembly(id, out asm)</code></td><td>Mono only; returns <code>false</code> on IL2CPP.</td></tr>
+          <tr><td><code>UnloadAssetBundle(id)</code>, <code>UnloadAll()</code></td><td>Unload bundles — destroy instances first.</td></tr>
+          <tr><td><code>WorkmodsLog.OnLog</code></td><td>Pipe SDK messages into your own logger.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ul class="doc-list">
+      <li>Everything runs on the main thread; do not load bundles from worker threads.</li>
+      <li>Disabled mods live in <code>.workmods-disabled/</code> and are skipped automatically on the next scan.</li>
+      <li>Windows, macOS and Linux standalone are fully supported; Android needs LZ4 bundles; iOS works with AssetBundles installed by your own UI; consoles need platform packaging.</li>
+      <li>WebGL is not supported: it has no synchronous file access and needs an asynchronous loader.</li>
+    </ul>
+
+    <p class="doc-p">More: <a href="https://github.com/Made-by-One/Devers-Workmods/blob/main/docs/UNITY_INTEGRATION.md" target="_blank" rel="noopener">Unity integration guide ↗</a> · <a href="https://github.com/Made-by-One/Devers-Workmods/tree/main/unity-sdk/examples" target="_blank" rel="noopener">Example loader &amp; sample mod ↗</a></p>
+  </section>

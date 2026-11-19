@@ -1,0 +1,37 @@
+<section class="doc-section" id="doc-overview">
+    <div class="doc-eyebrow">文档 01 · 概述</div>
+    <h2 class="doc-h2">Devers Workmods</h2>
+    <p class="doc-p">
+      Workmods 是一款面向 Unity 游戏的通用模组管理器。它由三部分组成，共享同一个约定——注册表条目：
+      模组只需发布一次，就会出现在每位玩家的目录中，安装到正确的文件夹，并通过游戏内的 SDK 加载，
+      无需为每个游戏单独适配。
+    </p>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>组成</th><th>作用</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>桌面客户端</strong></td>
+            <td>基于 Python + PyQt6，面向玩家与作者：浏览目录、安装、更新、启用或停用模组，并发布到自己的 GitHub 仓库。</td>
+          </tr>
+          <tr>
+            <td><strong>注册表</strong></td>
+            <td>Workmods 仓库中的 <code>registry.json</code>，由 GitHub Actions 根据每个模组的一份提交文件重建。客户端从 <code>raw.githubusercontent.com</code> 读取。</td>
+          </tr>
+          <tr>
+            <td><strong>Unity SDK</strong></td>
+            <td>单个无依赖的 C# 文件：扫描模组文件夹、列出已安装模组并加载其 AssetBundle。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ul class="doc-list">
+      <li>当前版本：<strong>1.2b</strong> 公开测试版，提供 Windows x64、Linux x86_64 与 macOS 构建。</li>
+      <li>MIT 许可证，无遥测，无后台服务。</li>
+      <li>模组存放在<strong>模组作者自己的 GitHub 仓库</strong>中，通过 GitHub Releases 分发。客户端从不写入共享注册表——它只发起 pull request。</li>
+    </ul>
+  </section>

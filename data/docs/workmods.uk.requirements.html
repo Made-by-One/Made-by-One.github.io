@@ -1,0 +1,68 @@
+<section class="doc-section" id="doc-requirements">
+    <div class="doc-eyebrow">Вимоги</div>
+    <h2 class="doc-h2">Вимоги та залежності</h2>
+    <p class="doc-p">Релізні збірки самодостатні: Python і PyQt6 уже всередині, гравцеві нічого до встановлювати. Запуск із джерел потрібен лише для розробки.</p>
+
+    <h3 class="doc-h3">Готова збірка клієнта</h3>
+    <ul class="doc-list">
+      <li>Windows 10/11 x64, Linux x86_64 (зібрано на Ubuntu 22.04, працює на новішому glibc) або macOS.</li>
+      <li>Python, Qt і права адміністратора не потрібні. На Linux один раз <code>chmod +x</code>.</li>
+      <li>Мережа для завантаження каталогу. Акаунт GitHub потрібен лише для створення й публікації модів.</li>
+    </ul>
+
+    <h3 class="doc-h3">З джерел</h3>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Залежність</th><th>Версія</th><th>Для чого</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Python</code></td><td>3.12</td><td>Середовище виконання клієнта та CLI</td></tr>
+          <tr><td><code>PyQt6</code></td><td>&gt;= 6.6.0</td><td>Інтерфейс</td></tr>
+          <tr><td><code>requests</code></td><td>&gt;= 2.31.0</td><td>GitHub API і завантаження</td></tr>
+          <tr><td><code>cryptography</code></td><td>&gt;= 42.0</td><td>Перевірка підписаних контрольних сум</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre class="doc-code"><code>git clone https://github.com/Made-by-One/Devers-Workmods.git
+cd Devers-Workmods
+python -m venv .venv
+source .venv/bin/activate        <span class="c"># Windows: .venv\Scripts\activate</span>
+pip install -r requirements.txt
+python main.py</code></pre>
+
+    <p class="doc-p">На Linux потрібні бібліотеки оточення Qt:</p>
+    <pre class="doc-code"><code>sudo apt-get install -y libxkbcommon0 libxkbcommon-x11-0 libfontconfig1 \
+  libfreetype6 libxcb-cursor0 libxcb-icccm4 libxcb-keysyms1 \
+  libxcb-shape0 libxcb-xinerama0 libgl1 libegl1</code></pre>
+
+    <div class="doc-note">
+      <b>Без інтерфейсу</b>
+      <span>CLI для авторів (<code>python -m workmods</code>) не імпортує Qt, тому працює на складальній машині та в CI без дисплея.</span>
+    </div>
+
+    <h3 class="doc-h3">Unity SDK</h3>
+    <ul class="doc-list">
+      <li>C# 7.3 і Unity 2019.4 або новіше; працює з Mono та IL2CPP, але завантаження DLL під час виконання — лише на Mono.</li>
+      <li>Не потрібні ні пакетний менеджер, ні assembly definition — достатньо одного файлу в <code>Assets/</code>.</li>
+      <li>AssetBundle працюють на всіх платформах Unity; WebGL SDK не підтримує.</li>
+    </ul>
+
+    <h3 class="doc-h3">Де що лежить</h3>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Шлях</th><th>Вміст</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>~/.devers_workmods/config.json</code></td><td>Адреса реєстру, мова, токен GitHub, профілі ігор</td></tr>
+          <tr><td><code>~/.devers_workmods/profiles.json</code></td><td>Профілі модів: набори увімкнених і пресети налаштувань</td></tr>
+          <tr><td><code>~/DeversMods/&lt;game_id&gt;/</code></td><td>Тека встановлення профілю гри за замовчуванням</td></tr>
+          <tr><td><code>&lt;mods&gt;/.workmods-disabled/</code></td><td>Вимкнені моди, SDK їх пропускає</td></tr>
+          <tr><td><code>&lt;mods&gt;/workmods.log</code></td><td>Лог SDK, якщо ввімкнено запис у файл</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="doc-p">Каталог конфігурації можна перенести через <code>WORKMODS_CONFIG_DIR</code>, джерело реєстру — через <code>WORKMODS_REGISTRY_REPO</code> і <code>WORKMODS_REGISTRY_BRANCH</code>.</p>
+  </section>

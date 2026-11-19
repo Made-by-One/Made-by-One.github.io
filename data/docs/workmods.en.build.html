@@ -1,0 +1,114 @@
+<section class="doc-section" id="doc-build">
+    <div class="doc-eyebrow">Authoring</div>
+    <h2 class="doc-h2">Building a mod</h2>
+    <p class="doc-p">A mod is a folder. Its contents are exactly what the game's SDK will see, plus an optional <code>workmod.json</code> manifest.</p>
+
+    <pre class="doc-code"><code>neon-ui/
+├── workmod.json
+├── neon-ui.bundle
+└── bundles/
+    └── shared.bundle</code></pre>
+
+    <h3 class="doc-h3">The manifest</h3>
+    <p class="doc-p">Only <code>name</code> and <code>version</code> are required by the client when publishing, but <code>id</code>, <code>game_id</code> and the compatibility fields let the validator reject a package that cannot run on the target machine.</p>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>Field</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>id</code></td><td>Stable mod id. Generated once, never changed between versions.</td></tr>
+          <tr><td><code>game_id</code></td><td>Target game. Defaults to the game's <code>default</code> profile.</td></tr>
+          <tr><td><code>name</code>, <code>version</code></td><td>Display name and version. The release tag becomes <code>v&lt;version&gt;</code>.</td></tr>
+          <tr><td><code>author</code>, <code>description</code></td><td>Free text shown in the catalog.</td></tr>
+          <tr><td><code>entry_asset</code></td><td>Optional default asset name the game can load.</td></tr>
+          <tr><td><code>bundles</code></td><td>Explicit bundle paths, relative to the mod root. Recommended when names are ambiguous.</td></tr>
+          <tr><td><code>engine</code>, <code>sdk</code></td><td><code>unity</code> for the current SDK.</td></tr>
+          <tr><td><code>unity_version</code></td><td>Minimum Unity version the mod was built for.</td></tr>
+          <tr><td><code>platforms</code></td><td><code>windows</code>, <code>linux</code>, <code>macos</code>, <code>android</code>, <code>ios</code>.</td></tr>
+          <tr><td><code>min_client_version</code>, <code>min_sdk_version</code></td><td>Oldest client and SDK that can install or load the mod.</td></tr>
+          <tr><td><code>tags</code></td><td>Searchable strings.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre class="doc-code"><code>{
+  "id": "a1b2c3d4",
+  "game_id": "space-rangers",
+  "name": "Neon UI",
+  "version": "1.2.0",
+  "author": "your-handle",
+  "description": "Neon HUD replacement for the tactical screen.",
+  "entry_asset": "NeonHud",
+  "bundles": ["neon-ui.bundle", "bundles/shared.bundle"],
+  "engine": "unity",
+  "unity_version": "2021.3",
+  "platforms": ["windows", "linux", "macos"],
+  "tags": ["ui", "hud"]
+}</code></pre>
+
+    <h3 class="doc-h3">Content format</h3>
+    <ul class="doc-list">
+      <li><strong>AssetBundles</strong> are the recommended format: they work with Mono and IL2CPP on every platform. Build one bundle per platform — a bundle is not portable between them.</li>
+      <li>Use <strong>ChunkBasedCompression</strong> (LZ4). LZMA bundles must be fully decompressed and are a common cause of Android failures.</li>
+      <li>Ship dependencies (shared bundles, textures, shaders) <strong>inside the mod</strong>. The SDK loads every bundle of a mod before resolving assets.</li>
+      <li><strong>Addressables</strong> work because they produce AssetBundles; ship the built bundle files from the platform folder.</li>
+      <li><strong>DLL assemblies</strong> only load on the Mono scripting backend. Treat them as fully trusted code.</li>
+    </ul>
+
+    <pre class="doc-code"><code>using UnityEditor;
+using UnityEngine;
+
+public static class WorkmodsBundleBuilder
+{
+    [MenuItem("Workmods/Build Mod Bundle")]
+    public static void Build()
+    {
+var builds = new[]
+{
+    new AssetBundleBuild
+    {
+        assetBundleName = "neon-ui.bundle",
+        assetNames = new[] { "Assets/ModContent/NeonHud.prefab" }
+    }
+};
+
+BuildPipeline.BuildAssetBundles(
+    "Build/Mod", builds,
+    BuildAssetBundleOptions.ChunkBasedCompression,
+    BuildTarget.StandaloneWindows64);
+    }
+}</code></pre>
+
+    <h3 class="doc-h3">Author CLI</h3>
+    <p class="doc-p">The desktop editor is enough, but the same helpers run from a shell or CI. Every command exits non-zero on errors and accepts <code>--json</code> for machine-readable output.</p>
+
+    <pre class="doc-code"><code><span class="c"># scaffold a folder with a filled-in workmod.json</span>
+python -m workmods init neon-ui --name "Neon UI" --game space-rangers --author your-handle
+
+<span class="c"># check required fields, listed bundles and missing content</span>
+python -m workmods validate neon-ui
+
+<span class="c"># build the release ZIP and print its SHA-256</span>
+python -m workmods pack neon-ui --out dist/neon-ui.zip
+
+<span class="c"># reopen the ZIP and verify contents and digest</span>
+python -m workmods validate-package dist/neon-ui.zip --sha256 &lt;digest&gt;
+
+<span class="c"># check compatibility against a concrete target</span>
+python -m workmods validate-package dist/neon-ui.zip \
+  --engine unity --unity-version 2022.3 --platform windows --platform linux</code></pre>
+
+    <h3 class="doc-h3">In the editor</h3>
+    <ol class="doc-steps">
+      <li><strong>Author Studio → Login via GitHub</strong>, then <strong>New Repo</strong> to create a public repository with an initial commit (or pick an existing one).</li>
+      <li><strong>Create</strong> a mod entry: the id is generated, fill in target game, name, version, author, description, icon and banner, tags and the files folder. A <code>workmod.json</code> in that folder pre-fills fields you left empty.</li>
+      <li><strong>Save Mod</strong> writes a local draft into the game's install folder, so you can install and test it in-game before publishing.</li>
+    </ol>
+
+    <div class="doc-note">
+      <b>Keep clean</b>
+      <span>Packaging skips <code>.devers_meta.json</code>, <code>.git</code>, <code>__pycache__</code>, <code>.DS_Store</code>, <code>Thumbs.db</code> and <code>.workmods-disabled</code>, but keep the folder tidy anyway.</span>
+    </div>
+  </section>

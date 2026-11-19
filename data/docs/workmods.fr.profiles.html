@@ -1,0 +1,17 @@
+<section class="doc-section" id="doc-profiles">
+    <div class="doc-eyebrow">Configuration</div>
+    <h2 class="doc-h2">Profils de jeu</h2>
+    <p class="doc-p">Une installation de Workmods gère les mods de n'importe quel nombre de jeux Unity. Un profil est un enregistrement <code>{ id, name, install_dir, sdk }</code> ; le registre ne stocke que le <code>game_id</code>, donc rien n'est lié à une machine.</p>
+
+    <ol class="doc-steps">
+      <li>Ouvre <strong>Réglages → Profils de jeu</strong> et choisis <strong>Ajouter un jeu</strong>.</li>
+      <li>Saisis un <strong>Game ID</strong> en minuscules (<code>a-z</code>, <code>0-9</code>, <code>.</code>, <code>_</code>, <code>-</code>) — exactement la valeur que le jeu transmet à <code>WorkmodsSDK.Initialize</code>.</li>
+      <li>Indique un nom affiché et le dossier d'installation que le jeu analyse. Vide signifie <code>~/DeversMods/&lt;game_id&gt;</code>.</li>
+      <li>Choisis le profil comme <strong>jeu actif</strong>. Catalogue et Installés se filtrent dessus ; <strong>Tous les jeux</strong> montre tout.</li>
+    </ol>
+
+    <div class="doc-note">
+      <b>Dossier</b>
+      <span>Le profil par défaut s'appelle « Unassigned », ne peut pas être supprimé et conserve les mods sans <code>game_id</code>. Le SDK Unity utilise par défaut <code>Application.persistentDataPath/Workmods</code> : pointe le profil vers ce dossier ou passe le dossier du profil à <code>Initialize</code>.</span>
+    </div>
+  </section>

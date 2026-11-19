@@ -64,5 +64,8 @@
   "theme.light": "Claro",
   "docs.title": "Documentação",
   "docs.subtitle": "Manuais das ferramentas do estúdio.",
-  "docs.lang": "A documentação técnica está em inglês."
+  "docs.loading": "Carregando a documentação…",
+  "docs.error": "Não foi possível carregar a documentação",
+  "docs.all": "Todos os docs",
+  "docs.sections": "Seções"
 }

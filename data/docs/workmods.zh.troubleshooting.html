@@ -1,0 +1,32 @@
+<section class="doc-section" id="doc-troubleshooting">
+    <div class="doc-eyebrow">参考</div>
+    <h2 class="doc-h2">故障排查</h2>
+
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead>
+          <tr><th>现象</th><th>原因与解决</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>目录为空</td><td>注册表请求失败，或筛选的是没有模组的游戏。刷新后切换到<strong>所有游戏</strong>。</td></tr>
+          <tr><td><code>No mods folder at …</code></td><td>尚未安装任何模组，或游戏扫描的目录与配置不同。设置配置目录或传入 <code>modsRoot</code>。</td></tr>
+          <tr><td>找到模组但被跳过</td><td><code>game_id</code> 与 <code>Initialize(gameId: …)</code> 不一致。</td></tr>
+          <tr><td><code>no AssetBundle found</code></td><td>文件夹中没有 <code>.bundle</code>、<code>.unity3d</code> 或 <code>.bytes</code>，且清单未列出 <code>bundles</code>。</td></tr>
+          <tr><td>资源加载了，但预制体是粉色</td><td>着色器或贴图位于另一个 bundle。把依赖放进模组并加载所有 bundle。</td></tr>
+          <tr><td>Android：<code>The archive is corrupted</code></td><td>用 LZ4 压缩重新构建 bundle。</td></tr>
+          <tr><td><code>GitHub API 401</code></td><td>令牌缺失或过期——退出后重新登录。</td></tr>
+          <tr><td><code>GitHub API 403</code> / <code>404</code></td><td>令牌无权访问目标仓库，或触发了频率限制。重新登录或选择其他仓库。</td></tr>
+          <tr><td><code>GitHub API 422</code></td><td>发行标签被拒绝或文件过大。提升版本，并让文件明显小于 100 MB。</td></tr>
+          <tr><td>pull request 冲突</td><td>另一个未合并的 pull request 修改了同一个模组文件。关闭旧的再重新发布。</td></tr>
+          <tr><td>合并后模组仍未出现</td><td>重建失败。打开仓库的 Actions → <strong>Rebuild Mod Registry</strong> 查看日志。</td></tr>
+          <tr><td>玩家遇到 <code>Checksum mismatch</code></td><td>发布后发行资源被改动。重新发布以让 SHA-256 一致。</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="doc-foot">
+      <a class="btn" href="https://github.com/Made-by-One/Devers-Workmods" target="_blank" rel="noopener">仓库 ↗</a>
+      <a class="btn" href="https://github.com/Made-by-One/Devers-Workmods/releases" target="_blank" rel="noopener">下载 ↗</a>
+      <a class="btn btn-quiet" href="https://github.com/Made-by-One/Devers-Workmods/issues" target="_blank" rel="noopener">报告问题 ↗</a>
+    </div>
+  </section>

@@ -64,5 +64,8 @@
   "theme.light": "Hell",
   "docs.title": "Dokumentation",
   "docs.subtitle": "Anleitungen für die Tools des Studios.",
-  "docs.lang": "Die technische Dokumentation ist auf Englisch."
+  "docs.loading": "Dokumentation wird geladen…",
+  "docs.error": "Dokumentation konnte nicht geladen werden",
+  "docs.all": "Alle Docs",
+  "docs.sections": "Abschnitte"
 }
