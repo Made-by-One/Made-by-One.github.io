@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://made-by-one.github.io/sitemap.xml

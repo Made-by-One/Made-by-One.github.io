@@ -330,7 +330,7 @@
       "id": "returnme",
       "name": "Return Me",
       "icon": "🎮",
-      "cover": "./data/games/ReturnMe.png",
+      "cover": "./data/games/ReturnMe.webp",
       "status": "dev",
       "progress": 35,
       "progressHistory": [
@@ -392,7 +392,7 @@
         },
         "art": [
           {
-            "src": "./data/games/concept-01-key-art.png",
+            "src": "./data/games/concept-01-key-art.webp",
             "caption": {
               "en": "Key art",
               "ru": "Ключевой арт",
@@ -405,7 +405,7 @@
             }
           },
           {
-            "src": "./data/games/concept-02-castle.jpg",
+            "src": "./data/games/concept-02-castle.webp",
             "caption": {
               "en": "Castle ruins",
               "ru": "Руины замка",
@@ -418,7 +418,7 @@
             }
           },
           {
-            "src": "./data/games/concept-03-field.jpg",
+            "src": "./data/games/concept-03-field.webp",
             "caption": {
               "en": "Golden field",
               "ru": "Золотое поле",
@@ -431,7 +431,7 @@
             }
           },
           {
-            "src": "./data/games/concept-04-emblem.jpg",
+            "src": "./data/games/concept-04-emblem.webp",
             "caption": {
               "en": "Emblem",
               "ru": "Эмблема",
