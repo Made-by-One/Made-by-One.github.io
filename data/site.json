@@ -12,20 +12,20 @@
       "status": "dev",
       "license": "MIT",
       "desc": {
-        "en": "Workmods is a mod management tool: a desktop client (Python + PyQt6) for players to browse, install, update and remove mods per game, a public registry updated by GitHub Actions, and a Unity SDK that any game developer drops into their project to discover and load mods. Mods live in the modder's own GitHub repository and are distributed through GitHub Releases. Currently in public beta (v1.2b).",
-        "ru": "Workmods — инструмент управления модами: десктоп-клиент (Python + PyQt6) для просмотра, установки, обновления и удаления модов для каждой игры, публичный реестр, обновляемый через GitHub Actions, и Unity SDK, который разработчик игры подключает для обнаружения и загрузки модов. Моды хранятся в собственном репозитории моддера на GitHub и распространяются через GitHub Releases. Сейчас в публичной бете (v1.2b).",
-        "uk": "Workmods — інструмент керування модами: десктоп-клієнт (Python + PyQt6) для перегляду, встановлення, оновлення та видалення модів для кожної гри, публічний реєстр, що оновлюється через GitHub Actions, та Unity SDK, який розробник гри підключає для виявлення та завантаження модів. Моди зберігаються у власному репозиторії моддера на GitHub і поширюються через GitHub Releases. Зараз у публічній беті (v1.2b).",
-        "es": "Workmods es una herramienta de gestión de mods: un cliente de escritorio (Python + PyQt6) para que los jugadores exploren, instalen, actualicen y eliminen mods por juego, un registro público actualizado por GitHub Actions y un Unity SDK que cualquier desarrollador de juegos integra para descubrir y cargar mods. Los mods viven en el propio repositorio GitHub del modder y se distribuyen a través de GitHub Releases. Actualmente en beta pública (v1.2b).",
-        "de": "Workmods ist ein Mod-Management-Tool: ein Desktop-Client (Python + PyQt6) für Spieler zum Durchsuchen, Installieren, Aktualisieren und Entfernen von Mods pro Spiel, ein öffentliches Register, das über GitHub Actions aktualisiert wird, und ein Unity SDK, das jeder Spieleentwickler integriert, um Mods zu entdecken und zu laden. Mods leben im eigenen GitHub-Repository des Modders und werden über GitHub Releases verteilt. Derzeit in öffentlicher Beta (v1.2b).",
-        "fr": "Workmods est un outil de gestion de mods : un client de bureau (Python + PyQt6) pour que les joueurs parcourent, installent, mettent à jour et suppriment des mods par jeu, un registre public mis à jour par GitHub Actions et un SDK Unity que tout développeur de jeu intègre pour découvrir et charger des mods. Les mods vivent dans le propre dépôt GitHub du modder et sont distribués via GitHub Releases. Actuellement en bêta publique (v1.2b).",
-        "pt": "Workmods é uma ferramenta de gestão de mods: um cliente de desktop (Python + PyQt6) para que os jogadores naveguem, instalem, atualizem e removam mods por jogo, um registro público atualizado por GitHub Actions e um Unity SDK que qualquer desenvolvedor de jogos integra para descobrir e carregar mods. Os mods vivem no próprio repositório GitHub do modder e são distribuídos via GitHub Releases. Atualmente em beta pública (v1.2b).",
-        "zh": "Workmods 是一款模组管理工具：为玩家提供桌面客户端（Python + PyQt6），可按游戏浏览、安装、更新和移除模组；提供由 GitHub Actions 更新的公共注册表；以及 Unity SDK，任何游戏开发者都可集成以发现和加载模组。模组存储在模组作者自己的 GitHub 仓库中，通过 GitHub Releases 分发。目前处于公开测试版（v1.2b）。"
+        "en": "Workmods is a mod management tool: a desktop client (Python + PyQt6) for players to browse, install, update and remove mods per game, a public registry updated by GitHub Actions, and a Unity SDK that any game developer drops into their project to discover and load mods. Mods live in the modder's own GitHub repository and are distributed through GitHub Releases. Currently in public beta (v1.3b).",
+        "ru": "Workmods — инструмент управления модами: десктоп-клиент (Python + PyQt6) для просмотра, установки, обновления и удаления модов для каждой игры, публичный реестр, обновляемый через GitHub Actions, и Unity SDK, который разработчик игры подключает для обнаружения и загрузки модов. Моды хранятся в собственном репозитории моддера на GitHub и распространяются через GitHub Releases. Сейчас в публичной бете (v1.3b).",
+        "uk": "Workmods — інструмент керування модами: десктоп-клієнт (Python + PyQt6) для перегляду, встановлення, оновлення та видалення модів для кожної гри, публічний реєстр, що оновлюється через GitHub Actions, та Unity SDK, який розробник гри підключає для виявлення та завантаження модів. Моди зберігаються у власному репозиторії моддера на GitHub і поширюються через GitHub Releases. Зараз у публічній беті (v1.3b).",
+        "es": "Workmods es una herramienta de gestión de mods: un cliente de escritorio (Python + PyQt6) para que los jugadores exploren, instalen, actualicen y eliminen mods por juego, un registro público actualizado por GitHub Actions y un Unity SDK que cualquier desarrollador de juegos integra para descubrir y cargar mods. Los mods viven en el propio repositorio GitHub del modder y se distribuyen a través de GitHub Releases. Actualmente en beta pública (v1.3b).",
+        "de": "Workmods ist ein Mod-Management-Tool: ein Desktop-Client (Python + PyQt6) für Spieler zum Durchsuchen, Installieren, Aktualisieren und Entfernen von Mods pro Spiel, ein öffentliches Register, das über GitHub Actions aktualisiert wird, und ein Unity SDK, das jeder Spieleentwickler integriert, um Mods zu entdecken und zu laden. Mods leben im eigenen GitHub-Repository des Modders und werden über GitHub Releases verteilt. Derzeit in öffentlicher Beta (v1.3b).",
+        "fr": "Workmods est un outil de gestion de mods : un client de bureau (Python + PyQt6) pour que les joueurs parcourent, installent, mettent à jour et suppriment des mods par jeu, un registre public mis à jour par GitHub Actions et un SDK Unity que tout développeur de jeu intègre pour découvrir et charger des mods. Les mods vivent dans le propre dépôt GitHub du modder et sont distribués via GitHub Releases. Actuellement en bêta publique (v1.3b).",
+        "pt": "Workmods é uma ferramenta de gestão de mods: um cliente de desktop (Python + PyQt6) para que os jogadores naveguem, instalem, atualizem e removam mods por jogo, um registro público atualizado por GitHub Actions e um Unity SDK que qualquer desenvolvedor de jogos integra para descobrir e carregar mods. Os mods vivem no próprio repositório GitHub do modder e são distribuídos via GitHub Releases. Atualmente em beta pública (v1.3b).",
+        "zh": "Workmods 是一款模组管理工具：为玩家提供桌面客户端（Python + PyQt6），可按游戏浏览、安装、更新和移除模组；提供由 GitHub Actions 更新的公共注册表；以及 Unity SDK，任何游戏开发者都可集成以发现和加载模组。模组存储在模组作者自己的 GitHub 仓库中，通过 GitHub Releases 分发。目前处于公开测试版（v1.3b）。"
       },
       "features": {
         "en": [
           "Mod browser & install",
           "Per-game profiles",
-          "Mod updater",
+          "Client self-update",
           "Unity SDK",
           "GitHub registry",
           "SHA-256 verification",
@@ -35,7 +35,7 @@
         "ru": [
           "Браузер и установка модов",
           "Профили по играм",
-          "Обновление модов",
+          "Обновление клиента",
           "Unity SDK",
           "Реестр на GitHub",
           "Проверка SHA-256",
@@ -45,7 +45,7 @@
         "uk": [
           "Браузер і встановлення модів",
           "Профілі за іграми",
-          "Оновлення модів",
+          "Оновлення клієнта",
           "Unity SDK",
           "Реєстр на GitHub",
           "Перевірка SHA-256",
@@ -55,7 +55,7 @@
         "es": [
           "Navegador e instalación de mods",
           "Perfiles por juego",
-          "Actualizador de mods",
+          "Actualización del cliente",
           "Unity SDK",
           "Registro en GitHub",
           "Verificación SHA-256",
@@ -65,7 +65,7 @@
         "de": [
           "Mod-Browser & Installation",
           "Profile pro Spiel",
-          "Mod-Updater",
+          "Client-Updates",
           "Unity SDK",
           "GitHub-Register",
           "SHA-256-Prüfung",
@@ -75,7 +75,7 @@
         "fr": [
           "Navigateur et installation de mods",
           "Profils par jeu",
-          "Mise à jour des mods",
+          "Mise à jour du client",
           "Unity SDK",
           "Registre GitHub",
           "Vérification SHA-256",
@@ -85,7 +85,7 @@
         "pt": [
           "Navegador e instalação de mods",
           "Perfis por jogo",
-          "Atualizador de mods",
+          "Atualização do cliente",
           "Unity SDK",
           "Registro no GitHub",
           "Verificação SHA-256",
@@ -95,7 +95,7 @@
         "zh": [
           "模组浏览与安装",
           "按游戏分组",
-          "模组更新器",
+          "客户端更新",
           "Unity SDK",
           "GitHub 注册表",
           "SHA-256 校验",
@@ -104,17 +104,19 @@
         ]
       },
       "download": {
-        "en": "⬇ Download .zip",
-        "ru": "⬇ Скачать .zip",
-        "uk": "⬇ Завантажити .zip",
-        "es": "⬇ Descargar .zip",
-        "de": "⬇ .zip herunterladen",
-        "fr": "⬇ Télécharger .zip",
-        "pt": "⬇ Baixar .zip",
-        "zh": "⬇ 下载 .zip"
+        "en": "Download for your OS",
+        "ru": "Скачать для своей ОС",
+        "uk": "Завантажити для своєї ОС",
+        "es": "Descargar para tu sistema",
+        "de": "Für dein System herunterladen",
+        "fr": "Télécharger pour votre système",
+        "pt": "Baixar para seu sistema",
+        "zh": "按系统下载"
       },
       "platform": "Windows / Linux / macOS",
-      "fallbackVersion": "v1.2b"
+      "fallbackVersion": "v1.3b",
+      "fallbackDownload": "https://github.com/Made-by-One/Devers-Workmods/releases/tag/v1.3b",
+      "includePrereleases": true
     },
     {
       "id": "launcher",

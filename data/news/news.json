@@ -101,5 +101,42 @@
       "pt": "O desenvolvimento atingiu 35%. Todas as mecânicas principais estão concluídas. O trabalho na criação de níveis e level design começou.",
       "zh": "开发进度已达到 35%。所有核心机制已完成。关卡创建和关卡设计工作已开始。"
     }
+  },
+  {
+    "date": "2026-11-23",
+    "tag": {
+      "en": "Beta",
+      "ru": "Бета",
+      "uk": "Бета",
+      "es": "Beta",
+      "de": "Beta",
+      "fr": "Bêta",
+      "pt": "Beta",
+      "zh": "测试版"
+    },
+    "title": {
+      "en": "Workmods 1.3b is out",
+      "ru": "Вышла Workmods 1.3b",
+      "uk": "Вийшла Workmods 1.3b",
+      "es": "Ya está disponible Workmods 1.3b",
+      "de": "Workmods 1.3b ist da",
+      "fr": "Workmods 1.3b est disponible",
+      "pt": "Workmods 1.3b já está disponível",
+      "zh": "Workmods 1.3b 已发布"
+    },
+    "text": {
+      "en": "Saved icons and banners survive repeated saves and profile changes. The updater finds beta releases, and the Unity SDK clears its cache when the mod folder or game filter changes.",
+      "ru": "Редактор сохраняет иконки и баннеры при повторном сохранении и смене профиля. Обновлятор находит бета-релизы, а Unity SDK очищает кэш при смене папки модов или фильтра игры.",
+      "uk": "Редактор зберігає іконки й банери під час повторного збереження та зміни профілю. Засіб оновлення знаходить бета-релізи, а Unity SDK очищає кеш після зміни папки модів або фільтра гри.",
+      "es": "El editor conserva los iconos y banners al volver a guardar o cambiar de perfil. El actualizador encuentra las betas y el SDK de Unity limpia su caché al cambiar la carpeta de mods o el filtro de juego.",
+      "de": "Der Editor behält Icons und Banner beim erneuten Speichern und beim Profilwechsel. Die Update-Funktion findet Beta-Versionen, und das Unity SDK leert beim Wechsel des Mod-Ordners oder Spielfilters seinen Cache.",
+      "fr": "L’éditeur conserve les icônes et bannières lors d’un nouvel enregistrement ou d’un changement de profil. Le programme de mise à jour trouve les bêtas, et le SDK Unity vide son cache lorsque le dossier des mods ou le filtre de jeu change.",
+      "pt": "O editor preserva ícones e banners ao salvar novamente ou mudar de perfil. O atualizador encontra versões beta, e o SDK do Unity limpa o cache ao mudar a pasta de mods ou o filtro de jogo.",
+      "zh": "重复保存或切换游戏配置时，编辑器会保留图标和横幅。更新程序可以发现测试版，Unity SDK 会在更改模组文件夹或游戏筛选条件时清除缓存。"
+    },
+    "products": [
+      "workmods"
+    ],
+    "link": "https://github.com/Made-by-One/Devers-Workmods/releases/tag/v1.3b"
   }
 ]

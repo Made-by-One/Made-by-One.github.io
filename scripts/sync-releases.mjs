@@ -7,8 +7,9 @@
  *
  * Что делает:
  *   1. Читает продукты из data/site.json
- *   2. Для каждого продукта запрашивает GitHub API (последний релиз)
- *   3. Выбирает .zip-архив по assetPattern (по умолчанию ищет "Windows")
+ *   2. Запрашивает последний релиз, включая беты для продуктов с includePrereleases
+ *   3. Для бета-релизов с несколькими сборками сохраняет ссылку на страницу релиза.
+ *      Для остальных продуктов выбирает .zip-архив по assetPattern.
  *   4. Записывает data/releases.json
  *
  * Если GitHub API недоступен для какого-то продукта — сохраняется
@@ -47,12 +48,17 @@ const out = { generatedAt: new Date().toISOString(), products: {} };
 let failures = 0;
 
 for (const product of site.products || []) {
-  const url = `https://api.github.com/repos/${product.repo}/releases/latest`;
+  const releasePath = product.includePrereleases ? '/releases?per_page=20' : '/releases/latest';
+  const url = `https://api.github.com/repos/${product.repo}${releasePath}`;
   try {
     const res = await fetch(url, { headers });
     if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
-    const release = await res.json();
-    const asset = pickAsset(release.assets, product.assetPattern || 'Windows');
+    const response = await res.json();
+    const release = product.includePrereleases
+      ? response.find((item) => !item.draft && item.published_at)
+      : response;
+    if (!release) throw new Error('Нет опубликованных релизов');
+    const asset = product.includePrereleases ? null : pickAsset(release.assets, product.assetPattern || 'Windows');
 
     out.products[product.id] = {
       repo: product.repo,

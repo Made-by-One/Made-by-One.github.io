@@ -2785,8 +2785,11 @@ async function loadReleases() {
   const live = {};
   await Promise.all(((SITE_CONFIG && SITE_CONFIG.products) || []).map(async (p) => {
     try {
-      const r = await fetchJson(GITHUB_API + p.repo + "/releases/latest");
-      const asset = pickAsset(r.assets, p.assetPattern);
+      const releasePath = p.includePrereleases ? "/releases?per_page=20" : "/releases/latest";
+      const response = await fetchJson(GITHUB_API + p.repo + releasePath);
+      const r = p.includePrereleases ? response.find(release => !release.draft && release.published_at) : response;
+      if (!r) return;
+      const asset = p.includePrereleases ? null : pickAsset(r.assets, p.assetPattern);
       live[p.id] = {
         version: r.tag_name,
         publishedAt: r.published_at,
@@ -2806,7 +2809,7 @@ function productRelease(p) {
   return {
     version: r.version || p.fallbackVersion || "",
     publishedAt: r.publishedAt || "",
-    htmlUrl: r.htmlUrl || `https://github.com/${p.repo}/releases`,
+    htmlUrl: r.htmlUrl || p.fallbackDownload || `https://github.com/${p.repo}/releases`,
     downloadUrl: r.downloadUrl || p.fallbackDownload || `https://github.com/${p.repo}/releases`,
     body: r.body || ""
   };
@@ -2885,7 +2888,9 @@ function renderProducts() {
             ? `<a class="btn btn-primary" href="${r.downloadUrl}" target="_blank" rel="noopener">${escapeHtml(cleanLabel(pickLocalized(p.download) || "Download .zip"))}</a>`
             : `<span class="btn btn-disabled" aria-disabled="true">${escapeHtml(t("games.status.dev"))}</span>`}
           <a class="btn" href="https://github.com/${p.repo}" target="_blank" rel="noopener">${escapeHtml(t("common.github"))}</a>
-          <a class="btn btn-quiet" href="${r.htmlUrl}" target="_blank" rel="noopener">${escapeHtml(t("common.releases"))}</a>
+          ${(!hasDownload || r.htmlUrl !== r.downloadUrl)
+            ? `<a class="btn btn-quiet" href="${r.htmlUrl}" target="_blank" rel="noopener">${escapeHtml(t("common.releases"))}</a>`
+            : ""}
         </div>
       </article>`;
   }).join("");
