@@ -1,0 +1,56 @@
+name: Telegram publish
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Approved post text'
+        required: true
+        type: string
+      publish:
+        description: 'Publish to @thedevers (unchecked = verify bot only)'
+        required: true
+        default: false
+        type: boolean
+permissions: {}
+concurrency:
+  group: telegram-publish
+  cancel-in-progress: false
+jobs:
+  telegram:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify or publish
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          POST_TEXT: ${{ inputs.message }}
+          PUBLISH: ${{ inputs.publish }}
+        run: |
+          python3 - <<'PY'
+          import os, json, urllib.request, urllib.error
+          token = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+          if not token:
+              raise SystemExit("Missing TELEGRAM_BOT_TOKEN secret")
+          def call(method, data):
+              req = urllib.request.Request("https://api.telegram.org/bot" + token + "/" + method, data=json.dumps(data).encode(), headers={"Content-Type":"application/json"})
+              try:
+                  with urllib.request.urlopen(req, timeout=25) as res:
+                      result = json.load(res)
+              except urllib.error.HTTPError as e:
+                  raise SystemExit("Telegram request failed: HTTP " + str(e.code)) from None
+              except Exception:
+                  raise SystemExit("Telegram connection failed") from None
+              if not result.get("ok"):
+                  raise SystemExit("Telegram rejected request")
+              return result["result"]
+          bot = call("getMe", {})
+          member = call("getChatMember", {"chat_id":"@thedevers","user_id":bot["id"]})
+          if member.get("status") != "administrator" or not member.get("can_post_messages"):
+              raise SystemExit("Bot needs channel administrator posting permission")
+          print("Bot permissions verified")
+          if os.environ["PUBLISH"].lower() == "true":
+              message = os.environ["POST_TEXT"].strip()
+              if not message or len(message.encode("utf-16-le")) // 2 > 4096:
+                  raise SystemExit("Post must contain 1–4096 UTF-16 units")
+              result = call("sendMessage", {"chat_id":"@thedevers","text":message})
+              print("Published message ID:", result["message_id"])
+          PY
