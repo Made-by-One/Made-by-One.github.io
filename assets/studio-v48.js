@@ -854,7 +854,8 @@ function autoReleaseNews() {
       tag: t("news.release.tag"),
       title: fillTemplate(titleTemplate, vars),
       text,
-      link: r.htmlUrl
+      link: r.htmlUrl,
+      image: ['workmods','launcher','packer'].includes(p.id) ? './data/news/'+p.id+'.svg' : ''
     };
   }).filter(Boolean);
 }
