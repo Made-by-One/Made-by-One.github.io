@@ -2110,7 +2110,7 @@ body{overflow-x:clip}.site-header{top:12px;margin:12px auto 0;width:calc(100% - 
 </style><style>.star-stage{mask-image:radial-gradient(ellipse at center,#000 48%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at center,#000 48%,transparent 75%)}</style><style>.hero-bg{display:none!important}.hero-visual{background:none!important}.star-stage{mask-image:radial-gradient(ellipse at center,#000 55%,transparent 90%);-webkit-mask-image:radial-gradient(ellipse at center,#000 55%,transparent 90%)}</style><style>:root[data-theme='light'] .star-stage{mask-image:radial-gradient(ellipse at center,#000 40%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at center,#000 40%,transparent 70%)}:root[data-theme='light'] .hero-visual{background:radial-gradient(ellipse at center,#b9a1ed26,transparent 70%)!important}</style><style>
 .growth-facts{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}.growth-fact{min-width:0}.growth-fact-label{white-space:normal!important;overflow-wrap:anywhere;letter-spacing:.08em!important;line-height:1.5}.growth-axis span:only-child{transform:translateX(-50%)}.growth-games-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:18px 0}.growth-game-project{display:flex;flex-direction:column;gap:8px;min-width:0;padding:20px;border:1px solid var(--line);border-radius:18px;background:var(--glass);overflow-wrap:anywhere}.growth-game-project>span{color:var(--accent);font-size:28px}.growth-game-project small,.growth-games-summary p{color:var(--muted);font-size:12px}.growth-games-summary p{grid-column:1/-1;margin:0}.growth-tabs{max-width:100%}.growth-tab{min-width:0}
 @media(max-width:760px){.growth-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 14px}.growth-fact-label{font-size:11px!important}.growth-game-project{padding:14px}.growth-tabs{display:flex}.growth-tab{flex:1;padding-inline:10px!important}}
-</style></head>
+</style><style>#gamesList .game-body{display:flex;flex-direction:column;gap:12px}#gamesList .game-meta{display:flex;flex-wrap:wrap;gap:10px 18px}#gamesList .meta-item{display:flex;flex-wrap:wrap;gap:6px;align-items:baseline}#gamesList .card-actions{margin-top:auto}#gamesList .progress-unknown .meter{background:repeating-linear-gradient(135deg,var(--line) 0 4px,transparent 4px 9px)}#gamesList .game-card:has(a[href*="jack-revenant-website"]){--accent:#e77565;--accent-2:#ffb19a}#gamesList .game-card:has(a[href*="jack-revenant-website"]) .game-cover{background:#18090b}</style></head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="mbo-refract"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="1" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
   <script>
     /* Класс ставится до отрисовки: без JS и при reduced motion контент виден сразу */
@@ -2933,18 +2933,19 @@ function renderGames() {
       ? `<img class="cover-img" src="${g.cover}" alt="${escapeHtml(g.name)}" loading="lazy" decoding="async" onerror="this.remove()">`
       : "";
 
+    const unknown=({ru:"Не объявлено",uk:"Не оголошено",de:"Nicht angekündigt",fr:"Non annoncé",es:"Sin anunciar",pt:"Não anunciado",zh:"待公布"}[currentLang]||"TBA");
     const meta = [
       ["games.label.release", g.release],
       ["games.label.genre", pickLocalized(g.genre)],
       ["games.label.platform", pickLocalized(g.platform)]
     ]
-      .filter(m => m[1])
+      .map(([key,val])=>[key,val||unknown])
       .map(([key, val]) =>
         `<span class="meta-item"><span class="meta-key">${escapeHtml(t(key))}</span>${escapeHtml(String(val))}</span>`
       )
       .join("");
 
-    let progress = "";
+    let progress = `<div class="progress progress-unknown"><div class="progress-head"><span>${escapeHtml(t("games.progress"))}</span><span class="progress-pct">—</span></div><div class="meter" role="img" aria-label="${escapeHtml(unknown)}"></div></div>`;
     if (typeof g.progress === "number") {
       const pct = Math.min(100, Math.max(0, g.progress));
 
