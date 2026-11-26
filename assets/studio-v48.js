@@ -499,7 +499,7 @@ function renderProducts() {
         <header class="card-head">
           <span class="product-icon" aria-hidden="true">${p.id==="launcher"?"◇":p.id==="packer"?"▣":"▦"}</span>
           <h2 class="card-title">${escapeHtml(p.name)}</h2>
-          <span class="card-meta">${meta}</span>
+          <span class="card-meta">${meta}</span>${r.version ? `<span class="product-version">${escapeHtml(r.version)}</span>` : ""}
         </header>
 
         <p class="card-desc">${escapeHtml(pickLocalized(p.desc) || "")}</p>
@@ -1015,8 +1015,8 @@ function setGrowthSeries(name) {
 }
 
 /* Рисуем SVG вручную: сглаженная линия, заливка, сетка, ховер */
-const activitySnapshot={"2026-11-26":29,"2026-11-23":1,"2026-11-19":7,"2026-11-16":8,"2026-11-13":3,"2026-11-12":1,"2026-11-09":10,"2026-11-08":1,"2026-11-07":1,"2026-11-05":1,"2026-10-21":14,"2026-10-18":3,"2026-10-15":5,"2026-10-04":10,"2026-09-20":6};
-let activityData=activitySnapshot, activityFrom="2026-09-20",activityTo="2026-11-26",activityComplete=false,activityRequested=false;
+const activitySnapshot={"2026-11-26":44,"2026-11-23":1,"2026-11-19":7,"2026-11-16":8,"2026-11-13":3,"2026-11-12":1,"2026-11-09":10,"2026-11-08":1,"2026-11-07":1,"2026-11-05":1,"2026-10-21":14,"2026-10-18":3,"2026-10-15":5,"2026-10-04":1};
+let activityData=activitySnapshot, activityFrom="2026-10-04",activityTo="2026-11-26",activityComplete=false,activityRequested=false;
 const activityRepos=[["Studio website","Made-by-One/Made-by-One.github.io"],["Devers-Workmods","Made-by-One/Devers-Workmods"],["Devers-Launcher","Made-by-One/Devers-Launcher"],["Devers-Packer","Made-by-One/Devers-Packer"]];
 let activityFilter="all",activityResults={};
 document.addEventListener("pointerdown",e=>{const picker=document.querySelector(".activity-picker[open]");if(picker&&!picker.contains(e.target))picker.open=false;});
@@ -1036,7 +1036,7 @@ function renderGrowth(){
  const end=new Date(activityTo+"T00:00:00Z"),first=new Date(end);first.setUTCDate(first.getUTCDate()-364);const begin=new Date(first);begin.setUTCDate(begin.getUTCDate()-(begin.getUTCDay()+6)%7);
  const total=Object.values(activityData).reduce((a,b)=>a+b,0);document.getElementById("growthTotal").textContent=(activityComplete?"":"≥")+growthNumber(total);document.getElementById("growthTotalLabel").textContent=labels[5];
  let cells="",months="",lastMonth=-1,lastLabelWeek=-4;const fmt=new Intl.DateTimeFormat(currentLang,{month:"short",timeZone:"UTC"}),dayFmt=new Intl.DateTimeFormat(currentLang,{dateStyle:"long",timeZone:"UTC"});
- for(let i=0;i<371;i++){const d=new Date(begin);d.setUTCDate(d.getUTCDate()+i);if(d>end)break;const key=d.toISOString().slice(0,10),week=Math.floor(i/7),row=i%7;if(row===0&&d.getUTCMonth()!==lastMonth&&week-lastLabelWeek>=3){lastLabelWeek=week;months+='<span style="grid-column:'+(week+1)+'">'+escapeHtml(fmt.format(d))+'</span>';lastMonth=d.getUTCMonth()}const known=d>=first&&key>=activityFrom&&(activityComplete||(!Object.keys(activityResults).length&&key!==activityFrom)),n=activityData[key]||0,level=!known?"unknown":n===0?0:n<=2?1:n<=5?2:n<=9?3:4;const label=dayFmt.format(d)+" · "+(known?labels[5]+": "+n:labels[4]+(n?" (≥"+n+")":""));cells+='<button type="button" class="activity-cell" data-level="'+level+'" style="grid-column:'+(week+1)+';grid-row:'+(row+1)+'" aria-label="'+escapeHtml(label)+'" title="'+escapeHtml(label)+'"></button>'}
+ for(let i=0;i<371;i++){const d=new Date(begin);d.setUTCDate(d.getUTCDate()+i);if(d>end)break;const key=d.toISOString().slice(0,10),week=Math.floor(i/7),row=i%7;if(row===0&&d.getUTCMonth()!==lastMonth&&week-lastLabelWeek>=3){lastLabelWeek=week;months+='<span style="grid-column:'+(week+1)+'">'+escapeHtml(fmt.format(d))+'</span>';lastMonth=d.getUTCMonth()}const known=d>=first&&key>=activityFrom&&(activityComplete||(!Object.keys(activityResults).length&&activityFilter==="all"&&key!==activityFrom)),n=activityData[key]||0,level=!known&&!n?"unknown":n===0?0:n<=2?1:n<=5?2:n<=9?3:4;const label=dayFmt.format(d)+" · "+(known?labels[5]+": "+n:labels[4]+(n?" (≥"+n+")":""));cells+='<button type="button" class="activity-cell" data-level="'+level+'" style="grid-column:'+(week+1)+';grid-row:'+(row+1)+'" aria-label="'+escapeHtml(label)+'" title="'+escapeHtml(label)+'"></button>'}
  const options=[['all',({ru:"Все проекты",uk:"Усі проєкти",de:"Alle Projekte",fr:"Tous les projets",es:"Todos los proyectos",pt:"Todos os projetos",zh:"所有项目"}[currentLang]||"All projects")],...activityRepos.map(([n,r])=>[r,n])];
  host.innerHTML='<details class="activity-picker"><summary><span class="activity-picker-icon">✦</span><span>'+escapeHtml(options.find(x=>x[0]===activityFilter)?.[1]||options[0][1])+'</span><span class="activity-chevron" aria-hidden="true">⌄</span></summary><div class="activity-options">'+options.map(([v,n])=>'<button type="button" data-repo="'+escapeHtml(v)+'" aria-pressed="'+(v===activityFilter)+'">'+escapeHtml(n)+'<span aria-hidden="true">'+(v===activityFilter?'✓':'')+'</span></button>').join("")+'</div></details><div class="activity-scroll"><div class="activity-months">'+months+'</div><div class="activity-grid">'+cells+'</div></div><p class="activity-detail" aria-live="polite">'+escapeHtml(activityComplete?document.querySelector("#growthPanel .growth-sub").textContent:Object.keys(activityResults).length?labels[4]+" · "+Object.keys(activityResults).length+"/"+activityRepos.length:labels[6])+'</p><div class="activity-legend">'+escapeHtml(labels[2])+[0,1,2,3,4].map(n=>'<i class="activity-cell" data-level="'+n+'"></i>').join("")+escapeHtml(labels[3])+'</div>';
  const picker=host.querySelector(".activity-picker");picker.addEventListener("keydown",e=>{if(e.key==="Escape"){picker.open=false;picker.querySelector("summary").focus()}});
