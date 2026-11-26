@@ -347,14 +347,14 @@
       ],
       "release": "2027",
       "genre": {
-        "en": "TBA",
-        "ru": "TBA",
-        "uk": "TBA",
-        "es": "TBA",
-        "de": "TBA",
-        "fr": "TBA",
-        "pt": "TBA",
-        "zh": "待公布"
+        "en": "Adventure",
+        "ru": "Приключение",
+        "uk": "Пригода",
+        "es": "Aventura",
+        "de": "Abenteuer",
+        "fr": "Aventure",
+        "pt": "Aventura",
+        "zh": "冒险"
       },
       "platform": {
         "en": "PC",
@@ -481,8 +481,17 @@
       },
       "link": "https://jack-revenant-website.vercel.app/#case",
       "icon": "✦",
-      "release": null,
-      "platform": null,
+      "release": "2027",
+      "platform": {
+        "en": "Windows",
+        "ru": "Windows",
+        "uk": "Windows",
+        "de": "Windows",
+        "fr": "Windows",
+        "es": "Windows",
+        "pt": "Windows",
+        "zh": "Windows"
+      },
       "progress": null,
       "progressHistory": []
     }
