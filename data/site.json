@@ -479,7 +479,12 @@
         "pt": "Terror investigativo atmosférico com motor 3D voxel próprio.",
         "zh": "采用自研体素3D引擎的氛围侦探恐怖游戏。"
       },
-      "link": "https://jack-revenant-website.vercel.app/#case"
+      "link": "https://jack-revenant-website.vercel.app/#case",
+      "icon": "✦",
+      "release": null,
+      "platform": null,
+      "progress": null,
+      "progressHistory": []
     }
   ]
 }
