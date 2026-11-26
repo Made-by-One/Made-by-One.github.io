@@ -2107,7 +2107,10 @@ body{overflow-x:clip}.site-header{top:12px;margin:12px auto 0;width:calc(100% - 
 .studio-object{transition:opacity .4s}.star-ready .studio-object{opacity:0;pointer-events:none}.star-stage{position:absolute;inset:0;width:100%;height:100%;touch-action:pan-y}.star-stage canvas{display:block;width:100%;height:100%}.hero-visual{isolation:isolate}.game-card{overflow:hidden}.game-cover{position:relative}.game-cover img{object-fit:cover}.game-card .btn-disabled{display:none}.game-card .cover-fallback{opacity:.4}#gamesList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}#gamesList .game-card{display:flex;flex-direction:column}#gamesList .game-cover{width:100%;aspect-ratio:16/10;height:auto;min-height:0}#gamesList .game-body{width:100%;flex:1;padding:24px}#gamesList .game-desc{font-size:15px}.glass-edge{position:absolute;inset:0;border-radius:inherit;pointer-events:none;padding:5px;mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;backdrop-filter:url(#mbo-refract);z-index:2}.card,.growth{position:relative}
 @media(max-width:760px){.site-header .nav{position:fixed;top:auto;bottom:calc(10px + env(safe-area-inset-bottom));left:10px;right:10px;background:var(--surface);border-radius:20px}.site-header{backdrop-filter:none;-webkit-backdrop-filter:none}.glass-edge{display:none}#gamesList{grid-template-columns:1fr}#gamesList .game-body{padding:18px}.card,.growth,.lang-menu{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}}
 @media(prefers-reduced-motion:reduce){.studio-nav-lens{transition:none}}
-</style><style>.star-stage{mask-image:radial-gradient(ellipse at center,#000 48%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at center,#000 48%,transparent 75%)}</style><style>.hero-bg{display:none!important}.hero-visual{background:none!important}.star-stage{mask-image:radial-gradient(ellipse at center,#000 55%,transparent 90%);-webkit-mask-image:radial-gradient(ellipse at center,#000 55%,transparent 90%)}</style><style>:root[data-theme='light'] .star-stage{mask-image:radial-gradient(ellipse at center,#000 40%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at center,#000 40%,transparent 70%)}:root[data-theme='light'] .hero-visual{background:radial-gradient(ellipse at center,#b9a1ed26,transparent 70%)!important}</style></head>
+</style><style>.star-stage{mask-image:radial-gradient(ellipse at center,#000 48%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at center,#000 48%,transparent 75%)}</style><style>.hero-bg{display:none!important}.hero-visual{background:none!important}.star-stage{mask-image:radial-gradient(ellipse at center,#000 55%,transparent 90%);-webkit-mask-image:radial-gradient(ellipse at center,#000 55%,transparent 90%)}</style><style>:root[data-theme='light'] .star-stage{mask-image:radial-gradient(ellipse at center,#000 40%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at center,#000 40%,transparent 70%)}:root[data-theme='light'] .hero-visual{background:radial-gradient(ellipse at center,#b9a1ed26,transparent 70%)!important}</style><style>
+.growth-facts{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}.growth-fact{min-width:0}.growth-fact-label{white-space:normal!important;overflow-wrap:anywhere;letter-spacing:.08em!important;line-height:1.5}.growth-axis span:only-child{transform:translateX(-50%)}.growth-games-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:18px 0}.growth-game-project{display:flex;flex-direction:column;gap:8px;min-width:0;padding:20px;border:1px solid var(--line);border-radius:18px;background:var(--glass);overflow-wrap:anywhere}.growth-game-project>span{color:var(--accent);font-size:28px}.growth-game-project small,.growth-games-summary p{color:var(--muted);font-size:12px}.growth-games-summary p{grid-column:1/-1;margin:0}.growth-tabs{max-width:100%}.growth-tab{min-width:0}
+@media(max-width:760px){.growth-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 14px}.growth-fact-label{font-size:11px!important}.growth-game-project{padding:14px}.growth-tabs{display:flex}.growth-tab{flex:1;padding-inline:10px!important}}
+</style></head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="mbo-refract"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="1" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
   <script>
     /* Класс ставится до отрисовки: без JS и при reduced motion контент виден сразу */
@@ -3422,6 +3425,12 @@ function renderGrowth() {
     return;
   }
 
+  if(growthSeries === "game" && known.length === 1){
+    const point=points.find(p=>typeof p.value==="number");
+    const names=({ru:["Игры","В планах","Данные на"],uk:["Ігри","У планах","Дані на"],de:["Spiele","Geplant","Stand"],fr:["Jeux","Prévus","Au"],es:["Juegos","Previstos","Datos al"],pt:["Jogos","Planejados","Dados de"],zh:["游戏","计划中","截至"]}[currentLang]||["Games","Planned","As of"]);
+    host.innerHTML='<div class="growth-games-summary"><div class="growth-game-project"><span aria-hidden="true">✦</span><strong>Return Me</strong><small>'+escapeHtml(names[1])+'</small></div><div class="growth-game-project"><span aria-hidden="true">✦</span><strong>Jack Revenant</strong><small>'+escapeHtml(names[1])+'</small></div><p>'+escapeHtml(names[2]+" "+formatGrowthDay(STATS.range?.to||point.date))+'</p></div>';
+    animateGrowthTotal(point.value);const label=document.getElementById("growthTotalLabel");if(label)label.textContent=names[0];syncGrowthPill();return;
+  }
   const W = 760, H = 240;
   const PAD = { l: 8, r: 8, t: 22, b: 22 };
   const topValue = Math.max(...known);
@@ -3429,7 +3438,7 @@ function renderGrowth() {
   const span = (topValue - bottomValue) || 1;
   const stepX = points.length > 1 ? (W - PAD.l - PAD.r) / (points.length - 1) : 0;
 
-  const px = i => PAD.l + stepX * i;
+  const px = i => points.length === 1 ? W/2 : PAD.l + stepX * i;
   const py = v => PAD.t + (H - PAD.t - PAD.b) * (1 - (v - bottomValue) / span);
   const baseY = (H - PAD.b).toFixed(1);
 
