@@ -1,0 +1,26 @@
+name: Studio activity
+on:
+  schedule:
+    - cron: '23 4 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: studio-activity
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate activity
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/update_activity.py
+      - name: Publish data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/activity.json
+          git diff --cached --quiet || git commit -m "chore: refresh studio activity"
+          git push
