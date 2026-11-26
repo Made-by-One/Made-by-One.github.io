@@ -1019,6 +1019,7 @@ const activitySnapshot={"2026-11-26":29,"2026-11-23":1,"2026-11-19":7,"2026-11-1
 let activityData=activitySnapshot, activityFrom="2026-09-20",activityTo="2026-11-26",activityComplete=false,activityRequested=false;
 const activityRepos=[["Studio website","Made-by-One/Made-by-One.github.io"],["Devers-Workmods","Made-by-One/Devers-Workmods"],["Devers-Launcher","Made-by-One/Devers-Launcher"],["Devers-Packer","Made-by-One/Devers-Packer"]];
 let activityFilter="all",activityResults={};
+document.addEventListener("pointerdown",e=>{const picker=document.querySelector(".activity-picker[open]");if(picker&&!picker.contains(e.target))picker.open=false;});
 function selectActivity(){const keys=activityFilter==="all"?activityRepos.map(x=>x[1]):[activityFilter];const map={};let complete=true;for(const key of keys){const result=activityResults[key];if(!result){complete=false;continue}for(const [d,n] of Object.entries(result))map[d]=(map[d]||0)+n}activityData=map;activityComplete=complete;}
 function restoreActivityCache(){try{const c=JSON.parse(localStorage.getItem("mbo.activity.v5")||"null");if(!c||!c.results||typeof c.from!=="string"||typeof c.to!=="string")return false;activityResults=c.results;activityFrom=c.from;activityTo=c.to;selectActivity();return Date.now()-c.saved<900000&&Object.keys(c.results).length===activityRepos.length}catch{return false}}
 async function refreshActivity(){
