@@ -2,7 +2,7 @@
   "generatedAt": "2026-11-19T08:21:30.854Z",
   "range": {
     "from": "2026-09-18",
-    "to": "2026-11-19"
+    "to": "2026-11-26"
   },
   "series": {
     "commits": [
@@ -30,29 +30,22 @@
       },
       {
         "date": "2026-11-01",
-        "value": 2
+        "value": 3
       }
     ],
     "game": [
       {
-        "date": "2026-09-01",
-        "value": null
-      },
-      {
-        "date": "2026-10-01",
-        "value": 15
-      },
-      {
         "date": "2026-11-01",
-        "value": 35
+        "value": 2
       }
     ]
   },
   "totals": {
     "commits": 94,
-    "releases": 2,
+    "releases": 3,
     "docs": 10,
     "products": 3,
-    "gameProgress": 35
+    "gameProgress": 35,
+    "plannedGames": 2
   }
 }
