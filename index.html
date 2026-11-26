@@ -54,7 +54,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://api.github.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./assets/studio-v48.css?v=5.0">
+<link rel="stylesheet" href="./assets/studio-v48.css?v=5.3">
 <style>
 .studio-feature a:has(.studio-return-cover){background:#211a2a!important;position:relative;isolation:isolate;overflow:hidden}
 .studio-return-cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none}
@@ -62,6 +62,21 @@
 .studio-feature a:has(.studio-return-cover)>strong,.studio-feature a:has(.studio-return-cover)>span{position:relative;z-index:2}
 .activity-filter select{max-width:100%;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:inherit;font:inherit;margin-bottom:12px}
 .activity-scroll{overscroll-behavior-inline:contain}.activity-grid{padding:3px}.activity-cell:hover{outline:1px solid var(--accent)}
+</style><style>
+.activity-picker{position:relative;max-width:340px;margin:0 0 18px;z-index:5}
+.activity-picker summary{display:flex;align-items:center;gap:12px;min-height:48px;padding:10px 15px;cursor:pointer;list-style:none;border-radius:18px;border:1px solid var(--line-strong);background:linear-gradient(145deg,#ffffff0e,transparent),var(--surface);box-shadow:inset 0 1px 2px #ffffff20;backdrop-filter:blur(18px) saturate(150%)}
+.activity-picker summary::-webkit-details-marker{display:none}
+.activity-picker-icon{color:var(--accent);font-size:20px}.activity-chevron{margin-left:auto;transition:transform .2s}.activity-picker[open] .activity-chevron{transform:rotate(180deg)}
+.activity-options{display:grid;gap:3px;padding:6px;margin-top:6px;border-radius:18px;border:1px solid var(--line-strong);background:var(--surface);box-shadow:0 12px 30px #0003}
+.activity-options button{display:flex;justify-content:space-between;align-items:center;text-align:left;min-height:44px;padding:9px 12px;border:0;border-radius:12px;background:transparent;color:inherit;font:inherit;cursor:pointer}
+.activity-options button[aria-pressed=true]{background:var(--accent-soft);color:var(--accent)}
+.activity-picker summary:focus-visible,.activity-options button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.activity-months span{font-size:10px;white-space:nowrap}.activity-scroll{max-width:100%}
+.studio-feature a{min-height:clamp(210px,26vw,340px);transition:border-color .25s}
+.studio-feature a strong{position:relative;z-index:2;text-wrap:balance}
+.studio-return-cover{transition:transform .5s ease}
+@media(hover:hover){.studio-feature a:hover .studio-return-cover{transform:scale(1.035)}}
+@media(prefers-reduced-motion:reduce){.studio-return-cover{transition:none!important;transform:none!important}.activity-chevron{transition:none}}
 </style></head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="mbo-refract"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="1" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
   <script>
@@ -329,6 +344,6 @@
     </footer>
   </main>
 
-<script src="./assets/studio-v48.js?v=5.0"></script>
+<script src="./assets/studio-v48.js?v=5.3"></script>
 <script type="module" src="./assets/star-v48.js"></script><script src="./assets/glass-v48.js"></script></body>
 </html>
