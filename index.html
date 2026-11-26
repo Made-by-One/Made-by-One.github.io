@@ -2203,7 +2203,21 @@ body{overflow-x:clip}.site-header{top:12px;margin:12px auto 0;width:calc(100% - 
 #mobileNavSlot #menuList .nav-item span{max-width:100%;white-space:normal}
 #mobileNavSlot #menuList .studio-nav-lens{background:linear-gradient(145deg,#ffffff30,var(--accent-soft) 65%,#ffffff12);box-shadow:inset 0 1px 2px #ffffff66,inset 0 -1px 3px #ffffff22}
 }
-</style><style>@media(max-width:900px){#mobileNavSlot:empty{display:none}#mobileNavSlot{min-height:68px}#mobileNavSlot #menuList{min-height:56px}#mobileNavSlot #menuList .nav-item{visibility:visible;opacity:1}#mobileNavSlot #menuList .nav-item.active{background:var(--accent-soft)}#mobileNavSlot #menuList:has(.studio-nav-lens) .nav-item.active{background:transparent}}</style></head>
+</style><style>@media(max-width:900px){#mobileNavSlot:empty{display:none}#mobileNavSlot{min-height:68px}#mobileNavSlot #menuList{min-height:56px}#mobileNavSlot #menuList .nav-item{visibility:visible;opacity:1}#mobileNavSlot #menuList .nav-item.active{background:var(--accent-soft)}#mobileNavSlot #menuList:has(.studio-nav-lens) .nav-item.active{background:transparent}}</style><style>
+#growthPanel .growth-tabs[hidden]{display:none!important}
+#growthPanel .growth-chart{height:auto;min-height:0;display:block}
+.activity-scroll{overflow-x:auto;padding:8px 2px 12px;scrollbar-width:thin}
+.activity-grid,.activity-months{display:grid;grid-template-columns:repeat(53,12px);gap:4px;width:max-content}
+.activity-grid{grid-template-rows:repeat(7,12px)}
+.activity-months{margin-bottom:8px;font-size:10px;color:var(--muted)}
+.activity-months span{white-space:nowrap}
+.activity-cell{display:block;width:12px;height:12px;padding:0;border:0;border-radius:3px;background:var(--line);cursor:pointer}
+.activity-cell[data-level="1"]{background:#b9a2ff55}.activity-cell[data-level="2"]{background:#a78bfa88}.activity-cell[data-level="3"]{background:#9270e7}.activity-cell[data-level="4"]{background:#7650d5}
+.activity-cell[data-level="unknown"]{background:transparent;border:1px dashed var(--line)}
+.activity-cell:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.activity-detail{font-size:12px;color:var(--muted);min-height:24px;margin-top:8px}
+.activity-legend{display:flex;align-items:center;justify-content:flex-end;gap:5px;font-size:11px;color:var(--muted)}
+</style></head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="mbo-refract"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="1" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
   <script>
     /* Класс ставится до отрисовки: без JS и при reduced motion контент виден сразу */
@@ -3487,142 +3501,28 @@ function setGrowthSeries(name) {
 }
 
 /* Рисуем SVG вручную: сглаженная линия, заливка, сетка, ховер */
-function renderGrowth() {
-  const host = document.getElementById("growthChart");
-  const panel = document.getElementById("growthPanel");
-  if (!host || !STATS || !STATS.series) return;
-
-  const series = STATS.series[growthSeries];
-  const points = Array.isArray(series) ? series : ((series && Array.isArray(series.points)) ? series.points : []);
-  const known = points.map(p => p.value).filter(v => typeof v === "number");
-
-  if (!known.length) {
-    host.innerHTML = `<div class="empty">${escapeHtml(t("growth.empty"))}</div>`;
-    return;
-  }
-
-  if(growthSeries === "game" && known.length === 1){
-    const point=points.find(p=>typeof p.value==="number");
-    const names=({ru:["Игры","В планах","Данные на"],uk:["Ігри","У планах","Дані на"],de:["Spiele","Geplant","Stand"],fr:["Jeux","Prévus","Au"],es:["Juegos","Previstos","Datos al"],pt:["Jogos","Planejados","Dados de"],zh:["游戏","计划中","截至"]}[currentLang]||["Games","Planned","As of"]);
-    host.innerHTML='<div class="growth-games-summary"><div class="growth-game-project"><span aria-hidden="true">✦</span><strong>Return Me</strong><small>'+escapeHtml(names[1])+'</small></div><div class="growth-game-project"><span aria-hidden="true">✦</span><strong>Jack Revenant</strong><small>'+escapeHtml(names[1])+'</small></div><p>'+escapeHtml(names[2]+" "+formatGrowthDay(STATS.range?.to||point.date))+'</p></div>';
-    animateGrowthTotal(point.value);const label=document.getElementById("growthTotalLabel");if(label)label.textContent=names[0];syncGrowthPill();return;
-  }
-  const W = 760, H = 240;
-  const PAD = { l: 8, r: 8, t: 22, b: 22 };
-  const topValue = Math.max(...known);
-  const bottomValue = Math.min(0, ...known);
-  const span = (topValue - bottomValue) || 1;
-  const stepX = points.length > 1 ? (W - PAD.l - PAD.r) / (points.length - 1) : 0;
-
-  const px = i => points.length === 1 ? W/2 : PAD.l + stepX * i;
-  const py = v => PAD.t + (H - PAD.t - PAD.b) * (1 - (v - bottomValue) / span);
-  const baseY = (H - PAD.b).toFixed(1);
-
-  // Разрывы на пропущенных месяцах
-  const segments = [];
-  let run = [];
-  points.forEach((point, i) => {
-    if (typeof point.value !== "number") {
-      if (run.length) segments.push(run);
-      run = [];
-      return;
-    }
-    run.push({ x: px(i), y: py(point.value), i, value: point.value });
-  });
-  if (run.length) segments.push(run);
-
-  const curve = (pts) => {
-    if (pts.length === 1) return `M ${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
-    let d = `M ${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
-    for (let i = 0; i < pts.length - 1; i++) {
-      const p0 = pts[i - 1] || pts[i];
-      const p1 = pts[i];
-      const p2 = pts[i + 1];
-      const p3 = pts[i + 2] || p2;
-      const c1x = p1.x + (p2.x - p0.x) / 6;
-      const c2x = p2.x - (p3.x - p1.x) / 6;
-      // Не даём кривой уходить ниже/выше соседних точек:
-      // накопительный рост не должен «проседать» между месяцами
-      const clampY = (v) => Math.min(Math.max(v, Math.min(p1.y, p2.y)), Math.max(p1.y, p2.y));
-      const c1y = clampY(p1.y + (p2.y - p0.y) / 6);
-      const c2y = clampY(p2.y - (p3.y - p1.y) / 6);
-      d += ` C ${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
-    }
-    return d;
-  };
-
-  const linePath = segments.map(curve).join(" ");
-  const areaPath = segments.map(pts => {
-    if (pts.length < 2) return "";
-    return `${curve(pts)} L ${pts[pts.length - 1].x.toFixed(1)} ${baseY} L ${pts[0].x.toFixed(1)} ${baseY} Z`;
-  }).join(" ");
-
-  const lastSegment = segments[segments.length - 1];
-  const lastPoint = lastSegment[lastSegment.length - 1];
-
-  const grid = [0, 0.5, 1].map(ratio => {
-    const y = (PAD.t + (H - PAD.t - PAD.b) * ratio).toFixed(1);
-    return `<line x1="${PAD.l}" y1="${y}" x2="${W - PAD.r}" y2="${y}"/>`;
-  }).join("");
-
-  const axis = points.map((point, i) =>
-    `<span style="left:${((px(i) / W) * 100).toFixed(2)}%">${escapeHtml(formatGrowthMonth(point.date))}</span>`
-  ).join("");
-
-  const endLeft = (lastPoint.x / W * 100).toFixed(2);
-  const endTop = (lastPoint.y / H * 100).toFixed(2);
-
-  host.innerHTML = `
-        <div class="growth-plot" id="growthPlot">
-          <div class="growth-canvas" id="growthCanvas">
-            <svg class="growth-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img"
-              aria-label="${escapeHtml(t("growth.title"))}">
-              <defs>
-                <linearGradient id="growthFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="var(--accent)" stop-opacity=".34"/>
-                  <stop offset="55%" stop-color="var(--accent)" stop-opacity=".12"/>
-                  <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
-                </linearGradient>
-                <linearGradient id="growthStroke" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stop-color="var(--accent)"/>
-                  <stop offset="100%" stop-color="var(--accent-2)"/>
-                </linearGradient>
-                <clipPath id="growthReveal">
-                  <rect class="growth-reveal-rect" x="0" y="0" width="${W}" height="${H}"/>
-                </clipPath>
-              </defs>
-              <g class="growth-grid">${grid}</g>
-              <g clip-path="url(#growthReveal)">
-                <path class="growth-area" d="${areaPath}"/>
-                <path class="growth-line" id="growthLinePath" d="${linePath}"/>
-              </g>
-              <line class="growth-marker" id="growthMarker" x1="0" y1="${PAD.t}" x2="0" y2="${baseY}"/>
-              <circle class="growth-pen" r="3.2">
-                <animateMotion id="growthPenMotion" dur="1.3s" begin="indefinite" fill="freeze"
-                  calcMode="spline" keyTimes="0;1" keySplines=".33 .7 .2 1">
-                  <mpath href="#growthLinePath"/>
-                </animateMotion>
-                <animate id="growthPenFade" attributeName="opacity" values="0;1;1;0"
-                  keyTimes="0;.05;.87;1" dur="1.3s" begin="indefinite" fill="freeze"/>
-              </circle>
-            </svg>
-            <span class="growth-end-dot" style="left:${endLeft}%;top:${endTop}%"><i class="growth-end-halo"></i></span>
-            <span class="growth-hover-dot" id="growthHoverDot"></span>
-            <div class="growth-tooltip" id="growthTooltip"></div>
-          </div>
-          <div class="growth-axis">${axis}</div>
-        </div>`;
-
-  const totalLabel = document.getElementById("growthTotalLabel");
-  if (lastPoint) animateGrowthTotal(lastPoint.value);
-  if (totalLabel) totalLabel.textContent = growthUnit(growthSeries, lastPoint.value);
-
-  playGrowthAnimation();
-  bindGrowthHover(points, px, py, W, H);
-  syncGrowthPill();
+const activitySnapshot={"2026-11-26":28,"2026-11-23":1,"2026-11-19":7,"2026-11-16":8,"2026-11-13":3,"2026-11-12":1,"2026-11-09":10,"2026-11-08":1,"2026-11-07":1,"2026-11-05":1,"2026-10-21":14,"2026-10-18":3,"2026-10-15":5,"2026-10-04":10,"2026-09-20":7};
+let activityData=activitySnapshot, activityFrom="2026-09-20",activityTo="2026-11-26",activityComplete=false,activityRequested=false;
+async function refreshActivity(){
+ if(activityRequested)return;activityRequested=true;
+ try{const until=new Date(),since=new Date(until);since.setUTCDate(since.getUTCDate()-364);const map={};let complete=false;
+ for(let page=1;page<=10;page++){const res=await fetch("https://api.github.com/repos/Made-by-One/Made-by-One.github.io/commits?per_page=100&page="+page+"&since="+encodeURIComponent(since.toISOString())+"&until="+encodeURIComponent(until.toISOString()));if(!res.ok)throw Error("GitHub "+res.status);const rows=await res.json();if(!Array.isArray(rows))throw Error("Invalid response");for(const c of rows){const d=c.commit?.committer?.date?.slice(0,10);if(d)map[d]=(map[d]||0)+1}if(rows.length<100){complete=true;break}}
+ if(!complete)throw Error("Incomplete history");activityData=map;activityFrom=since.toISOString().slice(0,10);activityTo=until.toISOString().slice(0,10);activityComplete=true;renderGrowth();
+ }catch(e){console.warn("Activity snapshot fallback",e)}
+}
+function renderGrowth(){
+ const host=document.getElementById("growthChart");if(!host)return;
+ const labels=({ru:["Активность студии","Коммиты сайта за последние 12 месяцев · UTC","Меньше","Больше","Нет данных","Коммиты","Снимок последних 100 коммитов"],uk:["Активність студії","Коміти сайту за останні 12 місяців · UTC","Менше","Більше","Немає даних","Коміти","Знімок останніх 100 комітів"],de:["Studioaktivität","Website-Commits der letzten 12 Monate · UTC","Weniger","Mehr","Keine Daten","Commits","Letzte 100 Commits"],fr:["Activité du studio","Commits du site sur 12 mois · UTC","Moins","Plus","Aucune donnée","Commits","100 derniers commits"],es:["Actividad del estudio","Commits del sitio en 12 meses · UTC","Menos","Más","Sin datos","Commits","Últimos 100 commits"],pt:["Atividade do estúdio","Commits do site em 12 meses · UTC","Menos","Mais","Sem dados","Commits","Últimos 100 commits"],zh:["工作室活动","过去12个月的网站提交 · UTC","少","多","无数据","提交","最近100次提交"]}[currentLang]||["Studio activity","Website commits over the last 12 months · UTC","Less","More","No data","Commits","Latest 100 commits snapshot"]);
+ document.getElementById("growthTitle").textContent=labels[0];document.querySelector("#growthPanel .growth-sub").textContent=labels[1];document.querySelector("#growthPanel .growth-tabs").hidden=true;
+ const end=new Date(activityTo+"T00:00:00Z"),first=new Date(end);first.setUTCDate(first.getUTCDate()-364);const begin=new Date(first);begin.setUTCDate(begin.getUTCDate()-(begin.getUTCDay()+6)%7);
+ const total=Object.values(activityData).reduce((a,b)=>a+b,0);document.getElementById("growthTotal").textContent=growthNumber(total);document.getElementById("growthTotalLabel").textContent=labels[5];
+ let cells="",months="",lastMonth=-1;const fmt=new Intl.DateTimeFormat(currentLang,{month:"short",timeZone:"UTC"}),dayFmt=new Intl.DateTimeFormat(currentLang,{dateStyle:"long",timeZone:"UTC"});
+ for(let i=0;i<371;i++){const d=new Date(begin);d.setUTCDate(d.getUTCDate()+i);if(d>end)break;const key=d.toISOString().slice(0,10),week=Math.floor(i/7),row=i%7;if(row===0&&d.getUTCMonth()!==lastMonth){months+='<span style="grid-column:'+(week+1)+'">'+escapeHtml(fmt.format(d))+'</span>';lastMonth=d.getUTCMonth()}const known=d>=first&&key>=activityFrom&&(activityComplete||key!==activityFrom),n=activityData[key]||0,level=!known?"unknown":n===0?0:n<=2?1:n<=5?2:n<=9?3:4;const label=dayFmt.format(d)+" · "+(known?labels[5]+": "+n:labels[4]+(n?" (≥"+n+")":""));cells+='<button type="button" class="activity-cell" data-level="'+level+'" style="grid-column:'+(week+1)+';grid-row:'+(row+1)+'" aria-label="'+escapeHtml(label)+'" title="'+escapeHtml(label)+'"></button>'}
+ host.innerHTML='<div class="activity-scroll"><div class="activity-months">'+months+'</div><div class="activity-grid">'+cells+'</div></div><p class="activity-detail" aria-live="polite">'+escapeHtml(activityComplete?labels[1]:labels[6])+'</p><div class="activity-legend">'+escapeHtml(labels[2])+[0,1,2,3,4].map(n=>'<i class="activity-cell" data-level="'+n+'"></i>').join("")+escapeHtml(labels[3])+'</div>';
+ host.querySelectorAll("button.activity-cell").forEach(b=>b.addEventListener("click",()=>{host.querySelector(".activity-detail").textContent=b.getAttribute("aria-label")}));
+ if(!activityComplete)refreshActivity();
 }
 
-/* Итоговая цифра набегает, а не появляется рывком */
 function formatGrowthTotal(value) {
   return growthNumber(Math.round(value));
 }
