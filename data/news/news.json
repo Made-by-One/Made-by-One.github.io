@@ -1,5 +1,40 @@
 [
   {
+    "date": "2026-11-26",
+    "title": {
+      "en": "Made by One 5.0 — Studio Platform",
+      "ru": "Made by One 5.0 — Studio Platform",
+      "uk": "Made by One 5.0 — Studio Platform",
+      "es": "Made by One 5.0 — Studio Platform",
+      "de": "Made by One 5.0 — Studio Platform",
+      "fr": "Made by One 5.0 — Studio Platform",
+      "pt": "Made by One 5.0 — Studio Platform",
+      "zh": "Made by One 5.0 — Studio Platform"
+    },
+    "text": {
+      "en": "The 5.0 update brings together a unified visual system, adaptive navigation with Liquid Glass, an interactive 3D studio emblem and refreshed game and software showcases. Studio Activity displays daily GitHub commits with project filters, caching and a fallback for incomplete data. Styles, interface logic and 3D rendering are now separated into independent files. Subsequent 5.1–5.3 updates introduce scheduled statistics generation, a floating project menu and clearer release information. Automated publishing and performance testing are still being validated.",
+      "ru": "Обновление 5.0 объединяет единую визуальную систему, адаптивную навигацию с Liquid Glass, интерактивную 3D-эмблему студии и обновлённую презентацию игр и программ. Studio Activity показывает ежедневные коммиты GitHub с фильтрацией по проектам, кешированием и резервным отображением неполных данных. Стили, логика интерфейса и 3D-рендеринг разделены на независимые файлы. Последующие обновления 5.1–5.3 добавляют генерацию статистики по расписанию, плавающее меню проектов и более наглядную информацию о релизах. Автоматическая публикация данных и тестирование производительности ещё проходят проверку.",
+      "uk": "Оновлення 5.0 об’єднує єдину візуальну систему, адаптивну навігацію з Liquid Glass, інтерактивну 3D-емблему студії та оновлену презентацію ігор і програм. Studio Activity показує щоденні коміти GitHub із фільтрацією за проєктами, кешуванням і резервним відображенням неповних даних. Стилі, логіку інтерфейсу та 3D-рендеринг розділено на незалежні файли. Оновлення 5.1–5.3 додають генерацію статистики за розкладом, плаваюче меню проєктів і наочнішу інформацію про релізи. Автоматична публікація даних і тестування продуктивності ще перевіряються.",
+      "es": "La actualización 5.0 reúne un sistema visual unificado, navegación adaptable con Liquid Glass, un emblema 3D interactivo y una presentación renovada de juegos y aplicaciones. Studio Activity muestra los commits diarios de GitHub con filtros por proyecto, caché y datos parciales de respaldo. Los estilos, la lógica de interfaz y el renderizado 3D se separan en archivos independientes. Las versiones 5.1–5.3 añaden estadísticas programadas, un menú flotante y datos de versiones más claros. La publicación automática y las pruebas de rendimiento siguen en validación.",
+      "de": "Version 5.0 vereint ein einheitliches Designsystem, adaptive Navigation mit Liquid Glass, ein interaktives 3D-Studioemblem und eine überarbeitete Präsentation von Spielen und Programmen. Studio Activity zeigt tägliche GitHub-Commits mit Projektfiltern, Cache und Ersatzdaten bei unvollständiger Historie. Styles, Oberflächenlogik und 3D-Rendering sind in separate Dateien aufgeteilt. Die Updates 5.1–5.3 ergänzen geplante Statistikgenerierung, ein schwebendes Projektmenü und übersichtlichere Release-Informationen. Automatische Veröffentlichung und Leistungstests werden noch überprüft.",
+      "fr": "La version 5.0 réunit un système visuel unifié, une navigation adaptative Liquid Glass, un emblème 3D interactif et une présentation renouvelée des jeux et logiciels. Studio Activity affiche les commits GitHub quotidiens avec filtres par projet, cache et données de secours partielles. Les styles, la logique de l’interface et le rendu 3D sont séparés en fichiers indépendants. Les versions 5.1–5.3 ajoutent la génération planifiée des statistiques, un menu flottant et des informations de version plus claires. La publication automatique et les tests de performance restent en cours de validation.",
+      "pt": "A atualização 5.0 reúne um sistema visual unificado, navegação adaptável com Liquid Glass, um emblema 3D interativo e uma apresentação renovada de jogos e programas. Studio Activity mostra commits diários do GitHub com filtros por projeto, cache e dados parciais de reserva. Os estilos, a lógica da interface e a renderização 3D foram separados em arquivos independentes. As versões 5.1–5.3 acrescentam estatísticas agendadas, um menu flutuante e informações de versões mais claras. A publicação automática e os testes de desempenho ainda estão em validação.",
+      "zh": "5.0 更新整合了统一视觉系统、Liquid Glass 自适应导航、交互式 3D 工作室标志以及焕新的游戏和软件展示。Studio Activity 按日显示 GitHub 提交记录，支持项目筛选、缓存和不完整数据的备用显示。样式、界面逻辑与 3D 渲染已拆分为独立文件。后续 5.1–5.3 更新加入定时统计生成、浮动项目菜单和更清晰的版本信息。自动发布与性能测试仍在验证中。"
+    },
+    "tag": {
+      "en": "Website update",
+      "ru": "Обновление сайта",
+      "uk": "Оновлення сайту",
+      "es": "Actualización web",
+      "de": "Website-Update",
+      "fr": "Mise à jour du site",
+      "pt": "Atualização do site",
+      "zh": "网站更新"
+    },
+    "image": "./data/news/studio-5.svg",
+    "link": "https://github.com/Made-by-One/Made-by-One.github.io"
+  },
+  {
     "date": "2026-10-21",
     "tag": {
       "en": "Devlog",
@@ -30,7 +65,8 @@
       "fr": "Le développement est à 15 %. Plus de détails bientôt.",
       "pt": "O desenvolvimento está em 15%. Mais detalhes em breve.",
       "zh": "开发进度 15%。更多细节即将公布。"
-    }
+    },
+    "image": "./data/games/ReturnMe.webp"
   },
   {
     "date": "2026-11-12",
@@ -67,7 +103,8 @@
     "products": [
       "workmods"
     ],
-    "link": "https://github.com/Made-by-One/Devers-Workmods/releases"
+    "link": "https://github.com/Made-by-One/Devers-Workmods/releases",
+    "image": "./data/news/workmods.svg"
   },
   {
     "date": "2026-11-13",
@@ -100,7 +137,8 @@
       "fr": "Le développement a atteint 35 %. Toutes les mécaniques principales sont terminées. Le travail sur la création de niveaux et le level design a commencé.",
       "pt": "O desenvolvimento atingiu 35%. Todas as mecânicas principais estão concluídas. O trabalho na criação de níveis e level design começou.",
       "zh": "开发进度已达到 35%。所有核心机制已完成。关卡创建和关卡设计工作已开始。"
-    }
+    },
+    "image": "./data/games/ReturnMe.webp"
   },
   {
     "date": "2026-11-23",
@@ -137,6 +175,7 @@
     "products": [
       "workmods"
     ],
-    "link": "https://github.com/Made-by-One/Devers-Workmods/releases/tag/v1.3b"
+    "link": "https://github.com/Made-by-One/Devers-Workmods/releases/tag/v1.3b",
+    "image": "./data/news/workmods.svg"
   }
 ]
