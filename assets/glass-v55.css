@@ -1,0 +1,12 @@
+/* 5.5 shared glass material profiles */
+:root{--glass-tint:76%;--glass-saturation:125%;--glass-shadow:inset 0 1px 1px #ffffff65,inset 1px 0 2px #ffffff26,inset 0 -2px 3px #ffffff30,0 8px 24px #0003;--glass-highlight:radial-gradient(ellipse at var(--glass-x,50%) var(--glass-y,0%),#ffffff24,transparent 65%);--glass-backdrop:blur(12px) saturate(120%)}
+:where(.activity-options,.lang-menu){--glass-tint:85%}
+:where(.btn:not(.btn-primary),.lightbox-close,.lightbox-nav){--glass-tint:82%;--glass-shadow:inset 0 1px 1px #ffffff40,0 4px 12px #0002}
+:where(.card,.growth,.stats,.docs-aside){--glass-shadow:inset 0 1px 0 var(--line-strong)}
+.card,.growth,.stats,.docs-aside{box-shadow:var(--glass-shadow)}
+#desktopNavSlot #menuList,.activity-options,.lang-menu,.btn:not(.btn-primary),.lightbox-close,.lightbox-nav{background-color:color-mix(in srgb,var(--bg) var(--glass-tint),transparent);box-shadow:var(--glass-shadow);backdrop-filter:var(--glass-backdrop);-webkit-backdrop-filter:var(--glass-backdrop)}
+.optical-ready{--glass-backdrop:var(--optical-filter) saturate(var(--glass-saturation))}
+#desktopNavSlot #menuList.optical-lit,.activity-options.optical-lit,.lang-menu.optical-lit{background-image:var(--glass-highlight)}
+@media(max-width:900px){#mobileNavSlot{--glass-tint:64%;--glass-saturation:135%}#mobileNavSlot::before{background:linear-gradient(155deg,#ffffff12,transparent 28%,transparent 72%,#ffffff0d),color-mix(in srgb,var(--bg) var(--glass-tint),transparent);box-shadow:var(--glass-shadow);backdrop-filter:var(--glass-backdrop);-webkit-backdrop-filter:var(--glass-backdrop)}#mobileNavSlot.optical-lit::before{background-image:var(--glass-highlight)}}
+html.optical-lite .optical-ready{--glass-backdrop:blur(12px) saturate(120%)}
+@media(prefers-reduced-transparency:reduce){#mobileNavSlot::before,#desktopNavSlot #menuList,.activity-options,.lang-menu,.btn:not(.btn-primary),.lightbox-close,.lightbox-nav{background:var(--bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
