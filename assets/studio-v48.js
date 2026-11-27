@@ -1515,9 +1515,23 @@ fr:["Studio indépendant de jeux et logiciels.","Trois projets : Workmods, Launc
 pt:["Estúdio independente de jogos e software.","Três projetos: Workmods, Launcher e Packer.","Aventura em desenvolvimento.","Terror de investigação em desenvolvimento.","Tecnologia de jogos e mundos voxel.","Lançamentos de jogos previstos."],
 zh:["独立游戏与软件工作室。","三个软件项目：Workmods、Launcher 和 Packer。","开发中的冒险游戏。","开发中的侦探恐怖游戏。","探索自主游戏技术和体素世界。","计划中的游戏发布。"]};
 let almanacChapter=0,almanacScene=null,almanacLoading=null,almanacVisible=false;
-function renderAlmanac(){const host=document.getElementById("almanacChapters");if(!host)return;document.getElementById("almanacIndex").textContent=String(almanacChapter+1).padStart(2,"0")+" / 06";document.getElementById("almanacTitle").textContent=almanacNames[almanacChapter];document.getElementById("almanacText").textContent=(almanacDescriptions[currentLang]||almanacDescriptions.en)[almanacChapter];if(!host.children.length)host.innerHTML=almanacNames.map((n,i)=>'<button class="btn news-filter '+(i===almanacChapter?'active':'')+'" aria-pressed="'+(i===almanacChapter)+'" data-chapter="'+i+'">'+'<span class="news-count">'+String(i+1).padStart(2,'0')+'</span><span class="almanac-glyph" aria-hidden="true">'+['✦','▦','◇','◉','▧','◎'][i]+'</span>'+escapeHtml(n)+'</button>').join("");host.querySelectorAll("button").forEach(b=>{const active=Number(b.dataset.chapter)===almanacChapter;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active));b.onclick=()=>chooseAlmanac(Number(b.dataset.chapter))});bindAlmanacGallery(host);renderAlmanacArchive();document.getElementById("almanacExplode").onclick=()=>{const v=almanacScene?.explode();document.getElementById("almanacExplode").setAttribute("aria-pressed",String(!!v))};document.getElementById("almanacReset").onclick=()=>{almanacScene?.reset();document.getElementById("almanacExplode").setAttribute("aria-pressed","false")};document.getElementById("almanacPrev").onclick=()=>chooseAlmanac((almanacChapter+5)%6);document.getElementById("almanacNext").onclick=()=>chooseAlmanac((almanacChapter+1)%6)}
-function chooseAlmanac(i){almanacChapter=i;document.getElementById('almanacExplode').setAttribute('aria-pressed','false');renderAlmanac();almanacScene?.select(i);const host=document.getElementById("almanacChapters"),b=host.querySelector("[data-chapter=\""+i+"\"]");if(b)host.scrollTo({left:b.offsetLeft-host.offsetLeft-(host.clientWidth-b.offsetWidth)/2,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth"})}
-function showAlmanac(v){almanacVisible=v;if(almanacScene){almanacScene.show(v);return}if(!v||almanacLoading)return;renderAlmanac();if(!NEWS_CACHE?.length)loadNews();almanacLoading=import("./almanac-v62.js?v=6.2.6").then(m=>{almanacScene=m.mountAlmanac(document.getElementById("almanacStage"));almanacScene.select(almanacChapter);almanacScene.show(almanacVisible);document.getElementById("almanacFallback").hidden=true}).catch(e=>{console.warn("Almanac 3D unavailable",e);almanacLoading=null})}
+let almanacExpanded=false,almanacMoving=false,almanacBound=false;
+function renderAlmanac(){
+ const host=document.getElementById("almanacChapters");if(!host)return;
+ document.getElementById("almanacIndex").textContent=String(almanacChapter+1).padStart(2,"0")+" / 06";
+ document.getElementById("almanacTitle").textContent=almanacNames[almanacChapter];
+ document.getElementById("almanacText").textContent=(almanacDescriptions[currentLang]||almanacDescriptions.en)[almanacChapter];
+ host.innerHTML=almanacNames.map((_,i)=>'<span class="'+(i===almanacChapter?'active':'')+'"></span>').join("");
+ const links=[[["GitHub","https://github.com/Made-by-One"]],[["Workmods","https://github.com/Made-by-One/Devers-Workmods"],["Launcher","https://github.com/Made-by-One/Devers-Launcher"],["Packer","https://github.com/Made-by-One/Devers-Packer"]],[["Return Me","games"]],[["Jack Revenant","https://jack-revenant-website.vercel.app/"]],[["GitHub","https://github.com/Made-by-One"]],[["2027","games"]]][almanacChapter];
+ const target=document.getElementById("almanacLinks");target.replaceChildren();for(const [name,url] of links){const el=document.createElement(url==="games"?"button":"a");el.className="btn";el.textContent=name;if(url==="games")el.onclick=()=>switchPageByKey("games");else{el.href=url;el.target="_blank";el.rel="noopener"}target.append(el)}
+ renderAlmanacArchive();bindAlmanacGallery();
+}
+function expandAlmanac(v){almanacExpanded=v;const d=document.getElementById("almanacDetails");d.classList.toggle("open",v);d.inert=!v;d.setAttribute("aria-hidden",String(!v));document.getElementById("almanacCard").setAttribute("aria-expanded",String(v));almanacScene?.setExpanded(v)}
+async function chooseAlmanac(i){if(almanacMoving)return;expandAlmanac(false);if(i<0||i>=6||i===almanacChapter)return;almanacMoving=true;const card=document.getElementById("almanacCard"),dir=Math.sign(i-almanacChapter),reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;const wait=ms=>new Promise(r=>setTimeout(r,reduced?0:ms));
+ await wait(320);if(!almanacVisible){almanacMoving=false;return}card.style.transform="translateX("+(-dir*105)+"%)";card.style.opacity="0";await wait(300);
+ almanacChapter=i;renderAlmanac();almanacScene?.select(i);card.style.transition="none";card.style.transform="translateX("+(dir*105)+"%)";void card.offsetWidth;card.style.transition="";card.style.transform="";card.style.opacity="";await wait(380);almanacMoving=false;
+}
+function showAlmanac(v){almanacVisible=v;if(!v&&almanacExpanded)expandAlmanac(false);if(almanacScene){almanacScene.show(v);return}if(!v||almanacLoading)return;renderAlmanac();if(!NEWS_CACHE?.length)loadNews();almanacLoading=import("./almanac-v62.js?v=6.2.7").then(m=>{almanacScene=m.mountAlmanac(document.getElementById("almanacStage"));almanacScene.select(almanacChapter);almanacScene.setExpanded(almanacExpanded);almanacScene.show(almanacVisible);document.getElementById("almanacFallback").hidden=true}).catch(e=>{console.warn("Almanac 3D unavailable",e);almanacLoading=null})}
 
 function renderAlmanacArchive(){
  const host=document.getElementById("almanacArchive");if(!host)return;
@@ -1528,13 +1542,14 @@ function renderAlmanacArchive(){
  host.querySelectorAll("button").forEach((b,i)=>b.onclick=()=>{newsFilter="all";switchPageByKey("news");requestAnimationFrame(()=>{const title=pickLocalized(items[i].title);const match=[...document.querySelectorAll("#newsList .news-title")].find(e=>e.textContent===title);match?.closest("article")?.scrollIntoView({block:"center"})})});
 }
 
-function bindAlmanacGallery(host){
- if(host.dataset.bound)return;host.dataset.bound="1";let wheelAt=0,scrollTimer=0,programUntil=0;
- const exhibit=document.querySelector(".almanac-exhibit");
- exhibit.addEventListener("wheel",e=>{if(e.ctrlKey)return;const delta=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;if(!delta)return;const next=almanacChapter+Math.sign(delta);if(next<0||next>=6)return;e.preventDefault();if(performance.now()-wheelAt<350)return;wheelAt=performance.now();programUntil=wheelAt+650;chooseAlmanac(next)},{passive:false});
- host.addEventListener("scroll",()=>{clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{if(performance.now()<programUntil)return;const box=host.getBoundingClientRect();const center=box.left+box.width/2;const buttons=[...host.querySelectorAll("button")];const nearest=buttons.reduce((a,b)=>Math.abs(b.getBoundingClientRect().left+b.offsetWidth/2-center)<Math.abs(a.getBoundingClientRect().left+a.offsetWidth/2-center)?b:a,buttons[0]);if(nearest&&Number(nearest.dataset.chapter)!==almanacChapter){almanacChapter=Number(nearest.dataset.chapter);renderAlmanac();almanacScene?.select(almanacChapter)}},180)},{passive:true});
- host.addEventListener("click",()=>{programUntil=performance.now()+800},true);
- let x=0,y=0;const stage=document.getElementById("almanacStage");
- stage.addEventListener("touchstart",e=>{x=e.touches[0].clientX;y=e.touches[0].clientY},{passive:true});
- stage.addEventListener("touchend",e=>{const t=e.changedTouches[0];const dx=t.clientX-x,dy=t.clientY-y;if(Math.abs(dx)>65&&Math.abs(dx)>Math.abs(dy)*1.5){programUntil=performance.now()+800;chooseAlmanac(Math.max(0,Math.min(5,almanacChapter-Math.sign(dx))))}},{passive:true});
+function bindAlmanacGallery(){
+ if(almanacBound)return;almanacBound=true;const card=document.getElementById("almanacCard"),page=document.getElementById("page-almanac"),viewport=card.parentElement;let start=null,suppress=0,wheelAt=0;
+ viewport.addEventListener("pointerdown",e=>{if(!e.isPrimary||e.button!==0)return;start={x:e.clientX,y:e.clientY,id:e.pointerId};viewport.setPointerCapture(e.pointerId)});
+ viewport.addEventListener("pointerup",e=>{if(!start||start.id!==e.pointerId)return;const dx=e.clientX-start.x,dy=e.clientY-start.y;start=null;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.3){suppress=performance.now()+500;chooseAlmanac(almanacChapter-Math.sign(dx))}else if(Math.hypot(dx,dy)<12&&!almanacMoving){suppress=performance.now()+500;expandAlmanac(!almanacExpanded)}});
+ viewport.addEventListener("pointercancel",()=>start=null);
+ card.addEventListener("click",()=>{if(performance.now()>suppress&&!almanacMoving)expandAlmanac(!almanacExpanded)});
+ card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();expandAlmanac(!almanacExpanded)}if(e.key==="ArrowLeft"||e.key==="ArrowRight"){e.preventDefault();chooseAlmanac(almanacChapter+(e.key==="ArrowRight"?1:-1))}});
+ page.addEventListener("wheel",e=>{if(e.ctrlKey||e.target.closest("#almanacDetails"))return;const d=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;if(!d)return;const next=almanacChapter+Math.sign(d);if(next<0||next>=6){expandAlmanac(false);return}e.preventDefault();if(almanacMoving||performance.now()-wheelAt<600)return;wheelAt=performance.now();chooseAlmanac(next)},{passive:false});
+ document.addEventListener("pointerdown",e=>{if(almanacVisible&&almanacExpanded&&!e.target.closest("#almanacCard,#almanacDetails"))expandAlmanac(false)});
+ document.addEventListener("keydown",e=>{if(almanacVisible&&e.key==="Escape")expandAlmanac(false)});
 }
