@@ -22,7 +22,7 @@ export function mountAlmanac(host){
  const facets=mat.clone();facets.side=T.DoubleSide;const redFacets=red.clone();redFacets.side=T.DoubleSide;
  for(const material of [mat,red,facets,redFacets]){const isRed=material===red||material===redFacets;material.onBeforeCompile=shader=>{shader.uniforms.themeLight=theme;shader.fragmentShader=shader.fragmentShader.replace('#include <common>','#include <common>\nuniform float themeLight;').replace('#include <opaque_fragment>','float edge=pow(1.-clamp(abs(dot(normalize(normal),normalize(vViewPosition))),0.,1.),2.4); outgoingLight=mix(outgoingLight, '+(isRed?'mix(vec3(1.35,.22,.28),vec3(.65,.06,.1),themeLight)':'mix(vec3(.68,.43,1.35),vec3(.25,.09,.64),themeLight)')+',edge*.32);\n#include <opaque_fragment>')};material.customProgramCacheKey=()=>isRed?'almanac-red-rim':'almanac-violet-rim'}
  let lost=false,renderedAt=0;let exploded=false,onscreen=true,quality=1,slow=0,fast=0,raf=0,chapter=0,visible=false,drag=false,rx=.2,ry=0,scale=1,last=0,amount=0;const reduced=matchMedia('(prefers-reduced-motion: reduce)');
- let solid=null,shards=null,faces=[];
+ let solid=null,shards=null,faces=[],incoming=null;const cache=new Map();
  function prism(outline,depth=.5){const shape=new T.Shape();outline.forEach(([x,y],i)=>i?shape.lineTo(x,y):shape.moveTo(x,y));shape.closePath();const g=new T.ExtrudeGeometry(shape,{depth,bevelEnabled:true,bevelSize:.12,bevelThickness:.12,bevelSegments:1,steps:1,curveSegments:1});g.center();return g}
  function build(i){
  if(i===0)return prism(Array.from({length:8},(_,j)=>{const a=Math.PI/2+j*Math.PI/4,r=j%2?.48:1.5;return [Math.cos(a)*r,Math.sin(a)*r]}),.42);
@@ -32,8 +32,10 @@ export function mountAlmanac(host){
  if(i===4)return new T.IcosahedronGeometry(1.48,0);
  return new T.TorusGeometry(1.05,.38,5,12);
  }
- function select(i){chapter=i;exploded=false;amount=0;for(const child of [...group.children]){group.remove(child);child.geometry.dispose()}faces=[];
- let g=build(i);if(g.index){const old=g;g=g.toNonIndexed();old.dispose()}g.computeVertexNormals();solid=new T.Mesh(g,i===3?red:mat);group.add(solid);
+ function prepare(i){if(cache.has(i))return cache.get(i);let g=build(i);if(g.index){const old=g;g=g.toNonIndexed();old.dispose()}g.computeVertexNormals();cache.set(i,g);return g}
+ function preview(i,dir){if(reduced.matches)return; if(incoming)group.remove(incoming);incoming=new T.Mesh(prepare(i),i===3?red:mat);incoming.position.x=dir*1.9;incoming.scale.setScalar(.01);group.add(incoming);incoming.userData.start=performance.now();incoming.userData.dir=dir;}
+ function select(i){chapter=i;exploded=false;amount=0;for(const child of [...group.children]){group.remove(child);if(child===shards)child.geometry.dispose()}incoming=null;faces=[];
+ let g=prepare(i);solid=new T.Mesh(g,i===3?red:mat);group.add(solid);
  const pos=g.attributes.position;const data=new Float32Array(pos.count*3);
  for(let j=0;j<pos.count;j+=3){const a=new T.Vector3().fromBufferAttribute(pos,j),b=new T.Vector3().fromBufferAttribute(pos,j+1),c=new T.Vector3().fromBufferAttribute(pos,j+2);const center=a.clone().add(b).add(c).multiplyScalar(1/3);const normal=b.clone().sub(a).cross(c.clone().sub(a)).normalize();faces.push({center,normal,local:[a.sub(center),b.sub(center),c.sub(center)],axis:new T.Vector3(Math.sin(j+1),Math.cos(j*2+1),.6).normalize()})}
  const geo=new T.BufferGeometry();geo.setAttribute('position',new T.BufferAttribute(data,3).setUsage(T.DynamicDrawUsage));geo.setAttribute('normal',new T.BufferAttribute(new Float32Array(data.length),3).setUsage(T.DynamicDrawUsage));shards=new T.Mesh(geo,i===3?redFacets:facets);shards.frustumCulled=false;group.add(shards);updateVoxels();draw()
@@ -42,7 +44,7 @@ export function mountAlmanac(host){
  function updateVoxels(){if(!solid||!shards)return;solid.visible=amount<.002;shards.visible=!solid.visible;if(solid.visible)return;const p=shards.geometry.attributes.position, normals=shards.geometry.attributes.normal;
  faces.forEach((f,i)=>{q.setFromAxisAngle(f.axis,amount*(.25+.35*Math.sin(i*2.4)));offset.copy(f.center).multiplyScalar(1+amount*.65).addScaledVector(f.normal,amount*.38);n.copy(f.normal).applyQuaternion(q);f.local.forEach((point,j)=>{v.copy(point).applyQuaternion(q).add(offset);p.setXYZ(i*3+j,v.x,v.y,v.z);normals.setXYZ(i*3+j,n.x,n.y,n.z)})});p.needsUpdate=true;normals.needsUpdate=true
  }
- function draw(){if(!visible||!onscreen||document.hidden||lost)return;group.rotation.set(rx,ry,0);theme.value=document.documentElement.dataset.theme==='light'?1:0;camera.position.z=Math.max(8,8/camera.aspect)+amount*1.6;group.scale.setScalar(scale);renderer.render(scene,camera)}
+ function draw(){if(!visible||!onscreen||document.hidden||lost)return;if(incoming){const u=Math.min(1,(performance.now()-incoming.userData.start)/150),e=u*u*(3-2*u),dir=incoming.userData.dir;incoming.position.x=dir*1.9*(1-e);incoming.scale.setScalar(Math.max(.01,e));for(const mesh of [solid,shards])if(mesh){mesh.position.x=-dir*1.9*e;mesh.scale.setScalar(Math.max(.01,1-e))}}group.rotation.set(rx,ry,0);theme.value=document.documentElement.dataset.theme==='light'?1:0;camera.position.z=Math.max(8,8/camera.aspect)+amount*1.6;group.scale.setScalar(scale);renderer.render(scene,camera)}
  function tick(t){raf=0;if(!visible||!onscreen||document.hidden||lost)return;const raw=last?t-last:16;const dt=Math.min(.05,(t-(last||t))/1000);last=t;if(raw>45){slow++;fast=0}else if(raw<23){fast++;slow=0}else{slow=fast=0}if(slow>30&&quality===1){quality=.7;renderer.setPixelRatio(Math.min(devicePixelRatio,.85));renderer.transmissionResolutionScale=.4;volume.material.uniforms.steps.value=mobile?10:24;resize();slow=0}if(fast>180&&quality<1){quality=1;renderer.setPixelRatio(Math.min(devicePixelRatio,maxDpr));renderer.transmissionResolutionScale=mobile?.5:.85;volume.material.uniforms.steps.value=mobile?16:40;resize();fast=0}const target=Number(exploded);if(amount!==target){amount+=(target-amount)*Math.min(1,dt*7);if(Math.abs(target-amount)<.001)amount=target;updateVoxels()}if(!drag&&!reduced.matches)ry+=dt*.28;scale+=(1-scale)*Math.min(1,dt*8);sunTime.value+=dt;if(!mobile||t-renderedAt>=30){renderedAt=t;draw()}if(!reduced.matches)raf=requestAnimationFrame(tick)}
  function resize(){const w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();draw()}
  const ro=new ResizeObserver(resize);ro.observe(host);
@@ -50,5 +52,5 @@ export function mountAlmanac(host){
  renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();lost=true;cancelAnimationFrame(raf);raf=0});renderer.domElement.addEventListener('webglcontextrestored',()=>{lost=false;show(visible)});
  new MutationObserver(()=>{if(reduced.matches)draw()}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
  document.addEventListener('visibilitychange',()=>show(visible));reduced.addEventListener('change',()=>{if(reduced.matches){amount=Number(exploded);updateVoxels()}show(visible)});
- const io=new IntersectionObserver(es=>{onscreen=es[0].isIntersecting;show(visible)});io.observe(host);return {select,show,setExpanded(v){exploded=v;if(reduced.matches){amount=Number(v);updateVoxels();draw()}}};
+ const io=new IntersectionObserver(es=>{onscreen=es[0].isIntersecting;show(visible)});io.observe(host);for(let i=0;i<6;i++)prepare(i);return {select,preview,show,setExpanded(v){exploded=v;if(reduced.matches){amount=Number(v);updateVoxels();draw()}}};
 }
