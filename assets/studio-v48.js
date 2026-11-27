@@ -1541,7 +1541,7 @@ async function chooseAlmanac(i){
  await motion([{transform:"translate3d("+(dir*110)+"%,38%,0) rotateZ("+(dir*27)+"deg) rotateY("+(-dir*32)+"deg) scale(.68)",opacity:0},{transform:"translate3d("+(dir*38)+"%,8%,0) rotateZ("+(dir*9)+"deg) rotateY("+(-dir*12)+"deg) scale(.92)",opacity:.9,offset:.48},{transform:"translate3d(0,0,0) rotateZ(0deg) rotateY(0deg) scale(1)",opacity:1}],430);
  }finally{almanacMoving=false}
 }
-function showAlmanac(v){almanacVisible=v;if(!v&&almanacExpanded)expandAlmanac(false);if(almanacScene){almanacScene.show(v);return}if(!v||almanacLoading)return;renderAlmanac();if(!NEWS_CACHE?.length)loadNews();almanacLoading=import("./almanac-v62.js?v=6.2.11").then(m=>{almanacScene=m.mountAlmanac(document.getElementById("almanacStage"));almanacScene.select(almanacChapter);almanacScene.setExpanded(almanacExpanded);almanacScene.show(almanacVisible);document.getElementById("almanacFallback").hidden=true}).catch(e=>{console.warn("Almanac 3D unavailable",e);almanacLoading=null})}
+function showAlmanac(v){almanacVisible=v;if(!v&&almanacExpanded)expandAlmanac(false);if(almanacScene){almanacScene.show(v);return}if(!v||almanacLoading)return;renderAlmanac();if(!NEWS_CACHE?.length)loadNews();almanacLoading=import("./almanac-v62.js?v=6.2.12").then(m=>{almanacScene=m.mountAlmanac(document.getElementById("almanacStage"));almanacScene.select(almanacChapter);almanacScene.setExpanded(almanacExpanded);almanacScene.show(almanacVisible);document.getElementById("almanacFallback").hidden=true}).catch(e=>{console.warn("Almanac 3D unavailable",e);almanacLoading=null})}
 
 function renderAlmanacArchive(){
  const host=document.getElementById("almanacArchive");if(!host)return;
