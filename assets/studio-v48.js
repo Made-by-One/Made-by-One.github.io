@@ -1521,15 +1521,25 @@ function renderAlmanac(){
  document.getElementById("almanacIndex").textContent=String(almanacChapter+1).padStart(2,"0")+" / 06";
  document.getElementById("almanacTitle").textContent=almanacNames[almanacChapter];
  document.getElementById("almanacText").textContent=(almanacDescriptions[currentLang]||almanacDescriptions.en)[almanacChapter];
- host.innerHTML=almanacNames.map((_,i)=>'<span class="'+(i===almanacChapter?'active':'')+'"></span>').join("");
+ if(!host.children.length)host.innerHTML=almanacNames.map(()=>'<span></span>').join("")+'<i class="almanac-liquid-indicator"></i>';
+ const indicator=host.lastElementChild;const previous=Number(host.dataset.chapter??almanacChapter);host.dataset.chapter=String(almanacChapter);host.style.setProperty("--chapter",almanacChapter);if(previous!==almanacChapter&&!matchMedia("(prefers-reduced-motion: reduce)").matches&&indicator.animate){indicator.getAnimations().forEach(a=>a.cancel());const delta=(previous-almanacChapter)*18;indicator.animate([{transform:"translateX("+delta+"px) scaleX(1)"},{transform:"translateX("+(delta*.5)+"px) scaleX(2.3)",offset:.48},{transform:"translateX(0) scaleX(1)"}],{duration:520,easing:"cubic-bezier(.22,.8,.25,1)"})}
  const links=[[["GitHub","https://github.com/Made-by-One"]],[["Workmods","https://github.com/Made-by-One/Devers-Workmods"],["Launcher","https://github.com/Made-by-One/Devers-Launcher"],["Packer","https://github.com/Made-by-One/Devers-Packer"]],[["Return Me","games"]],[["Jack Revenant","https://jack-revenant-website.vercel.app/"]],[["GitHub","https://github.com/Made-by-One"]],[["2027","games"]]][almanacChapter];
  const target=document.getElementById("almanacLinks");target.replaceChildren();for(const [name,url] of links){const el=document.createElement(url==="games"?"button":"a");el.className="btn";el.textContent=name;if(url==="games")el.onclick=()=>switchPageByKey("games");else{el.href=url;el.target="_blank";el.rel="noopener"}target.append(el)}
  renderAlmanacArchive();bindAlmanacGallery();
 }
 function expandAlmanac(v){almanacExpanded=v;const d=document.getElementById("almanacDetails");d.classList.toggle("open",v);d.inert=!v;d.setAttribute("aria-hidden",String(!v));document.getElementById("almanacCard").setAttribute("aria-expanded",String(v));almanacScene?.setExpanded(v)}
-async function chooseAlmanac(i){if(almanacMoving)return;expandAlmanac(false);if(i<0||i>=6||i===almanacChapter)return;almanacMoving=true;const card=document.getElementById("almanacCard"),dir=Math.sign(i-almanacChapter),reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;const wait=ms=>new Promise(r=>setTimeout(r,reduced?0:ms));
- await wait(320);if(!almanacVisible){almanacMoving=false;return}card.style.transform="translateX("+(-dir*105)+"%)";card.style.opacity="0";await wait(300);
- almanacChapter=i;renderAlmanac();almanacScene?.select(i);card.style.transition="none";card.style.transform="translateX("+(dir*105)+"%)";void card.offsetWidth;card.style.transition="";card.style.transform="";card.style.opacity="";await wait(380);almanacMoving=false;
+async function chooseAlmanac(i){
+ if(almanacMoving)return;const wasOpen=almanacExpanded;expandAlmanac(false);if(i<0||i>=6||i===almanacChapter)return;
+ almanacMoving=true;const card=document.getElementById("almanacCard"),dir=Math.sign(i-almanacChapter),reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+ const wait=ms=>new Promise(r=>setTimeout(r,ms));
+ async function motion(frames,duration){if(reduced||!card.animate)return;const animation=card.animate(frames,{duration,easing:"linear",fill:"forwards"});try{await animation.finished}finally{animation.cancel()}}
+ try{
+ if(wasOpen&&!reduced)await wait(460);if(!almanacVisible)return;
+ await motion([{transform:"translate3d(0,0,0) rotateZ(0deg) rotateY(0deg) scale(1)",opacity:1},{transform:"translate3d("+(-dir*48)+"%,12%,0) rotateZ("+(-dir*12)+"deg) rotateY("+(dir*18)+"deg) scale(.88)",opacity:.85,offset:.55},{transform:"translate3d("+(-dir*110)+"%,38%,0) rotateZ("+(-dir*27)+"deg) rotateY("+(dir*32)+"deg) scale(.68)",opacity:0}],340);
+ almanacChapter=i;renderAlmanac();almanacScene?.select(i);
+ if(!almanacVisible)return;
+ await motion([{transform:"translate3d("+(dir*110)+"%,38%,0) rotateZ("+(dir*27)+"deg) rotateY("+(-dir*32)+"deg) scale(.68)",opacity:0},{transform:"translate3d("+(dir*38)+"%,8%,0) rotateZ("+(dir*9)+"deg) rotateY("+(-dir*12)+"deg) scale(.92)",opacity:.9,offset:.48},{transform:"translate3d(0,0,0) rotateZ(0deg) rotateY(0deg) scale(1)",opacity:1}],430);
+ }finally{almanacMoving=false}
 }
 function showAlmanac(v){almanacVisible=v;if(!v&&almanacExpanded)expandAlmanac(false);if(almanacScene){almanacScene.show(v);return}if(!v||almanacLoading)return;renderAlmanac();if(!NEWS_CACHE?.length)loadNews();almanacLoading=import("./almanac-v62.js?v=6.2.9").then(m=>{almanacScene=m.mountAlmanac(document.getElementById("almanacStage"));almanacScene.select(almanacChapter);almanacScene.setExpanded(almanacExpanded);almanacScene.show(almanacVisible);document.getElementById("almanacFallback").hidden=true}).catch(e=>{console.warn("Almanac 3D unavailable",e);almanacLoading=null})}
 
