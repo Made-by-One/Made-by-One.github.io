@@ -150,6 +150,20 @@
 .almanac-archive summary{cursor:pointer;font-weight:600}
 @media(max-width:600px){#page-almanac .almanac-copy{padding:14px;grid-template-columns:1fr}#page-almanac .card-actions{grid-column:1;grid-row:auto}#almanacStage{height:350px}}
 @media(prefers-reduced-motion:no-preference){#almanacChapters{scroll-behavior:smooth}}
+</style><style>
+#page-almanac .almanac-viewport{overflow:hidden;touch-action:pan-y;border-radius:24px}
+#page-almanac #almanacCard{cursor:pointer;will-change:transform;transition:transform .38s cubic-bezier(.22,.8,.25,1),opacity .32s;touch-action:pan-y}
+#page-almanac #almanacStage{cursor:inherit;touch-action:pan-y;pointer-events:none}
+#page-almanac .almanac-copy{display:block;text-align:center;padding:12px 20px 24px}
+#page-almanac #almanacChapters{display:flex;justify-content:center;gap:7px;margin:16px 0;padding:0;overflow:visible}
+#almanacChapters span{width:6px;height:6px;border-radius:9px;background:var(--line-strong);transition:width .3s,background .3s}
+#almanacChapters span.active{width:22px;background:var(--accent)}
+#almanacDetails{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .48s cubic-bezier(.22,.8,.25,1),opacity .35s}
+#almanacDetails.open{grid-template-rows:1fr;opacity:1}
+.almanac-details-inner{overflow:hidden;min-height:0}
+#almanacDetails .almanac-archive{margin:0 0 16px}
+#almanacDetails h3{margin-top:20px}
+@media(prefers-reduced-motion:reduce){#page-almanac #almanacCard,#almanacDetails{transition:none}}
 </style></head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="mbo-refract"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="1" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
   <script>
@@ -395,7 +409,7 @@
       <button class="lightbox-nav next" id="lightboxNext" type="button" aria-label="Next">›</button>
     </div>
 
-    <section class="page hidden" id="page-almanac"><div class="page-head"><div class="eyebrow">MADE BY ONE / ALMANAC</div><h1 class="page-title">Almanac</h1></div><div class="almanac-exhibit"><div class="card almanac-layout"><div id="almanacStage" aria-hidden="true"><span id="almanacFallback">✦</span></div><div class="almanac-copy"><div id="almanacIndex" class="eyebrow"></div><h2 id="almanacTitle"></h2><p id="almanacText" class="card-desc"></p><div class="card-actions"><button class="btn" id="almanacExplode" aria-label="Explode artifact" aria-pressed="false">⊞</button><button class="btn" id="almanacReset" aria-label="Reset view">↺</button><button class="btn" id="almanacPrev" aria-label="Previous">←</button><button class="btn" id="almanacNext" aria-label="Next">→</button></div></div></div><div id="almanacChapters" class="news-filters" role="group" aria-label="Chapters"></div></div><details class="card almanac-archive"><summary id="almanacArchiveTitle">Archive</summary><div id="almanacArchive"></div></details></section>
+    <section class="page hidden" id="page-almanac"><div class="page-head"><div class="eyebrow">MADE BY ONE / ALMANAC</div><h1 class="page-title">Almanac</h1></div><div class="almanac-exhibit"><div class="almanac-viewport"><div class="card almanac-layout" id="almanacCard" role="button" tabindex="0" aria-expanded="false" aria-controls="almanacDetails"><div id="almanacStage" aria-hidden="true"><span id="almanacFallback">✦</span></div><div class="almanac-copy"><div id="almanacIndex" class="eyebrow"></div><h2 id="almanacTitle"></h2></div></div></div><div id="almanacChapters" aria-hidden="true"></div><div id="almanacDetails" inert aria-hidden="true"><div class="almanac-details-inner"><div class="card almanac-archive"><p id="almanacText" class="card-desc"></p><div id="almanacLinks" class="card-actions"></div><h3 id="almanacArchiveTitle">Archive</h3><div id="almanacArchive"></div></div></div></div></div></section>
     <footer class="site-footer">
       <div class="footer-main">
         <div class="footer-brand">
@@ -418,6 +432,6 @@
     </footer>
   </main>
 
-<script src="./assets/studio-v48.js?v=6.3.3"></script>
+<script src="./assets/studio-v48.js?v=6.3.4"></script>
 <script type="module" src="./assets/star-v48.js"></script><script src="./assets/glass-v48.js"></script><script src="./assets/optical-v54.js?v=6.0.2"></script></body>
 </html>
