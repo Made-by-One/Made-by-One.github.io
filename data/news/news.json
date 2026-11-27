@@ -1,5 +1,40 @@
 [
   {
+    "date": "2026-11-27",
+    "title": {
+      "en": "Made by One 5.5 — Unified Liquid Glass",
+      "ru": "Made by One 5.5 — Unified Liquid Glass",
+      "uk": "Made by One 5.5 — Unified Liquid Glass",
+      "es": "Made by One 5.5 — Unified Liquid Glass",
+      "de": "Made by One 5.5 — Unified Liquid Glass",
+      "fr": "Made by One 5.5 — Unified Liquid Glass",
+      "pt": "Made by One 5.5 — Unified Liquid Glass",
+      "zh": "Made by One 5.5 — Unified Liquid Glass"
+    },
+    "text": {
+      "en": "Version 5.5 consolidates the Liquid Glass interface into a shared material system. Navigation, menus, secondary buttons and cards share visual properties. Supported navigation and menus use rounded-edge SVG refraction, desktop color dispersion and pointer-responsive highlights. Cached displacement maps and a scroll-based lightweight fallback limit rendering overhead. Browser compatibility and mobile performance are still being validated; this is an optical simulation, not a physically complete glass renderer.",
+      "ru": "Версия 5.5 объединяет Liquid Glass в единую систему материалов. Навигация, меню, второстепенные кнопки и карточки используют общие визуальные параметры. Для навигации и меню в совместимых браузерах предусмотрены SVG-преломление по скруглённым краям, цветовая дисперсия на производительных настольных устройствах и блики, реагирующие на курсор. Кеширование карт преломления и облегчённый режим при просадках плавности ограничивают нагрузку. Совместимость браузеров и производительность на мобильных устройствах ещё проверяются. Это оптическая симуляция, а не полноценный физический рендерер стекла.",
+      "uk": "Версія 5.5 об’єднує Liquid Glass у спільну систему матеріалів. Навігація, меню, другорядні кнопки й картки використовують спільні візуальні параметри. Сумісні браузери підтримують SVG-заломлення країв, колірну дисперсію на потужних настільних пристроях і відблиски за курсором. Кешування карт і полегшений режим обмежують навантаження. Сумісність і мобільна продуктивність ще перевіряються; це оптична симуляція, а не повноцінний фізичний рендерер скла.",
+      "es": "La versión 5.5 unifica Liquid Glass en un sistema de materiales compartido para navegación, menús, botones secundarios y tarjetas. Los navegadores compatibles ofrecen refracción SVG en los bordes, dispersión cromática en equipos de escritorio capaces y reflejos que siguen el cursor. La caché y un modo ligero limitan la carga. La compatibilidad y el rendimiento móvil siguen en validación; es una simulación óptica, no un renderizador físico completo.",
+      "de": "Version 5.5 vereint Liquid Glass in einem gemeinsamen Materialsystem für Navigation, Menüs, sekundäre Schaltflächen und Karten. Unterstützte Browser bieten SVG-Kantenbrechung, Farbdispersion auf leistungsfähigen Desktopgeräten und cursorabhängige Glanzlichter. Cache und ein vereinfachter Modus begrenzen die Last. Browserkompatibilität und mobile Leistung werden noch geprüft; es handelt sich um eine optische Simulation, nicht um einen vollständigen physikalischen Glasrenderer.",
+      "fr": "La version 5.5 unifie Liquid Glass dans un système de matériaux commun pour la navigation, les menus, les boutons secondaires et les cartes. Les navigateurs compatibles proposent une réfraction SVG des bords, une dispersion chromatique sur les ordinateurs suffisamment puissants et des reflets suivant le curseur. Le cache et un mode allégé limitent la charge. La compatibilité et les performances mobiles restent à vérifier ; il s’agit d’une simulation optique, non d’un rendu physique complet.",
+      "pt": "A versão 5.5 unifica Liquid Glass num sistema de materiais partilhado para navegação, menus, botões secundários e cartões. Navegadores compatíveis oferecem refração SVG nas bordas, dispersão cromática em computadores capazes e brilhos que acompanham o cursor. A cache e um modo leve limitam a carga. A compatibilidade e o desempenho móvel ainda estão em validação; trata-se de uma simulação óptica, não de um renderizador físico completo.",
+      "zh": "5.5 将 Liquid Glass 整合为统一材质系统，导航、菜单、次要按钮和卡片共享视觉属性。兼容浏览器中的导航和菜单支持 SVG 圆角边缘折射、高性能桌面设备上的色散以及随光标变化的高光。位移贴图缓存和轻量模式可限制渲染开销。浏览器兼容性与移动端性能仍待验证；这是光学模拟，而非完整的物理玻璃渲染器。"
+    },
+    "tag": {
+      "en": "Website update",
+      "ru": "Обновление сайта",
+      "uk": "Оновлення сайту",
+      "es": "Actualización web",
+      "de": "Website-Update",
+      "fr": "Mise à jour du site",
+      "pt": "Atualização do site",
+      "zh": "网站更新"
+    },
+    "image": "./data/news/studio-55.svg",
+    "link": "https://github.com/Made-by-One/Made-by-One.github.io"
+  },
+  {
     "date": "2026-11-26",
     "title": {
       "en": "Made by One 5.0 — Studio Platform",
