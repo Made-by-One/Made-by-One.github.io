@@ -129,6 +129,7 @@ function applyTranslations() {
   });
   renderProducts();
   renderGames();
+  renderHomeOverview();
   renderCurrentGameDetail();
   refreshDocs();
   if (STATS) {
@@ -827,6 +828,7 @@ async function loadNews() {
     }
   }
   renderNews();
+  renderHomeOverview();
 }
 
 // Автоматические новости из релизов GitHub (публикуются без ручного редактирования)
@@ -1463,6 +1465,13 @@ async function init() {
   setLang(langToUse);
   applyProductMeta();
   restoreDocRoute();
+  loadNews();
 }
 
 window.addEventListener('load', init);
+
+function renderHomeOverview(){
+ const tools=document.getElementById("homeTools"),news=document.getElementById("homeNews");
+ if(tools)tools.innerHTML=((SITE_CONFIG&&SITE_CONFIG.products)||[]).map(p=>`<article class="card"><span class="product-icon" aria-hidden="true">${p.id==="launcher"?"◇":p.id==="packer"?"▣":"▦"}</span><h3 class="card-title">${escapeHtml(p.name)}</h3><p class="card-desc">${escapeHtml(pickLocalized(p.desc)||"")}</p></article>`).join("");
+ if(news){const item=[...(NEWS_CACHE||[])].sort((a,b)=>String(b.date||"").localeCompare(String(a.date||"")))[0];news.innerHTML=item?`<article class="news-item"><div class="news-body"><div class="news-meta"><span class="news-date">${escapeHtml(item.date||"")}</span></div><h3 class="news-title">${escapeHtml(pickLocalized(item.title))}</h3><div class="news-text">${escapeHtml(pickLocalized(item.text))}</div></div></article>`:"";}
+}
