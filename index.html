@@ -106,6 +106,13 @@
 #projectsList .card-desc{margin-block:8px}
 #projectsList .feature-list{margin-block:8px 16px}
 #projectsList .card-actions .btn:not(.btn-primary){flex:1;justify-content:center}
+</style><style>/* 6.3 news topic navigation */
+.news-filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px;align-items:center}
+.news-filters:empty{display:none}
+.news-filters .news-filter{display:inline-flex;align-items:center;gap:8px;min-height:44px;white-space:nowrap}
+.news-filters .news-filter.active{border-color:var(--accent);color:var(--text);box-shadow:inset 0 1px 2px #ffffff40,0 0 0 1px var(--accent)}
+.news-count{font-size:.8em;opacity:.7;font-variant-numeric:tabular-nums}
+@media(max-width:600px){.news-filters{gap:6px;margin-bottom:18px}.news-filters .news-filter{padding-inline:12px;flex:0 1 auto}}
 </style></head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="mbo-refract"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="1" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
   <script>
@@ -231,7 +238,8 @@
         <h1 class="page-title" data-i18n="news.title">News</h1>
         <p class="page-sub" data-i18n="news.subtitle">Latest updates from the studio</p>
       </div>
-      <div id="newsList" class="stack">
+      <div id="newsFilters" class="news-filters" role="group" aria-label="Filter news"></div>
+      <div id="newsList" class="stack" aria-live="polite">
         <div class="empty" data-i18n="news.loading">Loading news…</div>
       </div>
     </section>
@@ -372,6 +380,6 @@
     </footer>
   </main>
 
-<script src="./assets/studio-v48.js?v=6.1"></script>
+<script src="./assets/studio-v48.js?v=6.3"></script>
 <script type="module" src="./assets/star-v48.js"></script><script src="./assets/glass-v48.js"></script><script src="./assets/optical-v54.js?v=6.0.2"></script></body>
 </html>
