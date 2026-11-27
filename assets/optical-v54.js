@@ -1,0 +1,17 @@
+/* 5.4: rounded optical surface displacement, not random noise. */
+(()=> {
+const NS="http://www.w3.org/2000/svg";
+if(!window.CSS?.supports("backdrop-filter","url(#mbo-optical-test)")||!window.ResizeObserver)return;
+const svg=document.createElementNS(NS,"svg");svg.setAttribute("width","0");svg.setAttribute("height","0");svg.setAttribute("aria-hidden","true");svg.style.cssText="position:absolute;pointer-events:none";const defs=document.createElementNS(NS,"defs");svg.append(defs);document.body.append(svg);
+const targets="#mobileNavSlot,#desktopNavSlot #menuList,.activity-options,.lang-menu";
+const entries=new Map();let serial=0;
+function node(tag,attrs){const n=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,v);return n}
+function update(el){const e=entries.get(el);if(!e)return;const w=Math.round(el.offsetWidth),h=Math.round(el.offsetHeight);if(w<2||h<2||e.w===w&&e.h===h)return;
+const radius=Math.min(w/2,h/2,parseFloat(getComputedStyle(el).borderTopLeftRadius)||18),rim=Math.min(15,radius*.85),scale=24;
+const cw=Math.min(w,768),ch=Math.min(h,384),canvas=document.createElement("canvas");canvas.width=cw;canvas.height=ch;const ctx=canvas.getContext("2d");if(!ctx)return;const pixels=ctx.createImageData(cw,ch);
+for(let y=0;y<ch;y++)for(let x=0;x<cw;x++){const px=(x+.5)*w/cw-w/2,py=(y+.5)*h/ch-h/2;const qx=Math.abs(px)-w/2+radius,qy=Math.abs(py)-h/2+radius;const ax=Math.max(qx,0),ay=Math.max(qy,0),len=Math.hypot(ax,ay);const d=-(len+Math.min(Math.max(qx,qy),0)-radius);let nx=0,ny=0;if(len>0){nx=ax/len*Math.sign(px);ny=ay/len*Math.sign(py)}else if(qx>qy)nx=Math.sign(px);else ny=Math.sign(py);const t=Math.max(0,Math.min(1,d/rim));const bend=d>=0?Math.sin(Math.PI*t)*10:0;const i=(y*cw+x)*4;pixels.data[i]=Math.round(128-nx*bend/scale*255);pixels.data[i+1]=Math.round(128-ny*bend/scale*255);pixels.data[i+2]=128;pixels.data[i+3]=255}
+ctx.putImageData(pixels,0,0);e.image.setAttribute("href",canvas.toDataURL("image/png"));e.image.setAttribute("width",w);e.image.setAttribute("height",h);e.filter.setAttribute("width",w);e.filter.setAttribute("height",h);e.w=w;e.h=h;el.style.setProperty("--optical-filter","url(#"+e.id+")");el.classList.add("optical-ready")}
+const observer=new ResizeObserver(es=>es.forEach(e=>update(e.target)));
+function scan(){for(const [el,e] of entries)if(!el.isConnected||!el.matches(targets)){observer.unobserve(el);e.filter.remove();el.classList.remove("optical-ready");entries.delete(el)}for(const el of document.querySelectorAll(targets)){if(entries.has(el))continue;const id="mbo-optical-"+(++serial);const filter=node("filter",{id,filterUnits:"userSpaceOnUse",primitiveUnits:"userSpaceOnUse",x:0,y:0,"color-interpolation-filters":"sRGB"});const image=node("feImage",{x:0,y:0,preserveAspectRatio:"none",result:"map"});filter.append(image,node("feDisplacementMap",{in:"SourceGraphic",in2:"map",scale:24,xChannelSelector:"R",yChannelSelector:"G"}));defs.append(filter);entries.set(el,{id,filter,image});observer.observe(el);update(el)}}
+let pending=false;new MutationObserver(()=>{if(!pending){pending=true;requestAnimationFrame(()=>{pending=false;scan()})}}).observe(document.body,{childList:true,subtree:true});scan();
+})();
