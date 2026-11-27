@@ -21,3 +21,10 @@ html.optical-lite .optical-ready{--glass-backdrop:blur(12px) saturate(120%)}
 }
 @media(max-width:900px){#mobileNavSlot::before{clip-path:inset(0 round 24px)}}
 @media(prefers-reduced-transparency:reduce){#desktopNavSlot #menuList::before{background:var(--bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+
+/* 6.0.2: soften the return of optical material without stacking two filters. */
+@keyframes glass-return-tint{from{background-color:color-mix(in srgb,var(--bg) 72%,transparent)}to{background-color:color-mix(in srgb,var(--bg) var(--glass-tint),transparent)}}
+@media(prefers-reduced-motion:no-preference){
+html.optical-returning .activity-options.optical-ready,html.optical-returning .lang-menu.optical-ready,html.optical-returning #mobileNavSlot.optical-ready::before{animation:glass-return-tint .6s ease-out both}
+@media(min-width:901px){html.optical-returning #desktopNavSlot #menuList.optical-ready::before{--glass-tint:38%;animation:glass-return-tint .6s ease-out both}}
+}
