@@ -89,7 +89,17 @@
 #projectsList .product-showcase .card-actions .btn{min-height:44px}
 #projectsList .product-showcase .feature-list{line-height:1.55}
 #gamesList .game-card .card-actions .btn{min-height:44px}
-</style><style>#newsList .news-media{aspect-ratio:2/1;overflow:hidden;border-radius:16px;background:var(--surface)}#newsList .news-media img{display:block;width:100%;height:100%;object-fit:cover}#newsList .news-text{line-height:1.65;white-space:pre-line}</style><link rel="stylesheet" href="./assets/glass-v55.css?v=5.5"></head>
+</style><style>#newsList .news-media{aspect-ratio:2/1;overflow:hidden;border-radius:16px;background:var(--surface)}#newsList .news-media img{display:block;width:100%;height:100%;object-fit:cover}#newsList .news-text{line-height:1.65;white-space:pre-line}</style><link rel="stylesheet" href="./assets/glass-v55.css?v=5.5"><style>/* 6.0 composition only */
+.home-section{margin-block:clamp(30px,5vw,64px)}
+.home-section-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}
+.home-section-head h2{font-size:clamp(22px,3vw,32px);margin:0;letter-spacing:-.025em}
+#homeTools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+#homeTools .card{display:flex;flex-direction:column;gap:10px;min-width:0;padding:20px}
+#homeTools .card-title{font-size:clamp(18px,2vw,24px);overflow-wrap:anywhere}
+#homeNews .news-item{margin:0}
+#homeNews .news-text{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+@media(max-width:700px){#homeTools{grid-template-columns:1fr}.home-section-head .btn{flex-shrink:0}.home-section-head h2{overflow-wrap:anywhere}}
+</style></head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="mbo-refract"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="1" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
   <script>
     /* Класс ставится до отрисовки: без JS и при reduced motion контент виден сразу */
@@ -158,13 +168,9 @@
           </p>
 
           <div class="hero-actions" data-reveal>
-            <button class="btn btn-primary" onclick="switchPageByKey('projects')">
-              <span data-i18n="home.btn.projects">Projects</span>
-              <span aria-hidden="true">→</span>
-            </button>
-            <button class="btn" onclick="switchPageByKey('games')">
+            <button class="btn btn-primary" onclick="switchPageByKey('games')">
               <span data-i18n="home.btn.games">Games</span>
-            </button>
+            <span aria-hidden="true">→</span></button><button class="btn" onclick="switchPageByKey('projects')"><span data-i18n="home.btn.projects">Projects</span></button>
           </div>
         </div>
 
@@ -185,7 +191,10 @@
         </div>
       </div>
 
-      <div class="studio-feature"><a href="https://jack-revenant-website.vercel.app/#case"><svg viewBox="0 0 21 13" aria-hidden="true" fill="#ff7555"><rect x="4" y="0" width="1" height="1"/><rect x="16" y="0" width="1" height="1"/><rect x="5" y="1" width="1" height="1"/><rect x="15" y="1" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/><rect x="11" y="2" width="1" height="1"/><rect x="12" y="2" width="1" height="1"/><rect x="14" y="2" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="7" y="3" width="1" height="1"/><rect x="13" y="3" width="1" height="1"/><rect x="14" y="3" width="1" height="1"/><rect x="15" y="3" width="1" height="1"/><rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/><rect x="16" y="4" width="1" height="1"/><rect x="17" y="4" width="1" height="1"/><rect x="1" y="5" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/><rect x="18" y="5" width="1" height="1"/><rect x="19" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="20" y="6" width="1" height="1"/><rect x="1" y="7" width="1" height="1"/><rect x="2" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="11" y="7" width="1" height="1"/><rect x="18" y="7" width="1" height="1"/><rect x="19" y="7" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="12" y="8" width="1" height="1"/><rect x="16" y="8" width="1" height="1"/><rect x="17" y="8" width="1" height="1"/><rect x="5" y="9" width="1" height="1"/><rect x="6" y="9" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/><rect x="13" y="9" width="1" height="1"/><rect x="14" y="9" width="1" height="1"/><rect x="15" y="9" width="1" height="1"/><rect x="6" y="10" width="1" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="9" y="10" width="1" height="1"/><rect x="10" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/><rect x="12" y="10" width="1" height="1"/><rect x="14" y="10" width="1" height="1"/><rect x="5" y="11" width="1" height="1"/><rect x="15" y="11" width="1" height="1"/><rect x="4" y="12" width="1" height="1"/><rect x="16" y="12" width="1" height="1"/></svg><strong>Jack Revenant</strong><span>Made by One → Website</span></a><a href="#games" onclick="switchPageByKey('games');return false"><img class="studio-return-cover" src="./data/games/ReturnMe.webp" alt="" decoding="async"><strong>Return Me</strong><span>Made by One →</span></a></div><section class="studio-overview" aria-label="Studio facts"><div id="homeFacts" class="growth-facts"></div><button class="btn" onclick="switchPageByKey('about')" data-i18n="growth.title">Studio growth</button></section>
+      <section class="home-section" aria-labelledby="homeGamesHeading"><div class="home-section-head"><h2 id="homeGamesHeading" data-i18n="games.title">Games</h2><button class="btn" onclick="switchPageByKey('games')" data-i18n="home.btn.games">Games</button></div><div class="studio-feature"><a href="https://jack-revenant-website.vercel.app/#case"><svg viewBox="0 0 21 13" aria-hidden="true" fill="#ff7555"><rect x="4" y="0" width="1" height="1"/><rect x="16" y="0" width="1" height="1"/><rect x="5" y="1" width="1" height="1"/><rect x="15" y="1" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/><rect x="11" y="2" width="1" height="1"/><rect x="12" y="2" width="1" height="1"/><rect x="14" y="2" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="7" y="3" width="1" height="1"/><rect x="13" y="3" width="1" height="1"/><rect x="14" y="3" width="1" height="1"/><rect x="15" y="3" width="1" height="1"/><rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/><rect x="16" y="4" width="1" height="1"/><rect x="17" y="4" width="1" height="1"/><rect x="1" y="5" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/><rect x="18" y="5" width="1" height="1"/><rect x="19" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="20" y="6" width="1" height="1"/><rect x="1" y="7" width="1" height="1"/><rect x="2" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="11" y="7" width="1" height="1"/><rect x="18" y="7" width="1" height="1"/><rect x="19" y="7" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="12" y="8" width="1" height="1"/><rect x="16" y="8" width="1" height="1"/><rect x="17" y="8" width="1" height="1"/><rect x="5" y="9" width="1" height="1"/><rect x="6" y="9" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/><rect x="13" y="9" width="1" height="1"/><rect x="14" y="9" width="1" height="1"/><rect x="15" y="9" width="1" height="1"/><rect x="6" y="10" width="1" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="9" y="10" width="1" height="1"/><rect x="10" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/><rect x="12" y="10" width="1" height="1"/><rect x="14" y="10" width="1" height="1"/><rect x="5" y="11" width="1" height="1"/><rect x="15" y="11" width="1" height="1"/><rect x="4" y="12" width="1" height="1"/><rect x="16" y="12" width="1" height="1"/></svg><strong>Jack Revenant</strong><span>Made by One → Website</span></a><a href="#games" onclick="switchPageByKey('games');return false"><img class="studio-return-cover" src="./data/games/ReturnMe.webp" alt="" decoding="async"><strong>Return Me</strong><span>Made by One →</span></a></div></section>
+<section class="home-section" aria-labelledby="homeToolsHeading"><div class="home-section-head"><h2 id="homeToolsHeading" data-i18n="projects.title">Projects</h2><button class="btn" onclick="switchPageByKey('projects')" data-i18n="home.btn.projects">Projects</button></div><div id="homeTools"></div></section>
+<section class="home-section" aria-labelledby="homeNewsHeading"><div class="home-section-head"><h2 id="homeNewsHeading" data-i18n="news.title">News</h2><button class="btn" onclick="switchPageByKey('news')" data-i18n="news.title">News</button></div><div id="homeNews"></div></section>
+<section class="studio-overview" aria-label="Studio facts"><div id="homeFacts" class="growth-facts"></div><button class="btn" onclick="switchPageByKey('about')" data-i18n="growth.title">Studio growth</button></section>
     </section>
 
     <!-- ================= PROJECTS ================= -->
@@ -356,6 +365,6 @@
     </footer>
   </main>
 
-<script src="./assets/studio-v48.js?v=5.4"></script>
+<script src="./assets/studio-v48.js?v=6.0"></script>
 <script type="module" src="./assets/star-v48.js"></script><script src="./assets/glass-v48.js"></script><script src="./assets/optical-v54.js?v=5.5"></script></body>
 </html>
