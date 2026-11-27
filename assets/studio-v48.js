@@ -130,6 +130,7 @@ function applyTranslations() {
   renderProducts();
   renderGames();
   renderHomeOverview();
+  renderAlmanac();
   renderCurrentGameDetail();
   refreshDocs();
   if (STATS) {
@@ -357,6 +358,7 @@ function switchPage(key, el) {
   scrollRoot.style.scrollBehavior = prevBehavior;
 
   setupReveal(page);
+  showAlmanac(key==='almanac');
   if (key === 'games') replayMeters();
   if (key === "about" && typeof STATS !== "undefined" && STATS) {renderGrowthFacts();renderGrowth();}
 
@@ -1500,3 +1502,18 @@ function renderHomeOverview(){
  if(tools)tools.innerHTML=((SITE_CONFIG&&SITE_CONFIG.products)||[]).map(p=>`<article class="card"><span class="product-icon" aria-hidden="true">${p.id==="launcher"?"◇":p.id==="packer"?"▣":"▦"}</span><h3 class="card-title">${escapeHtml(p.name)}</h3><p class="card-desc">${escapeHtml(pickLocalized(p.desc)||"")}</p></article>`).join("");
  if(news){const item=[...(NEWS_CACHE||[])].sort((a,b)=>String(b.date||"").localeCompare(String(a.date||"")))[0];news.innerHTML=item?`<article class="news-item"><div class="news-body"><div class="news-meta"><span class="news-date">${escapeHtml(item.date||"")}</span></div><h3 class="news-title">${escapeHtml(pickLocalized(item.title))}</h3><div class="news-text">${escapeHtml(pickLocalized(item.text))}</div></div></article>`:"";}
 }
+
+const almanacNames=["Made by One","Devers","Return Me","Jack Revenant","Technology","2027"];
+const almanacDescriptions={
+en:["An independent studio exploring games and software.","Three software projects: Workmods, Launcher and Packer.","An adventure game in development.","A detective horror game in development.","Exploring independent game technology and voxel worlds.","Planned game releases. The next chapter is still being written."],
+ru:["Независимая студия, развивающая игры и программы.","Три программных проекта: Workmods, Launcher и Packer.","Приключенческая игра в разработке.","Детективный хоррор в разработке.","Развитие собственных игровых технологий и воксельных миров.","Запланированные игровые релизы. Следующая глава ещё пишется."],
+uk:["Незалежна студія ігор і програм.","Три проєкти: Workmods, Launcher і Packer.","Пригодницька гра в розробці.","Детективний горор у розробці.","Власні ігрові технології та воксельні світи.","Заплановані ігрові релізи."],
+es:["Estudio independiente de juegos y software.","Tres proyectos: Workmods, Launcher y Packer.","Aventura en desarrollo.","Terror detectivesco en desarrollo.","Tecnología de juegos y mundos vóxel.","Lanzamientos previstos."],
+de:["Unabhängiges Studio für Spiele und Software.","Drei Projekte: Workmods, Launcher und Packer.","Abenteuerspiel in Entwicklung.","Detektiv-Horror in Entwicklung.","Eigene Spieltechnologie und Voxelwelten.","Geplante Spielveröffentlichungen."],
+fr:["Studio indépendant de jeux et logiciels.","Trois projets : Workmods, Launcher et Packer.","Jeu d’aventure en développement.","Jeu d’horreur et d’enquête en développement.","Technologies de jeu et mondes voxel.","Sorties de jeux prévues."],
+pt:["Estúdio independente de jogos e software.","Três projetos: Workmods, Launcher e Packer.","Aventura em desenvolvimento.","Terror de investigação em desenvolvimento.","Tecnologia de jogos e mundos voxel.","Lançamentos de jogos previstos."],
+zh:["独立游戏与软件工作室。","三个软件项目：Workmods、Launcher 和 Packer。","开发中的冒险游戏。","开发中的侦探恐怖游戏。","探索自主游戏技术和体素世界。","计划中的游戏发布。"]};
+let almanacChapter=0,almanacScene=null,almanacLoading=null,almanacVisible=false;
+function renderAlmanac(){const host=document.getElementById("almanacChapters");if(!host)return;document.getElementById("almanacIndex").textContent=String(almanacChapter+1).padStart(2,"0")+" / 06";document.getElementById("almanacTitle").textContent=almanacNames[almanacChapter];document.getElementById("almanacText").textContent=(almanacDescriptions[currentLang]||almanacDescriptions.en)[almanacChapter];host.innerHTML=almanacNames.map((n,i)=>'<button class="btn news-filter '+(i===almanacChapter?'active':'')+'" aria-pressed="'+(i===almanacChapter)+'" data-chapter="'+i+'">'+escapeHtml(n)+'</button>').join("");host.querySelectorAll("button").forEach(b=>b.onclick=()=>chooseAlmanac(Number(b.dataset.chapter)));document.getElementById("almanacPrev").onclick=()=>chooseAlmanac((almanacChapter+5)%6);document.getElementById("almanacNext").onclick=()=>chooseAlmanac((almanacChapter+1)%6)}
+function chooseAlmanac(i){almanacChapter=i;renderAlmanac();almanacScene?.select(i)}
+function showAlmanac(v){almanacVisible=v;if(almanacScene){almanacScene.show(v);return}if(!v||almanacLoading)return;renderAlmanac();almanacLoading=import("./almanac-v62.js").then(m=>{almanacScene=m.mountAlmanac(document.getElementById("almanacStage"));almanacScene.select(almanacChapter);almanacScene.show(almanacVisible);document.getElementById("almanacFallback").hidden=true}).catch(e=>{console.warn("Almanac 3D unavailable",e);almanacLoading=null})}
