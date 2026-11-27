@@ -852,6 +852,7 @@ function autoReleaseNews() {
       : fillTemplate(t("news.release.text"), vars);
 
     return {
+      categories: ["software"],
       date: r.publishedAt ? String(r.publishedAt).slice(0, 10) : "",
       tag: t("news.release.tag"),
       title: fillTemplate(titleTemplate, vars),
@@ -862,20 +863,44 @@ function autoReleaseNews() {
   }).filter(Boolean);
 }
 
+let newsFilter="all";
+const newsTopics=["all","studio","games","software","devlog"];
+const newsLabels={
+en:["All","Studio","Games","Software","Devlogs","Filter news","No news in this section"],
+ru:["Все","Студия","Игры","Программы","Девлоги","Фильтр новостей","В этом разделе пока нет новостей"],
+uk:["Усі","Студія","Ігри","Програми","Девлоги","Фільтр новин","У цьому розділі поки немає новин"],
+es:["Todas","Estudio","Juegos","Software","Diarios","Filtrar noticias","No hay noticias en esta sección"],
+de:["Alle","Studio","Spiele","Software","Devlogs","News filtern","Keine Nachrichten in diesem Bereich"],
+fr:["Toutes","Studio","Jeux","Logiciels","Devlogs","Filtrer les actualités","Aucune actualité dans cette section"],
+pt:["Todas","Estúdio","Jogos","Software","Devlogs","Filtrar notícias","Sem notícias nesta seção"],
+zh:["全部","工作室","游戏","软件","开发日志","筛选新闻","此分类暂无新闻"]};
+function newsCategories(item){return Array.isArray(item.categories)?item.categories:item.products?.length?["software"]:item.tag?.en==="Devlog"?["games","devlog"]:["studio"]}
+function renderNewsFilters(all){
+ const host=document.getElementById("newsFilters");if(!host)return;
+ const labels=newsLabels[currentLang]||newsLabels.en;
+ host.setAttribute("aria-label",labels[5]);
+ const focused=host.contains(document.activeElement)?document.activeElement.dataset.topic:null;
+ host.innerHTML=newsTopics.map((key,i)=>{const count=all.filter(x=>key==="all"||newsCategories(x).includes(key)).length;return '<button type="button" class="btn news-filter '+(key===newsFilter?'active':'')+'" data-topic="'+key+'" aria-pressed="'+(key===newsFilter)+'">'+escapeHtml(labels[i])+' <span class="news-count">'+count+'</span></button>'}).join("");
+ host.querySelectorAll("button").forEach(b=>b.onclick=()=>{newsFilter=b.dataset.topic;renderNews()});
+ if(focused)host.querySelector('[data-topic="'+focused+'"]')?.focus({preventScroll:true});
+}
+
 function renderNews() {
   const container = document.getElementById("newsList");
   if (!container) return;
 
   // Ручные новости (news.json) + автоматические из релизов GitHub
   const all = [...(NEWS_CACHE || []), ...autoReleaseNews()];
+  renderNewsFilters(all);
+  const filtered=all.filter(item=>newsFilter==='all'||newsCategories(item).includes(newsFilter));
 
-  if (all.length === 0) {
-    container.innerHTML = `<div class="empty">${escapeHtml(t("news.empty"))}</div>`;
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="empty">${escapeHtml((newsLabels[currentLang]||newsLabels.en)[6])}</div>`;
     return;
   }
 
   // Сортировка по дате (новые сверху)
-  const sorted = [...all].sort((a, b) => {
+  const sorted = [...filtered].sort((a, b) => {
     const da = new Date(a.date || 0).getTime();
     const db = new Date(b.date || 0).getTime();
     return db - da;
