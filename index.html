@@ -164,6 +164,13 @@
 #almanacDetails .almanac-archive{margin:0 0 16px}
 #almanacDetails h3{margin-top:20px}
 @media(prefers-reduced-motion:reduce){#page-almanac #almanacCard,#almanacDetails{transition:none}}
+</style><style>
+#page-almanac .almanac-viewport{perspective:1100px;perspective-origin:50% 50%}
+#page-almanac #almanacCard{transform-origin:50% 90%;backface-visibility:hidden}
+#page-almanac #almanacChapters{position:relative;width:108px;height:12px;margin:16px auto;display:flex;align-items:center;justify-content:flex-start;gap:10px;padding:0 5px;box-sizing:border-box}
+#page-almanac #almanacChapters span{flex:0 0 8px;width:8px;height:8px;background:var(--line-strong);border-radius:50%}
+#almanacChapters .almanac-liquid-indicator{position:absolute;pointer-events:none;left:calc(5px + var(--chapter,0)*18px);top:2px;width:8px;height:8px;border-radius:999px;background:var(--accent);box-shadow:0 0 8px var(--accent),inset 0 1px 1px #ffffff80;transform-origin:center}
+@media(prefers-reduced-motion:reduce){#almanacChapters .almanac-liquid-indicator{animation:none}}
 </style></head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="mbo-refract"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="1" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
   <script>
@@ -432,6 +439,6 @@
     </footer>
   </main>
 
-<script src="./assets/studio-v48.js?v=6.3.6"></script>
+<script src="./assets/studio-v48.js?v=6.3.7"></script>
 <script type="module" src="./assets/star-v48.js"></script><script src="./assets/glass-v48.js"></script><script src="./assets/optical-v54.js?v=6.0.2"></script></body>
 </html>
