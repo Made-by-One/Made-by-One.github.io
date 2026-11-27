@@ -32,7 +32,10 @@
       "zh": "网站更新"
     },
     "image": "./data/news/studio-55.svg",
-    "link": "https://github.com/Made-by-One/Made-by-One.github.io"
+    "link": "https://github.com/Made-by-One/Made-by-One.github.io",
+    "categories": [
+      "studio"
+    ]
   },
   {
     "date": "2026-11-26",
@@ -67,7 +70,10 @@
       "zh": "网站更新"
     },
     "image": "./data/news/studio-5.svg",
-    "link": "https://github.com/Made-by-One/Made-by-One.github.io"
+    "link": "https://github.com/Made-by-One/Made-by-One.github.io",
+    "categories": [
+      "studio"
+    ]
   },
   {
     "date": "2026-10-21",
@@ -101,7 +107,11 @@
       "pt": "O desenvolvimento está em 15%. Mais detalhes em breve.",
       "zh": "开发进度 15%。更多细节即将公布。"
     },
-    "image": "./data/games/ReturnMe.webp"
+    "image": "./data/games/ReturnMe.webp",
+    "categories": [
+      "games",
+      "devlog"
+    ]
   },
   {
     "date": "2026-11-12",
@@ -139,7 +149,10 @@
       "workmods"
     ],
     "link": "https://github.com/Made-by-One/Devers-Workmods/releases",
-    "image": "./data/news/workmods.svg"
+    "image": "./data/news/workmods.svg",
+    "categories": [
+      "software"
+    ]
   },
   {
     "date": "2026-11-13",
@@ -173,7 +186,11 @@
       "pt": "O desenvolvimento atingiu 35%. Todas as mecânicas principais estão concluídas. O trabalho na criação de níveis e level design começou.",
       "zh": "开发进度已达到 35%。所有核心机制已完成。关卡创建和关卡设计工作已开始。"
     },
-    "image": "./data/games/ReturnMe.webp"
+    "image": "./data/games/ReturnMe.webp",
+    "categories": [
+      "games",
+      "devlog"
+    ]
   },
   {
     "date": "2026-11-23",
@@ -211,6 +228,9 @@
       "workmods"
     ],
     "link": "https://github.com/Made-by-One/Devers-Workmods/releases/tag/v1.3b",
-    "image": "./data/news/workmods.svg"
+    "image": "./data/news/workmods.svg",
+    "categories": [
+      "software"
+    ]
   }
 ]
