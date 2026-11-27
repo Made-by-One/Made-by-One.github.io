@@ -89,7 +89,7 @@
 #projectsList .product-showcase .card-actions .btn{min-height:44px}
 #projectsList .product-showcase .feature-list{line-height:1.55}
 #gamesList .game-card .card-actions .btn{min-height:44px}
-</style><style>#newsList .news-media{aspect-ratio:2/1;overflow:hidden;border-radius:16px;background:var(--surface)}#newsList .news-media img{display:block;width:100%;height:100%;object-fit:cover}#newsList .news-text{line-height:1.65;white-space:pre-line}</style><link rel="stylesheet" href="./assets/glass-v55.css?v=6.0.1"><style>/* 6.0 composition only */
+</style><style>#newsList .news-media{aspect-ratio:2/1;overflow:hidden;border-radius:16px;background:var(--surface)}#newsList .news-media img{display:block;width:100%;height:100%;object-fit:cover}#newsList .news-text{line-height:1.65;white-space:pre-line}</style><link rel="stylesheet" href="./assets/glass-v55.css?v=6.0.2"><style>/* 6.0 composition only */
 .home-section{margin-block:clamp(30px,5vw,64px)}
 .home-section-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}
 .home-section-head h2{font-size:clamp(22px,3vw,32px);margin:0;letter-spacing:-.025em}
@@ -99,6 +99,13 @@
 #homeNews .news-item{margin:0}
 #homeNews .news-text{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 @media(max-width:700px){#homeTools{grid-template-columns:1fr}.home-section-head .btn{flex-shrink:0}.home-section-head h2{overflow-wrap:anywhere}}
+</style><style>/* 6.1 information hierarchy; existing materials retained */
+#gamesList .game-meta{grid-template-columns:repeat(2,minmax(0,1fr));padding-block:12px;border-block:1px solid var(--line)}
+#gamesList .game-meta .meta-item:nth-child(2){grid-column:1/-1;grid-row:auto}
+#projectsList .card-head{gap:8px}
+#projectsList .card-desc{margin-block:8px}
+#projectsList .feature-list{margin-block:8px 16px}
+#projectsList .card-actions .btn:not(.btn-primary){flex:1;justify-content:center}
 </style></head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="mbo-refract"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="1" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
   <script>
@@ -365,6 +372,6 @@
     </footer>
   </main>
 
-<script src="./assets/studio-v48.js?v=6.0"></script>
-<script type="module" src="./assets/star-v48.js"></script><script src="./assets/glass-v48.js"></script><script src="./assets/optical-v54.js?v=5.5"></script></body>
+<script src="./assets/studio-v48.js?v=6.1"></script>
+<script type="module" src="./assets/star-v48.js"></script><script src="./assets/glass-v48.js"></script><script src="./assets/optical-v54.js?v=6.0.2"></script></body>
 </html>
