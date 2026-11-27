@@ -113,6 +113,14 @@
 .news-filters .news-filter.active{border-color:var(--accent);color:var(--text);box-shadow:inset 0 1px 2px #ffffff40,0 0 0 1px var(--accent)}
 .news-count{font-size:.8em;opacity:.7;font-variant-numeric:tabular-nums}
 @media(max-width:600px){.news-filters{gap:6px;margin-bottom:18px}.news-filters .news-filter{padding-inline:12px;flex:0 1 auto}}
+</style><style>
+.almanac-layout{display:grid;grid-template-columns:1.2fr 1fr;align-items:center;gap:24px;padding:24px}
+#almanacStage{height:clamp(260px,40vw,440px);position:relative;display:grid;place-items:center;touch-action:pan-y;cursor:grab;overflow:hidden}
+#almanacStage canvas{position:absolute;inset:0;width:100%;height:100%}
+#almanacFallback{font-size:100px;color:var(--accent)}
+.almanac-copy{min-width:0}.almanac-copy h2{font-size:clamp(24px,4vw,42px);margin:12px 0}
+#almanacChapters{margin-top:20px}
+@media(max-width:900px){#mobileNavSlot #menuList{grid-template-columns:repeat(6,minmax(0,1fr))}.almanac-layout{grid-template-columns:1fr;gap:12px;padding:16px}#mobileNavSlot #menuList .nav-item{font-size:clamp(8px,2.2vw,11px)}}
 </style></head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="mbo-refract"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="1" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
   <script>
@@ -136,7 +144,7 @@
         <button class="nav-item" data-page="games" onclick="switchPage('games', this)"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10c3 0 5 9 3 10-2 2-4-3-6-3h-4c-2 0-4 5-6 3-2-1 0-10 3-10zM6 10v4m-2-2h4m8-1h.01m3 2h.01"/></svg><span data-i18n="nav.games">Games</span></button>
         <button class="nav-item" data-page="news" onclick="switchPage('news', this)"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span data-i18n="nav.news">News</span></button>
         <button class="nav-item" data-page="docs" onclick="switchPage('docs', this)"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5C8 2 4 4 3 5v14c3-2 6-2 9 0 3-2 6-2 9 0V5c-3-2-6-2-9 0v14"/></svg><span data-i18n="nav.docs">Docs</span></button>
-      </nav></div>
+      <button class="nav-item" data-page="almanac" onclick="switchPage('almanac',this)"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2 15 9 22 12 15 15 12 22 9 15 2 12 9 9Z"/></svg><span>Almanac</span></button></nav></div>
 
       <div class="header-tools">
         <div class="theme">
@@ -378,8 +386,8 @@
         <span class="footer-note">MIT · no telemetry</span>
       </div>
     </footer>
-  </main>
+  <section class="page hidden" id="page-almanac"><div class="page-head"><div class="eyebrow">MADE BY ONE / ALMANAC</div><h1 class="page-title">Almanac</h1></div><div class="card almanac-layout"><div id="almanacStage" aria-hidden="true"><span id="almanacFallback">✦</span></div><div class="almanac-copy"><div id="almanacIndex" class="eyebrow"></div><h2 id="almanacTitle"></h2><p id="almanacText" class="card-desc"></p><div class="card-actions"><button class="btn" id="almanacPrev" aria-label="Previous">←</button><button class="btn" id="almanacNext" aria-label="Next">→</button></div></div></div><div id="almanacChapters" class="news-filters" role="group" aria-label="Chapters"></div></section></main>
 
-<script src="./assets/studio-v48.js?v=6.3"></script>
+<script src="./assets/studio-v48.js?v=6.3.1"></script>
 <script type="module" src="./assets/star-v48.js"></script><script src="./assets/glass-v48.js"></script><script src="./assets/optical-v54.js?v=6.0.2"></script></body>
 </html>
