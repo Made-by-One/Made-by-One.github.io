@@ -551,7 +551,7 @@ function renderGames() {
       )
       .join("");
 
-    let progress = `<div class="progress progress-unknown"><div class="progress-head"><span>${escapeHtml(t("games.progress"))}</span><span class="progress-pct">—</span></div><div class="meter" role="img" aria-label="${escapeHtml(unknown)}"></div></div>`;
+    let progress = "";
     if (typeof g.progress === "number") {
       const pct = Math.min(100, Math.max(0, g.progress));
 
@@ -584,8 +584,8 @@ function renderGames() {
             <h2 class="card-title">${escapeHtml(g.name)}</h2>
             
           </header>
-          <div class="game-meta">${meta}</div>
           <p class="game-desc">${escapeHtml(pickLocalized(g.desc) || "")}</p>
+          <div class="game-meta">${meta}</div>
           ${progress}
           <div class="card-actions">
             ${g.id !== "jack-revenant" ? `<button type="button" class="btn btn-primary" onclick="openGame('${escapeHtml(g.id)}')">${escapeHtml(({ru:"Подробнее",uk:"Докладніше",de:"Details",fr:"Détails",es:"Detalles",pt:"Detalhes",zh:"详情"}[currentLang]||"Explore"))} ↗</button>` : ""}
