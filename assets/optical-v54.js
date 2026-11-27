@@ -23,10 +23,30 @@ document.addEventListener("pointermove",ev=>{if(motion.matches||transparency.mat
 function clearLight(){if(active)active.classList.remove("optical-lit");active=null}
 document.addEventListener("pointerout",e=>{if(active&&!active.contains(e.relatedTarget))clearLight()});
 document.addEventListener("visibilitychange",clearLight);
-// Sample frame pacing only during scrolling; downgrade once per page on sustained slow frames.
-let sample=0,last=0,frames=0,slow=0,until=0;
-function pace(t){if(document.hidden||t>until||degraded){sample=0;last=frames=slow=0;return}if(last){frames++;if(t-last>34)slow++}last=t;if(frames>=45){if(slow/frames>.45){degraded=true;document.documentElement.classList.add("optical-lite");clearLight();sample=0;return}frames=slow=0}sample=requestAnimationFrame(pace)}
-window.addEventListener("scroll",()=>{if(degraded||document.hidden||motion.matches)return;until=performance.now()+1500;if(!sample)sample=requestAnimationFrame(pace)},{passive:true,capture:true});
+// Reversible quality controller. Keep optical glass unless sustained slow frames.
+const compact=matchMedia("(max-width:900px)");
+let sample=0,last=0,frames=0,slow=0,good=0,until=0,badWindows=0,goodWindows=0,changed=0,retry=0,fade=0;
+function setQuality(lite,t){
+ degraded=lite;changed=t;badWindows=goodWindows=0;
+ const root=document.documentElement;root.classList.toggle("optical-lite",lite);
+ if(lite){clearLight();root.classList.remove("optical-returning");clearTimeout(fade);scheduleRetry()}
+ else{root.classList.add("optical-returning");clearTimeout(fade);fade=setTimeout(()=>root.classList.remove("optical-returning"),650)}
+}
+function scheduleRetry(){clearTimeout(retry);if(degraded&&!document.hidden&&!transparency.matches)retry=setTimeout(()=>{kick(2600)},5000)}
+function kick(duration=2200){if(document.hidden||transparency.matches)return;until=Math.max(until,performance.now()+duration);if(!sample){last=frames=slow=good=0;sample=requestAnimationFrame(pace)}}
+function pace(t){
+ if(document.hidden||transparency.matches||t>until){sample=0;last=frames=slow=good=0;badWindows=goodWindows=0;scheduleRetry();return}
+ if(last){const dt=t-last;frames++;if(dt>(compact.matches?42:50))slow++;if(dt<25)good++}last=t;
+ if(frames>=45){
+ if(!degraded){badWindows=slow/frames>(compact.matches?.55:.65)?badWindows+1:0;if(badWindows>=2&&t-changed>2500)setQuality(true,t)}
+ else{goodWindows=good/frames>.85?goodWindows+1:0;if(goodWindows>=2&&t-changed>5000)setQuality(false,t)}
+ frames=slow=good=0;
+ }
+ sample=requestAnimationFrame(pace);
+}
+window.addEventListener("scroll",()=>kick(3500),{passive:true,capture:true});
+document.addEventListener("visibilitychange",()=>{if(document.hidden){cancelAnimationFrame(sample);sample=0;clearTimeout(retry);until=0;badWindows=goodWindows=0}else if(degraded)scheduleRetry()});
+transparency.addEventListener("change",()=>{if(!transparency.matches&&degraded)scheduleRetry()});
 function scan(){for(const [el,e] of entries)if(!el.isConnected||!el.matches(targets)){observer.unobserve(el);e.filter.remove();el.classList.remove("optical-ready");entries.delete(el)}for(const el of document.querySelectorAll(targets)){if(entries.has(el))continue;const id="mbo-optical-"+(++serial);const filter=node("filter",{id,filterUnits:"userSpaceOnUse",primitiveUnits:"userSpaceOnUse",x:0,y:0,"color-interpolation-filters":"sRGB"});const image=node("feImage",{x:0,y:0,preserveAspectRatio:"none",result:"map"});filter.append(image);
 const mobile=matchMedia("(max-width:900px)").matches;
 if(mobile||navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=4){
