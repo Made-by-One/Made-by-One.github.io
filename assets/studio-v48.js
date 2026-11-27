@@ -1534,14 +1534,14 @@ async function chooseAlmanac(i){
  const wait=ms=>new Promise(r=>setTimeout(r,ms));
  async function motion(frames,duration){if(reduced||!card.animate)return;const animation=card.animate(frames,{duration,easing:"linear",fill:"forwards"});try{await animation.finished}finally{animation.cancel()}}
  try{
- if(wasOpen&&!reduced)await wait(460);if(!almanacVisible)return;
- await motion([{transform:"translate3d(0,0,0) rotateZ(0deg) rotateY(0deg) scale(1)",opacity:1},{transform:"translate3d("+(-dir*48)+"%,12%,0) rotateZ("+(-dir*12)+"deg) rotateY("+(dir*18)+"deg) scale(.88)",opacity:.85,offset:.55},{transform:"translate3d("+(-dir*110)+"%,38%,0) rotateZ("+(-dir*27)+"deg) rotateY("+(dir*32)+"deg) scale(.68)",opacity:0}],340);
+ if(wasOpen&&!reduced)await wait(140);if(!almanacVisible)return;almanacScene?.preview?.(i,dir);
+ await motion([{transform:"translate3d(0,0,0) rotateZ(0deg) rotateY(0deg) scale(1)",opacity:1},{transform:"translate3d("+(-dir*48)+"%,12%,0) rotateZ("+(-dir*12)+"deg) rotateY("+(dir*18)+"deg) scale(.88)",opacity:.85,offset:.55},{transform:"translate3d("+(-dir*110)+"%,38%,0) rotateZ("+(-dir*27)+"deg) rotateY("+(dir*32)+"deg) scale(.68)",opacity:0}],150);
  almanacChapter=i;renderAlmanac();almanacScene?.select(i);
  if(!almanacVisible)return;
- await motion([{transform:"translate3d("+(dir*110)+"%,38%,0) rotateZ("+(dir*27)+"deg) rotateY("+(-dir*32)+"deg) scale(.68)",opacity:0},{transform:"translate3d("+(dir*38)+"%,8%,0) rotateZ("+(dir*9)+"deg) rotateY("+(-dir*12)+"deg) scale(.92)",opacity:.9,offset:.48},{transform:"translate3d(0,0,0) rotateZ(0deg) rotateY(0deg) scale(1)",opacity:1}],430);
+ await motion([{transform:"translate3d("+(dir*110)+"%,38%,0) rotateZ("+(dir*27)+"deg) rotateY("+(-dir*32)+"deg) scale(.68)",opacity:0},{transform:"translate3d("+(dir*38)+"%,8%,0) rotateZ("+(dir*9)+"deg) rotateY("+(-dir*12)+"deg) scale(.92)",opacity:.9,offset:.48},{transform:"translate3d(0,0,0) rotateZ(0deg) rotateY(0deg) scale(1)",opacity:1}],190);
  }finally{almanacMoving=false}
 }
-function showAlmanac(v){almanacVisible=v;if(!v&&almanacExpanded)expandAlmanac(false);if(almanacScene){almanacScene.show(v);return}if(!v||almanacLoading)return;renderAlmanac();if(!NEWS_CACHE?.length)loadNews();almanacLoading=import("./almanac-v62.js?v=6.2.13").then(m=>{almanacScene=m.mountAlmanac(document.getElementById("almanacStage"));almanacScene.select(almanacChapter);almanacScene.setExpanded(almanacExpanded);almanacScene.show(almanacVisible);document.getElementById("almanacFallback").hidden=true}).catch(e=>{console.warn("Almanac 3D unavailable",e);almanacLoading=null})}
+function showAlmanac(v){almanacVisible=v;if(!v&&almanacExpanded)expandAlmanac(false);if(almanacScene){almanacScene.show(v);return}if(!v||almanacLoading)return;renderAlmanac();if(!NEWS_CACHE?.length)loadNews();almanacLoading=import("./almanac-v62.js?v=6.2.14").then(m=>{almanacScene=m.mountAlmanac(document.getElementById("almanacStage"));almanacScene.select(almanacChapter);almanacScene.setExpanded(almanacExpanded);almanacScene.show(almanacVisible);document.getElementById("almanacFallback").hidden=true}).catch(e=>{console.warn("Almanac 3D unavailable",e);almanacLoading=null})}
 
 function renderAlmanacArchive(){
  const host=document.getElementById("almanacArchive");if(!host)return;
@@ -1559,7 +1559,7 @@ function bindAlmanacGallery(){
  viewport.addEventListener("pointercancel",()=>start=null);
  card.addEventListener("click",()=>{if(performance.now()>suppress&&!almanacMoving)expandAlmanac(!almanacExpanded)});
  card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();expandAlmanac(!almanacExpanded)}if(e.key==="ArrowLeft"||e.key==="ArrowRight"){e.preventDefault();chooseAlmanac(almanacChapter+(e.key==="ArrowRight"?1:-1))}});
- page.addEventListener("wheel",e=>{if(e.ctrlKey||e.target.closest("#almanacDetails"))return;const d=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;if(!d)return;const next=almanacChapter+Math.sign(d);if(next<0||next>=6){expandAlmanac(false);return}e.preventDefault();if(almanacMoving||performance.now()-wheelAt<600)return;wheelAt=performance.now();chooseAlmanac(next)},{passive:false});
+ page.addEventListener("wheel",e=>{if(e.ctrlKey||e.target.closest("#almanacDetails"))return;const d=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;if(!d)return;const next=almanacChapter+Math.sign(d);if(next<0||next>=6){expandAlmanac(false);return}e.preventDefault();if(almanacMoving||performance.now()-wheelAt<360)return;wheelAt=performance.now();chooseAlmanac(next)},{passive:false});
  document.addEventListener("pointerdown",e=>{if(almanacVisible&&almanacExpanded&&!e.target.closest("#almanacCard,#almanacDetails"))expandAlmanac(false)});
  document.addEventListener("keydown",e=>{if(almanacVisible&&e.key==="Escape")expandAlmanac(false)});
 }
