@@ -171,6 +171,18 @@
 #page-almanac #almanacChapters span{flex:0 0 8px;width:8px;height:8px;background:var(--line-strong);border-radius:50%}
 #almanacChapters .almanac-liquid-indicator{position:absolute;pointer-events:none;left:calc(5px + var(--chapter,0)*18px);top:2px;width:8px;height:8px;border-radius:999px;background:var(--accent);box-shadow:0 0 8px var(--accent),inset 0 1px 1px #ffffff80;transform-origin:center}
 @media(prefers-reduced-motion:reduce){#almanacChapters .almanac-liquid-indicator{animation:none}}
+</style><style>
+@media(max-width:760px){
+#page-almanac .almanac-viewport{perspective:800px}
+#page-almanac #almanacStage{height:clamp(230px,72vw,360px)}
+#page-almanac .almanac-copy{padding:10px 14px 18px}
+#page-almanac #almanacTitle{font-size:clamp(23px,6vw,32px)}
+#page-almanac #almanacDetails .almanac-archive{padding:14px}
+#page-almanac #almanacLinks{display:flex;flex-wrap:wrap;gap:8px}
+#page-almanac #almanacLinks .btn,#page-almanac .almanac-record{min-height:44px;max-width:100%}
+#page-almanac .almanac-record{width:100%;overflow-wrap:anywhere}
+#page-almanac #almanacChapters{margin:14px auto}
+}
 </style></head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="mbo-refract"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="1" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
   <script>
@@ -439,6 +451,6 @@
     </footer>
   </main>
 
-<script src="./assets/studio-v48.js?v=6.3.8"></script>
+<script src="./assets/studio-v48.js?v=6.3.9"></script>
 <script type="module" src="./assets/star-v48.js"></script><script src="./assets/glass-v48.js"></script><script src="./assets/optical-v54.js?v=6.0.2"></script></body>
 </html>
